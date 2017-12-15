@@ -23,7 +23,7 @@ class ItasksService:
     def start_server(self):
         # Start iTasks server
         process = Popen(
-            ["/usr/bin/mono", "/home/nick/RiderProjects/iTasksToStdIO/iTasksToStdIO/bin/Debug/iTasksToStdIO.exe"],
+            ["/usr/bin/mono", "itasks_server/iTasksToStdIO.exe"],
             stdout=PIPE, stdin=PIPE, bufsize=0)
         thread = Thread(target=self.background_worker, args=[process.stdout])
         thread.daemon = True
