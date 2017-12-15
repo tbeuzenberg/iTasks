@@ -1,5 +1,5 @@
 import json
 
 
-def json_decode(std_in):
-    return json.loads(std_in)
+def json_decode(strIn):
+    return json.loads(strIn)
