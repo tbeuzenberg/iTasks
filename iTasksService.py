@@ -17,8 +17,6 @@ class ItasksService:
     def __init__(self):
         super(ItasksService, self).__init__()
 
-        self.start_server()
-
     def start_server(self):
         # Start iTasks server
         global process

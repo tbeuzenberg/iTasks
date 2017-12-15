@@ -17,6 +17,7 @@ class Example(QMainWindow):
 
         # Start a new itasks session
         self.itasksService = itasks_service
+        self.itasksService.start_server()
         self.itasksService.new_session(self.new_session_callback)
 
         self.initUI()
