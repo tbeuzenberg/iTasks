@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-import fcntl
 import os
 import json
 from subprocess import *
@@ -18,13 +17,18 @@ class ItasksService:
     def __init__(self):
         super(ItasksService, self).__init__()
 
-        self.start_server()
-
     def start_server(self):
         # Start iTasks server
-        process = Popen(
-            ["/usr/bin/mono", "/home/nick/RiderProjects/iTasksToStdIO/iTasksToStdIO/bin/Debug/iTasksToStdIO.exe"],
-            stdout=PIPE, stdin=PIPE, bufsize=0)
+        global process
+        if os.name is "nt":
+            process = Popen(
+                ["itasks_server/iTasksToStdIO.exe"],
+                stdout=PIPE, stdin=PIPE, bufsize=0)
+        elif os.name is "posix":
+            process = Popen(
+                ["/usr/bin/mono", "itasks_server/iTasksToStdIO.exe"],
+                stdout=PIPE, stdin=PIPE, bufsize=0)
+
         thread = Thread(target=self.background_worker, args=[process.stdout])
         thread.daemon = True
         thread.start()
@@ -42,9 +46,9 @@ class ItasksService:
 
     @staticmethod
     def non_block_read(output):
-        fd = output.fileno()
-        fl = fcntl.fcntl(fd, fcntl.F_GETFL)
-        fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
+        # fd = output.fileno()
+        # fl = fcntl.fcntl(fd, fcntl.F_GETFL)
+        # fcntl.fcntl(fd, fcntl.F_SETFL, fl | os.O_NONBLOCK)
         try:
             line = output.readline().decode('utf-8')
             if len(line) > 1:

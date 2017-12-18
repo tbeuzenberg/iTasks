@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import sys
+import os
 from PyQt5.QtWidgets import QMainWindow, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication
 from iTasksService import ItasksService
 import json
@@ -16,6 +17,7 @@ class Example(QMainWindow):
 
         # Start a new itasks session
         self.itasksService = itasks_service
+        self.itasksService.start_server()
         self.itasksService.new_session(self.new_session_callback)
 
         self.initUI()
@@ -71,7 +73,11 @@ class Example(QMainWindow):
             self.itasksService.send_data('["event",1,["1-61",null,"Start task"]]')
         if self.temp_start_palindrome is 4:
             object = json.loads(data)
-            attributes = object['change']['children'][0][2]['children'][0][2]['definition']['children'][1]['children'][0]['children'][0]['attributes']
+            global attributes
+            if os.name is "nt":
+                attributes = object['change']['children'][0][2]['children'][0][2]['children'][0][2]['children'][1][2]['children'][0]['attributes']
+            elif os.name is "posix":
+                attributes = object['change']['children'][0][2]['children'][0][2]['definition']['children'][1]['children'][0]['children'][0]['attributes']
             instance_no = attributes['instanceNo']
             instance_key = attributes['instanceKey']
             self.itasksService.attach_task_instance(instance_no, instance_key, self.task_callback)
