@@ -1,9 +1,7 @@
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import (QWidget, QPushButton, QBoxLayout, QApplication, QLabel, QLineEdit, QGridLayout)
 import sys
-import PyQt5.QtCore
-from PyQt5.QtGui import QIcon, QPicture, QPainter
 
-from PyQt5.QtWidgets import (QWidget, QPushButton,
-    QBoxLayout, QHBoxLayout, QVBoxLayout, QApplication, QLabel, QLineEdit, QGridLayout)
 
 class Example(QWidget):
 
@@ -13,48 +11,48 @@ class Example(QWidget):
         self.initUI()
 
     def initUI(self):
-        b1 = QPushButton("OK")
-        b2 = QPushButton("Cancel")
-        l1 = QLabel('Enter a palindrome')
-        l2 = QLabel('<html><img src="icons/bug.png"></html>')
-        q1 = QLineEdit()
+        button1 = QPushButton("OK")
+        button2 = QPushButton("Cancel")
+        label1 = QLabel('Enter a palindrome')
+        label2 = QLabel('<html><img src="icons/bug.png"></html>')
+        line_edit1 = QLineEdit()
 
         #OPMAAK
-        I1 = QIcon("icons/accept.png")
-        I2 = QIcon("icons/cancel.png")
-        b1.setIcon(I1)
-        b1.setEnabled(False)
-        b1.setMaximumSize(45,30)
-        b2.setIcon(I2)
-        b2.setMaximumSize(60,30)
-        l1.setContentsMargins(10,20,0,20)
-        q1.setContentsMargins(5,0,0,0)
-        l2.setContentsMargins(0,0,5,0)
+        icon1 = QIcon("icons/accept.png")
+        icon2 = QIcon("icons/cancel.png")
+        button1.setIcon(icon1)
+        button1.setEnabled(False)
+        button1.setMaximumSize(45,30)
+        button2.setIcon(icon2)
+        button2.setMaximumSize(60,30)
+        label1.setContentsMargins(10,20,0,20)
+        line_edit1.setContentsMargins(5,0,0,0)
+        label2.setContentsMargins(0,0,5,0)
 
         MainLayout = QGridLayout()
         MainLayout.setContentsMargins(0,0,0,0)
 
-        #LAYOUTR
+        #LAYOUT RIGHT-TO-LEFT
         LayoutR = QBoxLayout(0)
         LayoutR.addStretch()
-        LayoutR.addWidget(b1)
+        LayoutR.addWidget(button1)
         LayoutR.setSpacing(0)
-        LayoutR.addWidget(b2)
+        LayoutR.addWidget(button2)
 
-        #LAYOUTB
+        #LAYOUT BOTTOM-TO-TOP
         LayoutB = QBoxLayout(2)
         LayoutB.addStretch()
 
-        #LAYOUTT
+        #LAYOUT TOP-TO-BOTTOM
         LayoutT = QBoxLayout(2)
-        LayoutT.addWidget(l1)
+        LayoutT.addWidget(label1)
 
-        #LAYOUTR2
+        #LAYOUT LEFT-TO-RIGHT
         LayoutL = QBoxLayout(1)
-        LayoutL.addWidget(l2)
-        LayoutL.addWidget(q1)
+        LayoutL.addWidget(label2)
+        LayoutL.addWidget(line_edit1)
 
-        #LAYOUTMERGE
+        #LAYOUT MERGING
         LayoutT.addLayout(LayoutL)
         LayoutB.addLayout(LayoutR)
         MainLayout.addLayout(LayoutB, 1,0)
