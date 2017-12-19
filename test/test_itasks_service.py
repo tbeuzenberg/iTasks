@@ -1,7 +1,9 @@
 import unittest
-from unittest.mock import patch, Mock
-from iTasksService import ItasksService
 import json
+
+from unittest.mock import patch, Mock
+
+from itasks.itasks_service import ItasksService
 
 
 class TestItasksService(unittest.TestCase):
@@ -19,6 +21,7 @@ class TestItasksService(unittest.TestCase):
 
         # Assert
         self.assertEqual(request_id + 1, itasksservice.reqId)
+        self.assertEqual(itasksservice.newSessionCallbacks[request_id], callback)
         callback.assert_not_called()
         mocked_popen.stdin.write.assert_called_once_with('[1, "new"]\n'.encode())
 

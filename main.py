@@ -2,21 +2,29 @@
 
 import sys
 import os
-from PyQt5.QtWidgets import QMainWindow, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication
-from iTasksService import ItasksService
 import json
 
+from PyQt5.QtWidgets import (
+    QMainWindow,
+    QWidget,
+    QPushButton,
+    QHBoxLayout,
+    QVBoxLayout,
+    QApplication
+)
 
-class Example(QMainWindow):
+from itasks.itasks_service import ItasksService
 
-    itasksService = None
+
+class Main(QMainWindow):
+
     temp_start_palindrome = 0
 
-    def __init__(self, itasks_service):
-        super(Example, self).__init__()
+    def __init__(self):
+        super(Main, self).__init__()
 
         # Start a new itasks session
-        self.itasksService = itasks_service
+        self.itasksService = ItasksService()
         self.itasksService.start_server()
         self.itasksService.new_session(self.new_session_callback)
 
@@ -56,9 +64,20 @@ class Example(QMainWindow):
         self.statusBar().showMessage(sender.text() + ' was pressed')
 
     def new_session_callback(self, instance_no, instance_key):
+        """
+        Callback method for the creation of a new session
+        :param instance_no: iTasks instance number
+        :param instance_key: iTasks instance key
+        :rtype: void
+        """
         self.itasksService.attach_task_instance(instance_no, instance_key, self.task_callback)
 
     def task_callback(self, data):
+        """
+        Task instance callback method
+        :param data: iTasks response data
+        :rtype: void
+        """
         self.statusBar().showMessage(data)
         print(data)
 
@@ -85,8 +104,6 @@ class Example(QMainWindow):
 
 
 if __name__ == '__main__':
-    service = ItasksService()
-
     app = QApplication(sys.argv)
-    ex = Example(service)
+    ex = Main()
     sys.exit(app.exec_())
