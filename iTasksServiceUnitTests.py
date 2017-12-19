@@ -1,7 +1,9 @@
 import unittest
-from unittest.mock import patch, Mock
-from iTasksService import ItasksService
 import json
+
+from unittest.mock import patch, Mock
+
+from iTasksService import ItasksService
 
 
 class TestItasksService(unittest.TestCase):

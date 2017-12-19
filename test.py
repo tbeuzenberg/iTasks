@@ -2,9 +2,18 @@
 
 import sys
 import os
-from PyQt5.QtWidgets import QMainWindow, QWidget, QPushButton, QHBoxLayout, QVBoxLayout, QApplication
-from iTasksService import ItasksService
 import json
+
+from PyQt5.QtWidgets import (
+    QMainWindow,
+    QWidget,
+    QPushButton,
+    QHBoxLayout,
+    QVBoxLayout,
+    QApplication
+)
+
+from iTasksService import ItasksService
 
 
 class Example(QMainWindow):
