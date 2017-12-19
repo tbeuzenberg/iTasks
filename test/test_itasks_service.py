@@ -12,6 +12,7 @@ class TestItasksService(unittest.TestCase):
     def test_new_session(self, mocked_popen):
         # Assign
         itasksservice = ItasksService()
+        itasksservice.reqId = 1
         itasksservice.process = mocked_popen
         callback = Mock()
         request_id = itasksservice.reqId
@@ -21,14 +22,17 @@ class TestItasksService(unittest.TestCase):
 
         # Assert
         self.assertEqual(request_id + 1, itasksservice.reqId)
-        self.assertEqual(itasksservice.newSessionCallbacks[request_id], callback)
+        self.assertEqual(
+            itasksservice.newSessionCallbacks[request_id], callback)
         callback.assert_not_called()
-        mocked_popen.stdin.write.assert_called_once_with('[1, "new"]\n'.encode())
+        mocked_popen.stdin.write.assert_called_once_with(
+            '[1, "new"]\n'.encode())
 
     @patch('subprocess.Popen')
     def test_process_data_new_session_callback(self, mocked_popen):
         # Assign
         itasksservice = ItasksService()
+        itasksservice.reqId = 1
         itasksservice.process = mocked_popen
         callback = Mock()
         instance_no = 2
@@ -36,7 +40,9 @@ class TestItasksService(unittest.TestCase):
 
         # Act
         itasksservice.new_session(callback)
-        itasksservice.process_data(json.dumps([1, {'instanceNo': instance_no, 'instanceKey': instance_key}]))
+        itasksservice.process_data(
+            json.dumps([1, {'instanceNo': instance_no,
+                            'instanceKey': instance_key}]))
 
         # Assert
         callback.assert_called_once_with(instance_no, instance_key)

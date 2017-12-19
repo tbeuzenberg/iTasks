@@ -17,7 +17,6 @@ from itasks.itasks_service import ItasksService
 
 
 class Main(QMainWindow):
-
     temp_start_palindrome = 0
 
     def __init__(self):
@@ -70,7 +69,8 @@ class Main(QMainWindow):
         :param instance_key: iTasks instance key
         :rtype: void
         """
-        self.itasksService.attach_task_instance(instance_no, instance_key, self.task_callback)
+        self.itasksService.attach_task_instance(
+            instance_no, instance_key, self.task_callback)
 
     def task_callback(self, data):
         """
@@ -89,17 +89,24 @@ class Main(QMainWindow):
         if self.temp_start_palindrome is 2:
             self.itasksService.send_data('["event",1,["1-63","v",[17]]]')
         if self.temp_start_palindrome is 3:
-            self.itasksService.send_data('["event",1,["1-61",null,"Start task"]]')
+            self.itasksService.send_data(
+                '["event",1,["1-61",null,"Start task"]]')
         if self.temp_start_palindrome is 4:
-            object = json.loads(data)
+            obj = json.loads(data)
             global attributes
             if os.name is "nt":
-                attributes = object['change']['children'][0][2]['children'][0][2]['children'][0][2]['children'][1][2]['children'][0]['attributes']
+                attributes = obj['change']['children'][0][2]['children'][0][2]
+                attributes = attributes['children'][0][2]['children'][1][2]
+                attributes = attributes['children'][0]['attributes']
             elif os.name is "posix":
-                attributes = object['change']['children'][0][2]['children'][0][2]['definition']['children'][1]['children'][0]['children'][0]['attributes']
+                attributes = obj['change']['children'][0][2]['children']
+                attributes = attributes[0][2]['definition']['children'][1]
+                attributes = attributes['children'][0]['children']
+                attributes = attributes[0]['attributes']
             instance_no = attributes['instanceNo']
             instance_key = attributes['instanceKey']
-            self.itasksService.attach_task_instance(instance_no, instance_key, self.task_callback)
+            self.itasksService.attach_task_instance(
+                instance_no, instance_key, self.task_callback)
         self.temp_start_palindrome += 1
 
 

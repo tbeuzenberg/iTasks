@@ -42,7 +42,8 @@ class ItasksService(object):
                 ["/usr/bin/mono", "itasks_server/iTasksToStdIO.exe"],
                 stdout=PIPE, stdin=PIPE, bufsize=0)
 
-        # Start a background thread that reads the stdio output from the iTasks Server
+        # Start a background thread that reads the stdio output from
+        # the iTasks Server
         thread = Thread(target=self.background_worker, args=[process.stdout])
         thread.daemon = True
         thread.start()
@@ -57,7 +58,8 @@ class ItasksService(object):
 
     def background_worker(self, stdout):
         """
-        Read the standard output without in a thread without blocking the main thread
+        Read the standard output without in a thread without blocking
+        the main thread
         Call process data when data is read
         :rtype: void
         """
