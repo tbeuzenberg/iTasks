@@ -1,0 +1,2 @@
+class CouldNotReadStdIO(Exception):
+    pass
