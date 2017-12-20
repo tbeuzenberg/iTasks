@@ -6,7 +6,7 @@ import json
 from subprocess import *
 from threading import Thread
 
-from itasks.exceptions import CouldNotReadStdIO
+from itasks.exceptions import CouldNotReadStdIOException
 
 
 class ItasksService(object):
@@ -81,7 +81,7 @@ class ItasksService(object):
             if len(line) > 1:
                 return str(line.strip())
         except Exception:
-            raise CouldNotReadStdIO
+            raise CouldNotReadStdIOException
 
     def process_data(self, data):
         """

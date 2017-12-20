@@ -79,6 +79,28 @@ class TestItasksService(unittest.TestCase):
         # Assert
         callback.assert_called_once_with(data)
 
+    @patch('subprocess.Popen')
+    def test_process_data_incorrect_instance_no(self, mocked_popen):
+        """
+        method: process_data
+        state: Response with incorrect instance number
+        expected_result: Callback method is not called
+        """
+        # Assert
+        itasksservice = ItasksService()
+        itasksservice.process = mocked_popen
+        callback = Mock()
+        instance_no = 2
+        instance_key = 'zwybytwiucxuukecmubejicucfakxwcj'
+        data = json.dumps({'instance': 5, 'change': 'dummy request'})
+
+        # Act
+        itasksservice.attach_task_instance(instance_no, instance_key, callback)
+        itasksservice.process_data(data)
+
+        # Assert
+        callback.assert_not_called()
+
 
 if __name__ == '__main__':
     unittest.main()

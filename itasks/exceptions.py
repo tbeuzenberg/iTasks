@@ -1,2 +1,2 @@
-class CouldNotReadStdIO(Exception):
+class CouldNotReadStdIOException(Exception):
     pass
