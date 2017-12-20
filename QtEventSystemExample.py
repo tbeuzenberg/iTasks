@@ -2,14 +2,15 @@ import sys
 from PyQt5.QtWidgets import QMainWindow, QPushButton, QApplication, QLineEdit, QBoxLayout, QGridLayout, QLabel, QWidget
 
 
-class Example(QMainWindow):
+class QtEventSystemExample(QMainWindow):
 
     def __init__(self):
         super().__init__()
 
         self.btn1 = QPushButton("Button 1", self)
-        self.init_ui()
         self.btn2 = QPushButton("Button 2", self)
+        self.init_ui()
+
 
     def init_ui(self):
 
@@ -77,5 +78,5 @@ class Example(QMainWindow):
 
 
 app = QApplication(sys.argv)
-ex = Example()
+ex = QtEventSystemExample()
 sys.exit(app.exec_())
