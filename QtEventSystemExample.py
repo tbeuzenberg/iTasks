@@ -7,7 +7,9 @@ class Example(QMainWindow):
     def __init__(self):
         super().__init__()
 
+        self.btn1 = QPushButton("Button 1", self)
         self.init_ui()
+        self.btn2 = QPushButton("Button 2", self)
 
     def init_ui(self):
 
@@ -15,9 +17,6 @@ class Example(QMainWindow):
         self.setCentralWidget(widget)
         main_layout = QGridLayout()
         main_layout.setContentsMargins(0, 0, 0, 0)
-
-        btn1 = QPushButton("Button 1", self)
-        btn2 = QPushButton("Button 2", self)
 
         label1 = QLabel('Enter a palindrome')
         label2 = QLabel('<html><img src="icons/bug.png"></html>')
@@ -29,16 +28,17 @@ class Example(QMainWindow):
         input_line.move(130, 22)
         input_line.setContentsMargins(5, 0, 0, 0)
 
-        btn1.clicked.connect(self.button_clicked)
-        btn2.clicked.connect(self.button_clicked)
+        self.btn1.clicked.connect(self.button_clicked)
+        self.btn2.clicked.connect(self.button_clicked)
+        self.btn1.setEnabled(False)
 
         self.statusBar()
 
         layout_r = QBoxLayout(0)
         layout_r.addStretch()
-        layout_r.addWidget(btn1)
+        layout_r.addWidget(self.btn1)
         layout_r.setSpacing(0)
-        layout_r.addWidget(btn2)
+        layout_r.addWidget(self.btn2)
 
         layout_b = QBoxLayout(2)
         layout_b.addStretch()
@@ -63,7 +63,13 @@ class Example(QMainWindow):
 
     def print_text(self):
         sender = self.sender()
-        self.statusBar().showMessage("Text Changed To: " + sender.text())
+        text = str(sender.text())
+        if text == text[::-1] and text is not None and text is not "" and len(text) is not 1:
+            self.btn1.setEnabled(True)
+            self.statusBar().showMessage(sender.text() + " is a palindrome")
+        else:
+            self.btn1.setEnabled(False)
+            self.statusBar().showMessage(sender.text() + " is not a palindrome")
 
     def button_clicked(self):
         sender = self.sender()
