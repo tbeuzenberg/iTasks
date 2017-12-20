@@ -5,8 +5,8 @@ from PyQt5.QtWidgets import QPushButton, QMainWindow, QApplication, QWidget, QLa
 
 
 class Node:
-    def __init__(self, qwidget=None):
-        self.qwidget = qwidget
+    def __init__(self, value=None):
+        self.value = value
         self.children = []
 
     def add_child(self, node, location):
@@ -19,6 +19,12 @@ class Node:
         self.children[location] = node
 
     def add_or_replace_child(self, node, location):
+        """
+        Chooses whether a node has to be added or replaced, and acts accordingly
+        :param node: Node
+        :param location: str
+        :rtype: void
+        """
         if location >= len(self.children):
             self.add_child(node, location)
         else:
@@ -36,10 +42,10 @@ class Node:
             return self.children[first_digit].search_node(rest)
 
     def print(self, prefix=""):
-        if self.qwidget is None:
+        if self.value is None:
             print(prefix + "None")
         else:
-            print(prefix + "QWidget")
+            print(prefix + type(self.value).__name__)
 
         if len(self.children) > 0:
             for i in range(0, len(self.children)):
@@ -53,15 +59,15 @@ class Tree:
     def search_node(self, location):
         return self.root.search_node(location)
 
-    def insert(self, qwidget, location):
-        node = Node(qwidget)
-        print("=={}==".format(location))
+    def insert(self, value, location):
+        node = Node(value)
+
         if len(location) <= 1:
             self.root.add_or_replace_child(node, int(location))
         else:
             last = location[len(location) - 1:]
             rest = location[:len(location) - 1]
-            self.search_node(rest).add_or_replace_child(node, last)
+            self.root.search_node(rest).add_or_replace_child(node, int(last))
 
     def print(self):
         self.root.print()
@@ -74,15 +80,14 @@ class Tree:
 # pb = QPushButton('str')
 # first_button = Node(pb)
 # tree = Tree(first_button)
-# tree.insert(QPushButton('hoi'), 3)
-# tree.insert(QPushButton('hee'), 1)
+# tree.insert(QPushButton('hoi'), "3")
+# tree.insert(QPushButton('hee'), "1")
 #
-# tree.insert(QPushButton('hallo'), 30)
-# tree.insert(QPushButton('hallo'), 305)
+# tree.insert(QPushButton('hallo'), "30")
+# tree.insert(QPushButton('hallo'), "305")
 #
-# tree.insert(QLabel('pinda'), 30)
-# print()
-#
+# tree.insert(QLabel('pinda'), "30")
+
 #
 # tree.print()
 #
