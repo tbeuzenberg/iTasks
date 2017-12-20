@@ -1,9 +1,11 @@
 #!/usr/bin/python3
 
+""" The ItasksService handles the communication with the iTasks Service """
+
 import os
 import json
 
-from subprocess import *
+from subprocess import Popen, PIPE
 from threading import Thread
 
 from itasks.exceptions import CouldNotReadStdIOException
@@ -17,37 +19,37 @@ class ItasksService(object):
     process = None  # Popen process
     newSessionCallbacks = {}
     taskInstanceCallbacks = {}
-    reqId = 1  # Unique request id
+    req_id = 1  # Unique request id
 
-    def __new__(cls, *args, **kwargs):
+    def __new__(cls):
+        """
+        Singleton retreive instance by calling constructor
+        :return: iTask Service instance
+        :rtype: ItasksService
+        """
         if ItasksService.__instance is None:
             ItasksService.__instance = object.__new__(cls)
         return ItasksService.__instance
-
-    def __init__(self):
-        super(ItasksService, self).__init__()
 
     def start_server(self):
         """
         Start iTasks server in a background thread
         :rtype: void
         """
-        global process
-        if os.name is "nt":
-            process = Popen(
+        if os.name == "nt":
+            self.process = Popen(
                 ["itasks_server/iTasksToStdIO.exe"],
                 stdout=PIPE, stdin=PIPE, bufsize=0)
-        elif os.name is "posix":
-            process = Popen(
+        elif os.name == "posix":
+            self.process = Popen(
                 ["/usr/bin/mono", "itasks_server/iTasksToStdIO.exe"],
                 stdout=PIPE, stdin=PIPE, bufsize=0)
 
         # Start a background thread that reads the stdio output from
         # the iTasks Server
-        thread = Thread(target=self.background_worker, args=[process.stdout])
+        thread = Thread(target=self.background_worker, args=[self.process.stdout])
         thread.daemon = True
         thread.start()
-        self.process = process
 
     def stop_server(self):
         """
@@ -82,6 +84,7 @@ class ItasksService(object):
                 return str(line.strip())
         except Exception:
             raise CouldNotReadStdIOException
+        return None
 
     def process_data(self, data):
         """
@@ -91,7 +94,7 @@ class ItasksService(object):
         :rtype: void
         """
         decoded_response = json.loads(data)
-        if type(decoded_response) == list:
+        if isinstance(decoded_response, list):
             request_id = decoded_response[0]
             response = decoded_response[1]
 
@@ -120,9 +123,9 @@ class ItasksService(object):
         :param callback: Method to call when a response is received
         :rtype: void
         """
-        self.newSessionCallbacks[self.reqId] = callback
-        self.send_data(json.dumps([self.reqId, "new"]))
-        self.reqId = self.reqId + 1
+        self.newSessionCallbacks[self.req_id] = callback
+        self.send_data(json.dumps([self.req_id, "new"]))
+        self.req_id = self.req_id + 1
 
     def attach_task_instance(self, instance_no, instance_key, callback):
         """
