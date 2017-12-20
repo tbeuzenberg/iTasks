@@ -9,7 +9,12 @@ from itasks.itasks_service import ItasksService
 class TestItasksService(unittest.TestCase):
 
     @patch('subprocess.Popen')
-    def test_new_session(self, mocked_popen):
+    def test_new_session_callback(self, mocked_popen):
+        """
+        method: new_session
+        state: with callback
+        expected_result: new session request is made
+        """
         # Assign
         itasksservice = ItasksService()
         itasksservice.reqId = 1
@@ -30,6 +35,11 @@ class TestItasksService(unittest.TestCase):
 
     @patch('subprocess.Popen')
     def test_process_data_new_session_callback(self, mocked_popen):
+        """
+        method: process_data
+        state: with correct callback
+        expected_result: callback is called with correct data
+        """
         # Assign
         itasksservice = ItasksService()
         itasksservice.reqId = 1
@@ -49,6 +59,11 @@ class TestItasksService(unittest.TestCase):
 
     @patch('subprocess.Popen')
     def test_process_data_attach_task_instance_callback(self, mocked_popen):
+        """
+        method: attach_task_instance
+        state: with correct callback
+        expected_result: callback is called with correct data
+        """
         # Assign
         itasksservice = ItasksService()
         itasksservice.process = mocked_popen
