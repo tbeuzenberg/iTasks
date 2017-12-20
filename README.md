@@ -1,5 +1,8 @@
-# iTasks
-iTasks project
+# iTasks Desktop Application
+
+[![Build Status](https://travis-ci.com/tbeuzenberg/iTasks.svg?token=zyV8axzWJqZ5eqvpAcjk&branch=development)](https://travis-ci.com/tbeuzenberg/iTasks)
+
+This project is a Desktop Application for the [iTasks framework.](http://www.itasks.org/)
 
 ## Installation instructions
 
