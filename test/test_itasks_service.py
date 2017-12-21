@@ -1,3 +1,6 @@
+
+""" Unit tests for itasks_service.py """
+
 import unittest
 import json
 
@@ -7,6 +10,7 @@ from itasks.itasks_service import ItasksService
 
 
 class TestItasksService(unittest.TestCase):
+    """ Unit test class """
 
     @patch('subprocess.Popen')
     def test_new_session_callback(self, mocked_popen):
@@ -17,16 +21,16 @@ class TestItasksService(unittest.TestCase):
         """
         # Assign
         itasksservice = ItasksService()
-        itasksservice.reqId = 1
+        itasksservice.req_id = 1
         itasksservice.process = mocked_popen
         callback = Mock()
-        request_id = itasksservice.reqId
+        request_id = itasksservice.req_id
 
         # Act
         itasksservice.new_session(callback)
 
         # Assert
-        self.assertEqual(request_id + 1, itasksservice.reqId)
+        self.assertEqual(request_id + 1, itasksservice.req_id)
         self.assertEqual(
             itasksservice.newSessionCallbacks[request_id], callback)
         callback.assert_not_called()
@@ -42,7 +46,7 @@ class TestItasksService(unittest.TestCase):
         """
         # Assign
         itasksservice = ItasksService()
-        itasksservice.reqId = 1
+        itasksservice.req_id = 1
         itasksservice.process = mocked_popen
         callback = Mock()
         instance_no = 2

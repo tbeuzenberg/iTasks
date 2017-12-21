@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 
+""" iTasks Desktop Application Entry point """
+
 import sys
 import os
 import json
 
-from PyQt5.QtWidgets import (
+from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
     QMainWindow,
     QWidget,
     QPushButton,
@@ -17,19 +19,23 @@ from itasks.itasks_service import ItasksService
 
 
 class Main(QMainWindow):
+    """ Main Window for the """
+
     temp_start_palindrome = 0
 
     def __init__(self):
+        """ Main window constructor """
         super(Main, self).__init__()
 
         # Start a new itasks session
-        self.itasksService = ItasksService()
-        self.itasksService.start_server()
-        self.itasksService.new_session(self.new_session_callback)
+        self.itasks_service = ItasksService()
+        self.itasks_service.start_server()
+        self.itasks_service.new_session(self.new_session_callback)
 
-        self.initUI()
+        self.init_ui()
 
-    def initUI(self):
+    def init_ui(self):
+        """ Initialize basic UI """
         window = QWidget()
 
         ok_button = QPushButton("OK", self)
@@ -51,14 +57,16 @@ class Main(QMainWindow):
 
         self.statusBar().showMessage('Ready')
 
-        self.setGeometry(300, 300, 300, 150)
+        self.setGeometry(200, 200, 600, 500)
         self.setWindowTitle('iTasks')
         self.show()
 
-    def closeEvent(self, q_close_event):
-        self.itasksService.stop_server()
+    def closeEvent(self, q_close_event):  # pylint: disable-msg=C0103,W0613
+        """ Close window event """
+        self.itasks_service.stop_server()
 
     def button_clicked(self):
+        """ Button click handler """
         sender = self.sender()
         self.statusBar().showMessage(sender.text() + ' was pressed')
 
@@ -69,7 +77,7 @@ class Main(QMainWindow):
         :param instance_key: iTasks instance key
         :rtype: void
         """
-        self.itasksService.attach_task_instance(
+        self.itasks_service.attach_task_instance(
             instance_no, instance_key, self.task_callback)
 
     def task_callback(self, data):
@@ -82,35 +90,34 @@ class Main(QMainWindow):
         print(data)
 
         # Start the palindrome task
-        if self.temp_start_palindrome is 0:
-            self.itasksService.send_data('["event",1,["1-7",null,"Continue"]]')
-        if self.temp_start_palindrome is 1:
-            self.itasksService.send_data('["event",1,["1-41",null,"New"]]')
-        if self.temp_start_palindrome is 2:
-            self.itasksService.send_data('["event",1,["1-63","v",[17]]]')
-        if self.temp_start_palindrome is 3:
-            self.itasksService.send_data(
+        if self.temp_start_palindrome == 0:
+            self.itasks_service.send_data('["event",1,["1-7",null,"Continue"]]')
+        if self.temp_start_palindrome == 1:
+            self.itasks_service.send_data('["event",1,["1-41",null,"New"]]')
+        if self.temp_start_palindrome == 2:
+            self.itasks_service.send_data('["event",1,["1-63","v",[17]]]')
+        if self.temp_start_palindrome == 3:
+            self.itasks_service.send_data(
                 '["event",1,["1-61",null,"Start task"]]')
-        if self.temp_start_palindrome is 4:
-            obj = json.loads(data)
-            global attributes
-            if os.name is "nt":
-                attributes = obj['change']['children'][0][2]['children'][0][2]
-                attributes = attributes['children'][0][2]['children'][1][2]
-                attributes = attributes['children'][0]['attributes']
-            elif os.name is "posix":
-                attributes = obj['change']['children'][0][2]['children']
+        if self.temp_start_palindrome == 4:
+            attributes = json.loads(data)
+            if os.name == "nt":
+                attributes = attributes['change']['children'][0][2]['children']
+                attributes = attributes[0][2]['children'][0][2]['children']
+                attributes = attributes[1][2]['children'][0]['attributes']
+            elif os.name == "posix":
+                attributes = attributes['change']['children'][0][2]['children']
                 attributes = attributes[0][2]['definition']['children'][1]
                 attributes = attributes['children'][0]['children']
                 attributes = attributes[0]['attributes']
             instance_no = attributes['instanceNo']
             instance_key = attributes['instanceKey']
-            self.itasksService.attach_task_instance(
+            self.itasks_service.attach_task_instance(
                 instance_no, instance_key, self.task_callback)
         self.temp_start_palindrome += 1
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
+    APP = QApplication(sys.argv)
     ex = Main()
-    sys.exit(app.exec_())
+    sys.exit(APP.exec_())

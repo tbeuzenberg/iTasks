@@ -3,7 +3,12 @@ python:
   - "3.6"
 install:
   - pip install PyQt5
-  - pip install pytest-pep8
+  - pip install pytest-pep8 coverage pylint coveralls
 script:
   - PYTHONPATH=. pytest
   - PYTHONPATH=. pytest --pep8
+  - PYTHONPATH=. pylint * || true
+  - PYTHONPATH=. coverage run --source=. -m unittest discover -s test/
+  - PYTHONPATH=. coverage report -m
+after_success:
+  - coveralls
