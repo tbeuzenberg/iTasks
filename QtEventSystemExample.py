@@ -1,28 +1,35 @@
 import sys
-from PyQt5.QtWidgets import QMainWindow, QPushButton, QApplication, QLineEdit, QBoxLayout, QGridLayout, QLabel, QWidget
+from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
+    QMainWindow,
+    QPushButton,
+    QApplication,
+    QLineEdit,
+    QBoxLayout,
+    QGridLayout,
+    QLabel,
+    QWidget
+)
 
 
 class QtEventSystemExample(QMainWindow):
-
+    """" Initialise Components """
     def __init__(self):
         super().__init__()
-
-        self.btn1 = QPushButton("Button 1", self)
-        self.btn2 = QPushButton("Button 2", self)
+        # Initialise Components here so we can access them in the functions
+        self.widget = QWidget()
+        self.btn1 = QPushButton("Continue", self)
+        self.btn2 = QPushButton("Quit", self)
+        self.label1 = QLabel('Enter a palindrome')
+        self.label2 = QLabel('<html><img src="icons/bug.png"></html>')
+        self.main_layout = QGridLayout()
         self.init_ui()
 
-
     def init_ui(self):
-
-        widget = QWidget()
-        self.setCentralWidget(widget)
-        main_layout = QGridLayout()
-        main_layout.setContentsMargins(0, 0, 0, 0)
-
-        label1 = QLabel('Enter a palindrome')
-        label2 = QLabel('<html><img src="icons/bug.png"></html>')
-        label1.setContentsMargins(10, 20, 0, 20)
-        label2.setContentsMargins(0, 0, 5, 0)
+        # Set actions listeners and layout
+        self.setCentralWidget(self.widget)
+        self.main_layout.setContentsMargins(0, 0, 0, 0)
+        self.label1.setContentsMargins(10, 20, 0, 20)
+        self.label2.setContentsMargins(0, 0, 5, 0)
 
         input_line = QLineEdit(self)
         input_line.textChanged.connect(self.print_text)
@@ -35,28 +42,32 @@ class QtEventSystemExample(QMainWindow):
 
         self.statusBar()
 
+        # LAYOUT RIGHT-TO-LEFT
         layout_r = QBoxLayout(0)
         layout_r.addStretch()
         layout_r.addWidget(self.btn1)
         layout_r.setSpacing(0)
         layout_r.addWidget(self.btn2)
 
+        # LAYOUT BOTTOM-TO-TOP
         layout_b = QBoxLayout(2)
         layout_b.addStretch()
 
+        # LAYOUT TOP-TO-BOTTOM
         layout_t = QBoxLayout(2)
-        layout_t.addWidget(label1)
+        layout_t.addWidget(self.label1)
 
+        # LAYOUT LEFT-TO-RIGHT
         layout_l = QBoxLayout(1)
-        layout_l.addWidget(label2)
+        layout_l.addWidget(self.label2)
         layout_l.addWidget(input_line)
 
+        # LAYOUT MERGING
         layout_t.addLayout(layout_l)
         layout_b.addLayout(layout_r)
-        main_layout.addLayout(layout_b, 1, 0)
-        main_layout.addLayout(layout_t, 0, 0)
-
-        widget.setLayout(main_layout)
+        self.main_layout.addLayout(layout_b, 1, 0)
+        self.main_layout.addLayout(layout_t, 0, 0)
+        self.widget.setLayout(self.main_layout)
 
         self.setGeometry(300, 300, 1000, 500)
         self.setWindowTitle('Event sender')
@@ -72,11 +83,11 @@ class QtEventSystemExample(QMainWindow):
             self.btn1.setEnabled(False)
             self.statusBar().showMessage(sender.text() + " is not a palindrome")
 
-    def button_clicked(self):
-        sender = self.sender()
-        self.statusBar().showMessage(sender.text() + ' was pressed')
+    @staticmethod
+    def button_clicked():
+        APP.quit()
 
 
-app = QApplication(sys.argv)
+APP = QApplication(sys.argv)
 ex = QtEventSystemExample()
-sys.exit(app.exec_())
+sys.exit(APP.exec_())
