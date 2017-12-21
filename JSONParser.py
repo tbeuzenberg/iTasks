@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QPushButton, QMainWindow, QApplication, QWidget, QLa
 
 
 class Node:
+
     def __init__(self, value=None):
         self.value = value
         self.children = []
