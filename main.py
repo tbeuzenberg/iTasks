@@ -102,9 +102,9 @@ class Main(QMainWindow):
         if self.temp_start_palindrome == 4:
             attributes = json.loads(data)
             if os.name == "nt":
-                attributes = attributes['change']['children'][0][2]['children'][0][2]
-                attributes = attributes['children'][0][2]['children'][1][2]
-                attributes = attributes['children'][0]['attributes']
+                attributes = attributes['change']['children'][0][2]['children']
+                attributes = attributes[0][2]['children'][0][2]['children']
+                attributes = attributes[1][2]['children'][0]['attributes']
             elif os.name == "posix":
                 attributes = attributes['change']['children'][0][2]['children']
                 attributes = attributes[0][2]['definition']['children'][1]

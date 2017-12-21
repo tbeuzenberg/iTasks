@@ -47,7 +47,8 @@ class ItasksService(object):
 
         # Start a background thread that reads the stdio output from
         # the iTasks Server
-        thread = Thread(target=self.background_worker, args=[self.process.stdout])
+        thread = Thread(target=self.background_worker,
+                        args=[self.process.stdout])
         thread.daemon = True
         thread.start()
 
