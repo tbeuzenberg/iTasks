@@ -10,3 +10,5 @@ script:
   - PYTHONPATH=. pylint * || true
   - PYTHONPATH=. coverage run --source=. -m unittest discover -s test/
   - PYTHONPATH=. coverage report -m
+after_success:
+  - coveralls
