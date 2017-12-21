@@ -1,6 +1,7 @@
 # iTasks Desktop Application
 
-[![Build Status](https://travis-ci.com/tbeuzenberg/iTasks.svg?token=zyV8axzWJqZ5eqvpAcjk&branch=development)](https://travis-ci.com/tbeuzenberg/iTasks)
+[![Build Status](https://travis-ci.org/tbeuzenberg/iTasks.svg?branch=communicatie)](https://travis-ci.org/tbeuzenberg/iTasks)
+[![Coverage Status](https://coveralls.io/repos/github/tbeuzenberg/iTasks/badge.svg?branch=development)](https://coveralls.io/github/tbeuzenberg/iTasks?branch=development)
 
 This project is a Desktop Application for the [iTasks framework.](http://www.itasks.org/)
 
