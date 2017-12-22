@@ -1,3 +1,4 @@
+""" QtEventSystemExample """
 import sys
 from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
     QMainWindow,
@@ -14,6 +15,7 @@ from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
 class QtEventSystemExample(QMainWindow):
     """" Initialise Components """
     def __init__(self):
+        """ init """
         super().__init__()
         # Initialise Components here so we can access them in the functions
         self.widget = QWidget()
@@ -25,6 +27,7 @@ class QtEventSystemExample(QMainWindow):
         self.init_ui()
 
     def init_ui(self):
+        """ init_ui """
         # Set actions listeners and layout
         self.setCentralWidget(self.widget)
         self.main_layout.setContentsMargins(0, 0, 0, 0)
@@ -74,9 +77,10 @@ class QtEventSystemExample(QMainWindow):
         self.show()
 
     def print_text(self):
+        """ Prints whether it is a palindrome or not """
         sender = self.sender()
         text = str(sender.text())
-        if text == text[::-1] and text is not None and text is not "" and len(text) is not 1:
+        if text == text[::-1] and text is not None and text != "" and len(text) is not 1:
             self.btn1.setEnabled(True)
             self.statusBar().showMessage(sender.text() + " is a palindrome")
         else:
@@ -85,6 +89,7 @@ class QtEventSystemExample(QMainWindow):
 
     @staticmethod
     def button_clicked():
+        """ Button clicked event """
         APP.quit()
 
 
