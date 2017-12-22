@@ -1,7 +1,13 @@
 import json
 import sys
 
-from PyQt5.QtWidgets import QPushButton, QMainWindow, QApplication, QWidget, QLabel
+from PyQt5.QtWidgets import (
+    QPushButton,
+    QMainWindow,
+    QApplication,
+    QWidget,
+    QLabel
+)
 
 
 class Node:
@@ -9,37 +15,37 @@ class Node:
         self.value = value
         self.children = []
 
-    def add_child(self, node, location):
-        if location >= len(self.children):
-            for i in range(0, location):
+    def add_child(self, node, index):
+        if index >= len(self.children):
+            for i in range(0, index):
                     self.children.append(Node())
         self.children.append(node)
 
-    def replace_child(self, node, location):
-        self.children[location] = node
+    def replace_child(self, node, index):
+        self.children[index] = node
 
-    def add_or_replace_child(self, node, location):
+    def add_or_replace_child(self, node, index):
         """
         Chooses whether a node has to be added or replaced, and acts accordingly
         :param node: Node
-        :param location: str
+        :param node: str
         :rtype: void
         """
-        if location >= len(self.children):
-            self.add_child(node, location)
+        if index >= len(self.children):
+            self.add_child(node=node, index=index)
         else:
-            self.replace_child(node, location)
+            self.replace_child(node=node, index=index)
 
-    def get_child(self, location):
-        return self.children[int(location)]
+    def get_child(self, index):
+        return self.children[index]
 
-    def search_node(self, location):
-        if len(str(location)) == 1:
-            return self.get_child(location)
+    def search_node(self, index_list):
+        if len(index_list) == 1:
+            return self.get_child(index=index_list[0])
         else:
-            first_digit = int(str(location)[:1])
-            rest = str(location)[1:]
-            return self.children[first_digit].search_node(rest)
+            first_element = index_list[:1]
+            rest = index_list[1:]
+            return self.children[first_element[0]].search_node(index_list=rest)
 
     def print(self, prefix=""):
         if self.value is None:
@@ -56,18 +62,20 @@ class Tree:
     def __init__(self, root):
         self.root = root
 
-    def search_node(self, location):
-        return self.root.search_node(location)
+    def search_node(self, index_list):
+        return self.root.search_node(index_list=index_list)
 
-    def insert(self, value, location):
+    def insert(self, value, index_list):
         node = Node(value)
 
-        if len(location) <= 1:
-            self.root.add_or_replace_child(node, int(location))
+        if len(index_list) <= 1:
+            self.root.add_or_replace_child(node=node, index=index_list[0])
         else:
-            last = location[len(location) - 1:]
-            rest = location[:len(location) - 1]
-            self.root.search_node(rest).add_or_replace_child(node, int(last))
+
+            last = index_list[len(index_list) - 1:]
+            rest = index_list[:len(index_list) - 1]
+
+            self.root.search_node(index_list=rest).add_or_replace_child(node=node, index=last[0])
 
     def print(self):
         self.root.print()
