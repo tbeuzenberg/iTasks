@@ -1,4 +1,3 @@
-
 """ Unit tests for itasks_service.py """
 
 import unittest
@@ -80,8 +79,9 @@ class TestItasksService(unittest.TestCase):
 
         # Act
         itasksservice.process_data(
-            json.dumps([5, {'instanceNo': 2,
-                            'instanceKey': "zwybytwiucxuukecmubejicucfakxwcj"}]))
+            json.dumps(
+                [5, {'instanceNo': 2,
+                     'instanceKey': "zwybytwiucxuukecmubejicucfakxwcj"}]))
 
         # Assign
         builtins.print.assert_called_once()
@@ -181,7 +181,8 @@ class TestItasksService(unittest.TestCase):
         os.name = "mac"
 
         # Assert
-        self.assertRaises(UnsupportedOperatingSystemException, itasksservice.start_server)
+        self.assertRaises(UnsupportedOperatingSystemException,
+                          itasksservice.start_server)
 
     def test_stop_server(self):
         """
@@ -248,7 +249,9 @@ class TestItasksService(unittest.TestCase):
         method_input.readline = Mock(side_effect=Exception)
 
         # Assert
-        self.assertRaises(CouldNotReadStdIOException, itasksservice.non_block_read, method_input)
+        self.assertRaises(CouldNotReadStdIOException,
+                          itasksservice.non_block_read,
+                          method_input)
 
 
 if __name__ == '__main__':
