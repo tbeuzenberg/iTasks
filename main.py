@@ -15,7 +15,7 @@ from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
     QApplication
 )
 
-from itasks.itasks_service import ItasksService
+from itasks import ItasksService
 
 
 class Main(QMainWindow):
@@ -86,19 +86,22 @@ class Main(QMainWindow):
         :param data: iTasks response data
         :rtype: void
         """
-        self.statusBar().showMessage(data)
+        self.statusBar().showMessage("Response received from iTasks")
         print(data)
 
         # Start the palindrome task
         if self.temp_start_palindrome == 0:
-            self.itasks_service.send_data('["event",1,["1-7",null,"Continue"]]')
+            self.itasks_service.send_ui_event(
+                {"instanceNo": 1, "taskNo": 7, "action": "Continue"})
         if self.temp_start_palindrome == 1:
-            self.itasks_service.send_data('["event",1,["1-41",null,"New"]]')
+            self.itasks_service.send_ui_event(
+                {"instanceNo": 1, "taskNo": 41, "action": "New"})
         if self.temp_start_palindrome == 2:
-            self.itasks_service.send_data('["event",1,["1-63","v",[17]]]')
+            self.itasks_service.send_ui_event(
+                {"instanceNo": 1, "taskNo": 63, "edit": "v", "value": [17]})
         if self.temp_start_palindrome == 3:
-            self.itasks_service.send_data(
-                '["event",1,["1-61",null,"Start task"]]')
+            self.itasks_service.send_ui_event(
+                {"instanceNo": 3, "taskNo": 61, "action": "Start task"})
         if self.temp_start_palindrome == 4:
             attributes = json.loads(data)
             if os.name == "nt":

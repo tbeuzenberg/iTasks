@@ -21,7 +21,7 @@ class ItasksService(object):
     process = None  # Popen process
     newSessionCallbacks = {}
     taskInstanceCallbacks = {}
-    req_id = 1  # Unique request id
+    req_id = 0  # Unique request id
 
     def __new__(cls):
         """
@@ -101,20 +101,92 @@ class ItasksService(object):
         :rtype: void
         """
         decoded_response = json.loads(data)
-        if isinstance(decoded_response, list):
+        if isinstance(decoded_response, list) and len(decoded_response) == 3:
             request_id = decoded_response[0]
-            response = decoded_response[1]
+            request_type = decoded_response[1]
+            request_arguments = decoded_response[2]
 
-            if request_id in self.newSessionCallbacks:
-                instance_no = response['instanceNo']
-                instance_key = response['instanceKey']
-                self.newSessionCallbacks[request_id](instance_no, instance_key)
+            # Define handlers for the response types
+            handlers = {
+                'new': self.process_new,
+                'attach': self.process_attach,
+                'detach': self.process_detach,
+                'ping': self.process_ping,
+                'ui-change': self.process_ui_change,
+                'exception': self.process_exception
+            }
+
+            # Call the handler
+            if request_type in handlers:
+                handlers[request_type](request_arguments=request_arguments,
+                                       request_id=request_id)
             else:
-                print("Unknown response: " + data)
+                print("Unknown response from iTasks: " + data)
+
+    def process_new(self, request_arguments, **kwargs):
+        """
+        Process a "new" response
+        :param request_arguments: Response arguments
+        :param kwargs: request_id
+        :rtype: void
+        """
+        if kwargs["request_id"] in self.newSessionCallbacks:
+            instance_no = request_arguments['instanceNo']
+            instance_key = request_arguments['instanceKey']
+            self.newSessionCallbacks[kwargs["request_id"]](instance_no,
+                                                           instance_key)
+            del self.newSessionCallbacks[kwargs["request_id"]]
         else:
-            instance_no = decoded_response['instance']
-            if instance_no in self.taskInstanceCallbacks:
-                self.taskInstanceCallbacks[instance_no](data)
+            print("Unknown response from iTasks for request_id: " +
+                  str(kwargs['request_id']))
+
+    def process_attach(self, request_arguments, **kwargs):
+        """
+        Process a "attach" response
+        :param request_arguments: Response arguments
+        :param kwargs: request_id
+        :rtype: void
+        """
+        pass
+
+    def process_detach(self, request_arguments, **kwargs):
+        """
+        Process a "detach" response
+        :param request_arguments: Response arguments
+        :param kwargs: request_id
+        :rtype: void
+        """
+        pass
+
+    def process_ping(self, request_arguments, **kwargs):
+        """
+        Process a "ping" response
+        :param request_arguments: Response arguments
+        :param kwargs: request_id
+        :rtype: void
+        """
+        pass
+
+    def process_ui_change(self, request_arguments, **kwargs):
+        """
+        Process a "ui-change" response
+        :param request_arguments: Response arguments
+        :param kwargs: request_id
+        :rtype: void
+        """
+        kwargs.pop('request_id')
+        instance_no = request_arguments['instanceNo']
+        if instance_no in self.taskInstanceCallbacks:
+            self.taskInstanceCallbacks[instance_no](request_arguments)
+
+    def process_exception(self, request_arguments):
+        """
+        Process a "exception" response
+        :param request_arguments: Response arguments
+        :param kwargs: request_id
+        :rtype: void
+        """
+        pass
 
     def send_data(self, data):
         """
@@ -124,6 +196,16 @@ class ItasksService(object):
         """
         self.process.stdin.write((data + '\n').encode())
 
+    def send_ui_event(self, data):
+        """
+        Send ui-event to the iTasks Server
+        :param data: Request to send
+        :rtype: void
+        """
+        request = json.dumps([self.req_id, "ui-event", data])
+        self.send_data(request)
+        self.req_id += 1
+
     def new_session(self, callback):
         """
         Request the creation of a new session
@@ -131,8 +213,8 @@ class ItasksService(object):
         :rtype: void
         """
         self.newSessionCallbacks[self.req_id] = callback
-        self.send_data(json.dumps([self.req_id, "new"]))
-        self.req_id = self.req_id + 1
+        self.send_data(json.dumps([self.req_id, "new", {}]))
+        self.req_id += 1
 
     def attach_task_instance(self, instance_no, instance_key, callback):
         """
@@ -143,4 +225,7 @@ class ItasksService(object):
         :rtype: void
         """
         self.taskInstanceCallbacks[instance_no] = callback
-        self.send_data(json.dumps(["attach", instance_no, instance_key]))
+        self.send_data(json.dumps(
+            [self.req_id, "attach", {"instanceNo": instance_no,
+                                     "instanceKey": instance_key}]))
+        self.req_id += 1
