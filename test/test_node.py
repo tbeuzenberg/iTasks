@@ -5,12 +5,15 @@ from unittest.mock import (
     Mock
 )
 
-from TreeComponents import Node
+from tree_components import Node
 
 
 class NodeTest(unittest.TestCase):
 
     def test_private_add_child_one_deep(self):
+        """
+
+        """
         # Assign
         root = Node("")
         child = Node("")
