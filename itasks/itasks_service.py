@@ -179,7 +179,7 @@ class ItasksService(object):
         if instance_no in self.taskInstanceCallbacks:
             self.taskInstanceCallbacks[instance_no](request_arguments)
 
-    def process_exception(self, request_arguments):
+    def process_exception(self, request_arguments, **kwargs):
         """
         Process a "exception" response
         :param request_arguments: Response arguments
