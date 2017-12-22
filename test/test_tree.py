@@ -36,15 +36,22 @@ class TreeTest(unittest.TestCase):
         to_be_added = Node()
 
         # Act
-        with patch('TreeComponents.Node.__new__', return_value={"AA": "AAA"}):
+        with patch(
+                'TreeComponents.Node.__new__',
+                return_value={"AA": "AAA"}
+        ):
             tree.insert(value=to_be_added, index_list=[3])
 
         # Assert
-        add_or_replace_child_mock.assert_called_with(node={"AA": "AAA"}, index=3)
+        add_or_replace_child_mock.assert_called_with(
+            node={"AA": "AAA"},
+            index=3
+        )
 
     @patch('TreeComponents.Node.search_node')
     @patch('TreeComponents.Node.add_or_replace_child')
-    def test_insert_with_double_digit_location(self, add_or_replace_child_mock, search_node_mock):
+    def test_insert_with_double_digit_location(self, add_or_replace_child_mock,
+                                               search_node_mock):
         # Assign
         root = Node()
         child = Node()
@@ -58,7 +65,10 @@ class TreeTest(unittest.TestCase):
 
         # Assert
         search_node_mock.assert_called_with(index_list=[3])
-        add_or_replace_child_mock.assert_called_with(node={"AA": "AAA"}, index=0)
+        add_or_replace_child_mock.assert_called_with(
+            node={"AA": "AAA"},
+            index=0
+        )
 
 
 if __name__ == '__main__':

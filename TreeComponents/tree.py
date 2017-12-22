@@ -17,7 +17,10 @@ class Tree:
             last = index_list[len(index_list) - 1:]
             rest = index_list[:len(index_list) - 1]
 
-            self.root.search_node(index_list=rest).add_or_replace_child(node=node, index=last[0])
+            self.root.search_node(index_list=rest).add_or_replace_child(
+                node=node,
+                index=last[0]
+            )
 
     def print(self):
         self.root.print()
