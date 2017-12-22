@@ -3,10 +3,16 @@
 
 import unittest
 import json
+import os
+import builtins
 
 from unittest.mock import patch, Mock
 
 from itasks.itasks_service import ItasksService
+from itasks.exceptions import (
+    CouldNotReadStdIOException,
+    UnsupportedOperatingSystemException
+)
 
 
 class TestItasksService(unittest.TestCase):
@@ -61,6 +67,25 @@ class TestItasksService(unittest.TestCase):
         # Assert
         callback.assert_called_once_with(instance_no, instance_key)
 
+    def test_process_data_new_session_invalid_response(self):
+        """
+        method: process_data
+        state: response with invalid request_id
+        expected_result: Unknown response is shown in console
+        """
+        # Assign
+        itasksservice = ItasksService()
+        itasksservice.newSessionCallbacks = {}
+        builtins.print = Mock()
+
+        # Act
+        itasksservice.process_data(
+            json.dumps([5, {'instanceNo': 2,
+                            'instanceKey': "zwybytwiucxuukecmubejicucfakxwcj"}]))
+
+        # Assign
+        builtins.print.assert_called_once()
+
     @patch('subprocess.Popen')
     def test_process_data_attach_task_instance_callback(self, mocked_popen):
         """
@@ -90,7 +115,7 @@ class TestItasksService(unittest.TestCase):
         state: Response with incorrect instance number
         expected_result: Callback method is not called
         """
-        # Assert
+        # Assign
         itasksservice = ItasksService()
         itasksservice.process = mocked_popen
         callback = Mock()
@@ -104,6 +129,126 @@ class TestItasksService(unittest.TestCase):
 
         # Assert
         callback.assert_not_called()
+
+    @patch('subprocess.Popen')
+    @patch('threading.Thread')
+    def test_start_server_on_nt(self, mocked_popen, mocked_thread):
+        """
+        method: start_server
+        state: Server started on Windows platform
+        expected_result: Server started
+        """
+        # Assign
+        itasksservice = ItasksService()
+        os.name = "nt"
+
+        # Act
+        itasksservice.start_server()
+
+        # Assert
+        mocked_popen.assert_called()
+        mocked_thread.assert_called()
+        self.assertTrue(mocked_thread.daemon)
+
+    @patch('subprocess.Popen')
+    @patch('threading.Thread')
+    def test_start_server_on_posix(self, mocked_popen, mocked_thread):
+        """
+        method: start_server
+        state: Server started on Unix platform
+        expected_result: Server started
+        """
+        # Assign
+        itasksservice = ItasksService()
+        os.name = "posix"
+
+        # Act
+        itasksservice.start_server()
+
+        # Assert
+        mocked_popen.assert_called()
+        mocked_thread.assert_called()
+        self.assertTrue(mocked_thread.daemon)
+
+    def test_start_server_on_unsupported_system(self):
+        """
+        method: start_server
+        state: Server started on Mac platform
+        expected_result: Exception
+        """
+        # Assign
+        itasksservice = ItasksService()
+        os.name = "mac"
+
+        # Assert
+        self.assertRaises(UnsupportedOperatingSystemException, itasksservice.start_server)
+
+    def test_stop_server(self):
+        """
+        method: stop_server
+        expected_result: stop method called on process
+        """
+        # Assign
+        itasksservice = ItasksService()
+        itasksservice.process = Mock()
+
+        # Act
+        itasksservice.stop_server()
+
+        # Assert
+        itasksservice.process.kill.assert_called()
+
+    def test_non_block_read(self):
+        """
+        method: non_block_read
+        state: Line is available longer than 1 character
+        expected_result: String is returned
+        """
+        # Assign
+        itasksservice = ItasksService()
+        input = Mock()
+        input.readline = Mock()
+        input.readline.return_value = "Test string ".encode()
+        expected_result = "Test string"
+
+        # Act
+        result = itasksservice.non_block_read(input)
+
+        # Assert
+        self.assertEqual(result, expected_result)
+
+    def test_non_block_read_nothing_to_read(self):
+        """
+        method: non_block_read
+        state: No data available
+        expected_result: String is returned
+        """
+        # Assign
+        itasksservice = ItasksService()
+        method_input = Mock()
+        method_input.readline = Mock()
+        method_input.readline.return_value = "".encode()
+        expected_result = None
+
+        # Act
+        result = itasksservice.non_block_read(method_input)
+
+        # Assert
+        self.assertEqual(result, expected_result)
+
+    def test_non_block_read_failed(self):
+        """
+        method: non_block_read
+        state: Exception is thrown
+        expected_result: Exception is thrown
+        """
+        # Assign
+        itasksservice = ItasksService()
+        method_input = Mock()
+        method_input.readline = Mock(side_effect=Exception)
+
+        # Assert
+        self.assertRaises(CouldNotReadStdIOException, itasksservice.non_block_read, method_input)
 
 
 if __name__ == '__main__':

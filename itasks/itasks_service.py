@@ -4,11 +4,13 @@
 
 import os
 import json
+import subprocess
+import threading
 
-from subprocess import Popen, PIPE
-from threading import Thread
-
-from itasks.exceptions import CouldNotReadStdIOException
+from itasks.exceptions import (
+    CouldNotReadStdIOException,
+    UnsupportedOperatingSystemException
+)
 
 
 class ItasksService(object):
@@ -37,18 +39,21 @@ class ItasksService(object):
         :rtype: void
         """
         if os.name == "nt":
-            self.process = Popen(
+            self.process = subprocess.Popen(
                 ["itasks_server/iTasksToStdIO.exe"],
-                stdout=PIPE, stdin=PIPE, bufsize=0)
+                stdout=subprocess.PIPE, stdin=subprocess.PIPE, bufsize=0)
         elif os.name == "posix":
-            self.process = Popen(
+            self.process = subprocess.Popen(
                 ["/usr/bin/mono", "itasks_server/iTasksToStdIO.exe"],
-                stdout=PIPE, stdin=PIPE, bufsize=0)
+                stdout=subprocess.PIPE, stdin=subprocess.PIPE, bufsize=0)
+        else:
+            raise UnsupportedOperatingSystemException
 
         # Start a background thread that reads the stdio output from
         # the iTasks Server
-        thread = Thread(target=self.background_worker,
-                        args=[self.process.stdout])
+        thread = threading.Thread(
+            target=self.background_worker,
+            args=[self.process.stdout])
         thread.daemon = True
         thread.start()
 
@@ -80,6 +85,7 @@ class ItasksService(object):
         :rtype: str
         """
         try:
+
             line = output.readline().decode('utf-8')
             if len(line) > 1:
                 return str(line.strip())
