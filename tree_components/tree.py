@@ -1,7 +1,4 @@
-from tree_components import Node
-
 # TODO: Add items when insert on unknown index
-# TODO: Something goes wrong when calling
 
 
 class Tree:
