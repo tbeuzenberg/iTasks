@@ -5,17 +5,15 @@ from unittest.mock import (
     Mock
 )
 
-from JSONParser import (
-    Node
-)
+from TreeComponents import Node
 
 
 class NodeTest(unittest.TestCase):
 
     def test_private_add_child_one_deep(self):
         # Assign
-        root = Node("Ding")
-        child = Node("Ding2")
+        root = Node("")
+        child = Node("")
 
         # Act
         root.add_child(child, 3)
@@ -25,10 +23,10 @@ class NodeTest(unittest.TestCase):
 
     def test_replace_child(self):
         # Assign/act
-        root = Node("Ding")
-        child = Node("Ding2")
+        root = Node("")
+        child = Node("")
         root.add_child(child, 3)
-        child2 = Node("Ding3")
+        child2 = Node("")
         root.replace_child(child2, 3)
 
         # Assert
@@ -36,9 +34,9 @@ class NodeTest(unittest.TestCase):
 
     def test_add_or_replace_child_with_replace(self):
         # Assign
-        root = Node("Ding")
-        node1 = Node("1")
-        node2 = Node("2")
+        root = Node("")
+        node1 = Node("")
+        node2 = Node("")
         root.add_child(node1, 0)
         root.replace_child = Mock(name="replace_child")
         root.add_child = Mock(name="add_child")
@@ -50,9 +48,9 @@ class NodeTest(unittest.TestCase):
 
     def test_add_or_replace_child_with_add(self):
         # Assign
-        root = Node("Ding")
-        node1 = Node("1")
-        node2 = Node("2")
+        root = Node("")
+        node1 = Node("")
+        node2 = Node("")
         root.add_child(node1, 0)
         root.replace_child = Mock(name="replace_child")
         root.add_child = Mock(name="add_child")
@@ -64,8 +62,8 @@ class NodeTest(unittest.TestCase):
 
     def test_get_child(self):
         # Assign
-        root = Node("Ding")
-        node1 = Node("1")
+        root = Node("")
+        node1 = Node("")
         root.add_child(node=node1, index=0)
 
         # Act
@@ -76,14 +74,14 @@ class NodeTest(unittest.TestCase):
 
     def test_search_node(self):
         # Assign
-        node2 = Node("2")
-        node3 = Node("3")
+        node2 = Node("")
+        node3 = Node("")
         node2.add_child(node=node3, index=2)
 
-        node1 = Node("1")
+        node1 = Node("")
         node1.add_child(node=node2, index=0)
 
-        root = Node("Ding")
+        root = Node("")
         root.add_child(node=node1, index=3)
 
         # Act
@@ -100,14 +98,14 @@ class NodeTest(unittest.TestCase):
         # Assign
         builtins.print = Mock()
 
-        node2 = Node("2")
-        node3 = Node("3")
+        node2 = Node("")
+        node3 = Node("")
         node2.add_child(node3, 2)
 
-        node1 = Node("1")
+        node1 = Node("")
         node1.add_child(node2, 0)
 
-        root = Node("Ding")
+        root = Node("")
         root.add_child(node1, 3)
 
         # Act
