@@ -4,11 +4,11 @@ from tree_components import (
 )
 
 
-tree = Tree("root")
+tree = Tree(Node())
 
-tree.insert("fc", [3])
-tree.insert("sc", [3, 8])
-tree.insert("tc", [3, 5])
+tree.insert(Node(), [3])
+tree.insert(Node(), [3, 8])
+tree.insert(Node(), [3, 5])
 
 tree.print()
 

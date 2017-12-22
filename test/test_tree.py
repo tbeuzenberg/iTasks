@@ -1,5 +1,9 @@
+""" Unit test file for the tree component """
+# pylint: disable=invalid-name, no-self-use
+
 import unittest
 from unittest.mock import (
+    Mock,
     patch
 )
 
@@ -10,29 +14,29 @@ from tree_components import (
 
 
 class TreeTest(unittest.TestCase):
+    """ Unit test class for the tree component """
 
-    @patch('tree_components.Node.search_node')
-    def test_search_node(self, search_node_mock):
+    @patch('tree_components.Node.find_node')
+    def test_find_node_mock(self, find_node_mock):
         """
         Test for searching a node of a tree.
 
-        :method: search_node
-        :expect: The search_node method of the root to be called with the
+        :method: find_node
+        :expect: The find_node method of the root to be called with the
         search same search parameters as for the tree
-        :param search_node_mock: Mocked search_node of the Node class.
+        :param find_node_mock: Mocked find_node of the Node class.
         """
         # Assign
         root = Node("Root node")
         tree = Tree(root_node=root)
 
         # Act
-        tree.search_node(index_list=[0])
+        tree.find_node(index_list=[0])
 
         # Assert
-        search_node_mock.assert_called_with(index_list=[0])
+        find_node_mock.assert_called_with(index_list=[0])
 
-    @patch('tree_components.Node.add_or_replace_child')
-    def test_insert_with_one_numbered_location(self, add_or_replace_child_mock):
+    def test_insert_with_one_numbered_location(self):
         """
         Test for adding a node with a single digit index list.
         When the index_list has only one item, the item should be added to the
@@ -42,13 +46,12 @@ class TreeTest(unittest.TestCase):
         :state: A tree with only a root node, which has no children.
         :expect: The add_or_replace_child to be called with the right
         parameters on the given digit.
-        :param add_or_replace_child_mock: Mocked add_or_replace_child of the
-        Node class
         """
         # Assign
         root = Node("Root node")
         tree = Tree(root_node=root)
         node_to_be_inserted = Node("To be inserted")
+        root.add_or_replace_child = Mock()
 
         # Act
         tree.insert(node=node_to_be_inserted, index_list=[3])
@@ -59,10 +62,10 @@ class TreeTest(unittest.TestCase):
             index=3
         )
 
-    @patch('tree_components.Node.search_node')
+    @patch('tree_components.Node.find_node')
     @patch('tree_components.Node.add_or_replace_child')
     def test_insert_with_two_numbered_location(self, add_or_replace_child_mock,
-                                               search_node_mock):
+                                               find_node_mock):
         """
         Test for adding a node with an index list with two numbers.
 
@@ -71,7 +74,7 @@ class TreeTest(unittest.TestCase):
         :expect: The add_or_replace_child to be called with the right
         parameters on the given numbers.
         :param add_or_replace_child_mock: Mocked add_or_replace_child of the
-        :param search_node_mock: Mocked search_node of the Node class
+        :param find_node_mock: Mocked find_node of the Node class
         Node class
         """
         # Assign
@@ -79,25 +82,24 @@ class TreeTest(unittest.TestCase):
         child = Node("Child node")
         root.add_child(node=child, index=0)
         tree = Tree(root_node=root)
-        search_node_mock.return_value = child
+        find_node_mock.return_value = child
         node_to_be_inserted = Node("To be inserted")
 
         # Act
         tree.insert(node=node_to_be_inserted, index_list=[3, 0])
 
         # Assert
-        search_node_mock.assert_called_with(index_list=[3])
+        find_node_mock.assert_called_with(index_list=[3])
         add_or_replace_child_mock.assert_called_with(
             node=node_to_be_inserted,
             index=0
         )
 
-    @patch('tree_components.Node.search_node')
+    @patch('tree_components.Node.find_node')
     @patch('tree_components.Node.add_or_replace_child')
     def test_insert_with_four_numbered_location(self,
                                                 add_or_replace_child_mock,
-                                                search_node_mock
-                                                ):
+                                                find_node_mock):
         """
         Test for adding a node with an index list with four numbers.
 
@@ -108,14 +110,14 @@ class TreeTest(unittest.TestCase):
         correct parameters as tested in the assert.
         :param add_or_replace_child_mock: Mocked add_or_replace_child of the
         Node class
-        :param search_node_mock: Mocked search_node of the Node class
+        :param find_node_mock: Mocked find_node of the Node class
         """
         # Assign
         root = Node("Root node")
         child = Node("Child node")
         root.add_child(node=child, index=0)
         tree = Tree(root_node=root)
-        search_node_mock.return_value = child
+        find_node_mock.return_value = child
         node_to_be_inserted1 = Node("To be inserted")
         node_to_be_inserted2 = Node("To be inserted two")
         node_to_be_inserted3 = Node("To be inserted three")
@@ -126,14 +128,13 @@ class TreeTest(unittest.TestCase):
         tree.insert(node=node_to_be_inserted3, index_list=[3, 0, 4, 8])
 
         # Assert
-        search_node_mock.assert_called_with(index_list=[3, 0, 4])
+        find_node_mock.assert_called_with(index_list=[3, 0, 4])
         add_or_replace_child_mock.assert_called_with(
             node=node_to_be_inserted3,
             index=8
         )
 
-    @staticmethod
-    def test_call_print_root():
+    def test_call_print_root(self):
         """
         Test if the print function works
         :state: Tree with root node
