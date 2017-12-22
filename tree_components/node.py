@@ -1,5 +1,6 @@
 """ Node component file """
 
+
 class Node:
     """ Node component to store data in. This is also a subtree. """
 

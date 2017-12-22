@@ -1,7 +1,5 @@
 """ File for the tree component """
 
-# TODO: Add items when insert on unknown index
-
 
 class Tree:
     """
