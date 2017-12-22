@@ -70,6 +70,18 @@ class TreeTest(unittest.TestCase):
             index=0
         )
 
+    def test_call_print_root(self):
+        # Assign
+        root = Node()
+        tree = Tree(root)
+
+        # Act
+        with patch('TreeComponents.Node.print', return_value="") as print:
+            tree.print()
+
+        # Assert
+        print.assert_called()
+
 
 if __name__ == '__main__':
     unittest.main()
