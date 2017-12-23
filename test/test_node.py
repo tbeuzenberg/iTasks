@@ -115,11 +115,11 @@ class NodeTest(unittest.TestCase):
         root.add_child = Mock(name="add_child")
 
         # Act
-        root.add_or_replace_child(node=node2, index=5)
+        root.add_or_replace_child(node=node2, index=0)
 
         # Assert
-        root.add_child.assert_called_once_with(node=node2, index=5)
-        root.replace_child.assert_not_called()
+        root.replace_child.assert_called_once_with(node=node2, index=0)
+        root.add_child.assert_not_called()
 
     def test_add_or_replace_child_with_add(self):
         """
