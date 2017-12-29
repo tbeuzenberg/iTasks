@@ -21,6 +21,8 @@ class Tree:
         :param index_list: The index_list the Node.find_node uses to find
         :rtype: Node
         """
+        if len(index_list) == 0:
+            return self.root
         return self.root.find_node(index_list=index_list)
 
     def insert(self, node, index_list):
@@ -50,3 +52,10 @@ class Tree:
         :rtype: void
         """
         self.root.print()
+
+    def get_root(self):
+        """
+        Get the root node of the tree
+        :rtype: Node
+        """
+        return self.root

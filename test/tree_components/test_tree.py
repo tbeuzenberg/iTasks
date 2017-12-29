@@ -36,6 +36,24 @@ class TreeTest(unittest.TestCase):
         # Assert
         find_node_mock.assert_called_with(index_list=[0])
 
+    def test_find_node_mock_with_empty_list(self):
+        """
+        Test for searching a node of a tree with an empty list.
+
+        :method: find_node
+        :expect: The root node to be returned
+        """
+        # Assign
+        root = Node("Root node")
+        tree = Tree(root_node=root)
+
+        # Act
+        returned_node = tree.find_node([])
+
+        # Assert
+        self.assertEqual(root, returned_node)
+
+
     def test_insert_with_one_numbered_location(self):
         """
         Test for adding a node with a single digit index list.
