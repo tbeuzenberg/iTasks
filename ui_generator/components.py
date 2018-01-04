@@ -18,7 +18,7 @@ class Components:
         return QBoxLayout(0)
 
     @staticmethod
-    def button(enabled=True, iconCls=None, text="", parent=None):
+    def button(enabled=True, iconCls=None, text="", parent=None, **kwargs):
         output = QPushButton(parent)
         output.setText(text)
         output.setEnabled(enabled)
@@ -27,7 +27,7 @@ class Components:
 
     @staticmethod
     def container(parent=None, direction=0, marginBottom=0, marginTop=0,
-                  marginLeft=0, marginRight=0):
+                  marginLeft=0, marginRight=0, **kwargs):
         output = QBoxLayout(direction)
         output.setParent(parent)
         output.setContentsMargins(marginBottom, marginTop, marginLeft,
@@ -35,24 +35,30 @@ class Components:
         return output
 
     @staticmethod
-    def icon(iconCls, parent=None):
+    def icon(iconCls, parent=None, **kwargs):
         output = QLabel(
-            "<html><img src='icons/" + Components.create_attributes_string(
-                iconCls) + ".png'></html>")
+            "<html><img src='icons/" + iconCls + ".png'></html>")
         output.setParent(parent)
         output.margin()
         return output
 
     @staticmethod
-    def textfield(parent=None, hint="", value=None):
-        output = QLineEdit(parent)
+    def textfield(hint="", value=None, parent=None, **kwargs):
+        output = QLineEdit()
+        output.setParent(parent)
         output.setText(value)
         # output.textChanged.connect() : TODO
-        output.toolTip(hint)
         return output
 
     @staticmethod
-    def create_attributes_string(attributes_dict):
+    def label(parent=None, **kwargs):
+        output = QLabel()
+        output.setParent(parent)
+        output.setText(kwargs["value"])
+        return output
+
+    @staticmethod
+    def create_html_attributes(attributes_dict):
         temp = ""
         for attribute_key, attribute_value in attributes_dict.items():
             temp += " {name}=\"{value}\"".format(
