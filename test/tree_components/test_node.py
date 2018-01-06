@@ -95,7 +95,7 @@ class NodeTest(unittest.TestCase):
         root.replace_child(child2, 3)
 
         # Assert
-        self.assertEqual(child2.value, root.children[3].value)
+        self.assertEqual(child2.value, root.__children[3].value)
 
     def test_add_or_replace_child_with_replace(self):
         """

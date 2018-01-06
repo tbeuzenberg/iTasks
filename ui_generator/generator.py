@@ -1,9 +1,13 @@
 import json
 import sys
 
+from temporary_dir.json_components import *
+
 from PyQt5.QtWidgets import (
     QApplication,
-    QWidget
+    QWidget,
+    QMainWindow,
+    QPushButton
 )
 
 from ui_generator import components
@@ -20,7 +24,8 @@ class UIGenerator:
     def __init__(self, application):
         self.__application = application
 
-    def get_application(self):
+    @property
+    def application(self):
         return self.__application
 
     def add_widget(self, itasks_id, widget):
@@ -35,15 +40,23 @@ class UIGenerator:
     def get_component_from_widget(self, itasks_id, location):
         return self.frame_widgets[itasks_id].find_node(index_list=location)
 
+    # TODO: This function is too long, should be cut into different, smaller, parts
     def add_component_to_widget(self, itasks_id, location,
                                 json_component=""):
+        # TODO: Location has to be relative to the previously added component
+        # TODO: No idea how we should fix this yet.
         current_widget: Tree = self.frame_widgets[itasks_id]
 
         component_data = json.loads(json_component)
-        create_component_action = getattr(
-            components.Components,
-            component_data["type"].lower()
-        )
+
+        # dir() might actually take pretty long, I have no idea.
+        if component_data["type"].lower() in dir(components.Components):
+            create_component_action = getattr(
+                components.Components,
+                component_data["type"].lower()
+            )
+        else:
+            create_component_action = components.Components.unknown_component
 
         parent = current_widget.find_node(index_list=location).value
 
@@ -62,28 +75,21 @@ class UIGenerator:
 if __name__ == '__main__':
     generator = UIGenerator(QApplication(sys.argv))
 
-    generator.add_widget(itasks_id=1, widget=QWidget())
+    generator.add_widget(itasks_id=1, widget=QMainWindow())
 
     generator.add_component_to_widget(
         itasks_id=1,
         location=[],
-        json_component='{"type": "Icon","attributes": {"hint": "Please enter a single line of text (this value is required)","hint-type": "info","iconCls": "icon-info","marginLeft": 5,"tooltip": "Please enter a single line of text (this value is required)"}}'
+        json_component=get_button()
     )
 
-    generator.add_component_to_widget(
-        itasks_id=1,
-        location=[],
-        json_component='{"type": "Label","attributes": {"value": "Ik ben Pieter haha", "hint": "Please enter a single line of text (this value is required)","hint-type": "info","iconCls": "icon-info","marginLeft": 5,"tooltip": "Please enter a single line of text (this value is required)"}}'
-    )
+    ding = generator.get_component_from_widget(itasks_id=1, location=[0])
 
-    generator.add_component_to_widget(
-        itasks_id=1,
-        location=[],
-        json_component='{"type": "button","attributes": {"value": "Ik ben Pieter haha", "hint": "Please enter a single line of text (this value is required)","hint-type": "info","iconCls": "icon-info","marginLeft": 5,"tooltip": "Please enter a single line of text (this value is required)"}}'
-    )
+    print(ding.value.layout)
+
 
     generator.get_widget(1).show()
-    sys.exit(generator.get_application().exec_())
+    sys.exit(generator.application.exec_())
 
 
 

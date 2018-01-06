@@ -1,12 +1,20 @@
 import sys
 import time
 
-from PyQt5.QtGui import QIcon
+
+from PyQt5.QtCore import Qt
+
+from PyQt5.QtGui import (
+    QIcon,
+    QPalette
+)
 from PyQt5.QtWidgets import (
     QPushButton,
     QLineEdit,
     QLabel,
     QGridLayout,
+    QWidget,
+    QHBoxLayout,
     QBoxLayout
 )
 
@@ -66,6 +74,29 @@ class Components:
                 value=attribute_value
             )
         return temp
+
+    @staticmethod
+    def buttonbar(parent=None, **kwargs):
+        output = QWidget(parent=parent)
+        output.setLayout(QHBoxLayout())
+
+        return output
+
+    @staticmethod
+    def unknown_component(parent=None, **kwargs):
+        raise NotImplementedError
+
+    @staticmethod
+    def container(parent=None, **kwargs):
+        output = QWidget(parent=parent)
+        layout = QHBoxLayout()
+        layout.addChildWidget()
+
+
+
+
+
+
 
 
 """"
