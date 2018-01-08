@@ -23,20 +23,21 @@ from PyQt5.QtWidgets import (
 class Components:
 
     @staticmethod
-    def __component(self, marginBottom=0, marginTop=0, marginLeft=0, marginRight=0):
+    def component(marginBottom=0, marginTop=0, marginLeft=0, marginRight=0, **kwargs):
         q = QWidget()
         q.setContentsMargins(marginBottom, marginTop, marginLeft, marginRight)
         return q
 
     @staticmethod
-    def buttonbar(self, **kwargs):
-        layout: QBoxLayout = self.component(**kwargs)
+    def buttonbar(**kwargs):
+        layout: QBoxLayout = Components.component(**kwargs)
         layout.setDirection(0)
         return layout
 
     @staticmethod
     def button(enabled=True, iconCls=None, text="", parent=None, **kwargs):
-        output = QPushButton(parent)
+        output= Components.component(**kwargs)
+        output.setParent(parent)
         output.setText(text)
         output.setEnabled(enabled)
         output.setIcon(QIcon("icons/" + iconCls))
