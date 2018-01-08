@@ -6,6 +6,7 @@ import os
 import json
 import subprocess
 import threading
+import time
 
 from itasks.exceptions import (
     CouldNotReadStdIOException,
@@ -62,6 +63,9 @@ class ItasksService(object):
         Stop the iTasks server that is running in the background
         :rtype: void
         """
+        self.send_data("EXIT_SERVER")  # TODO: Remove when iTasks has support for StdIO
+        time.sleep(1)
+        os.kill(self.process.pid, 2)
         self.process.kill()
 
     def background_worker(self, stdout):
