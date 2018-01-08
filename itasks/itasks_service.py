@@ -4,6 +4,7 @@
 
 import os
 import json
+import sys
 
 from subprocess import Popen, PIPE
 from threading import Thread
@@ -69,7 +70,10 @@ class ItasksService(object):
         while True:
             output = self.non_block_read(stdout)
             if output:
-                self.process_data(output)
+                try:
+                    self.process_data(output)
+                except TypeError:
+                    sys.excepthook(*sys.exc_info())
 
     @staticmethod
     def non_block_read(output):

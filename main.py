@@ -5,6 +5,8 @@
 import sys
 import os
 import json
+import logging
+import traceback
 
 from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
     QMainWindow,
@@ -67,6 +69,7 @@ class Main(QMainWindow):
 
     def button_clicked(self):
         """ Button click handler """
+        1/0
         sender = self.sender()
         self.statusBar().showMessage(sender.text() + ' was pressed')
 
@@ -117,7 +120,29 @@ class Main(QMainWindow):
         self.temp_start_palindrome += 1
 
 
+def log_uncaught_exceptions(exctype, exception, trace):
+    """
+    Log uncaught exceptions to errors.log file and to console
+    :param exctype: Exception type or class
+    :param exception: The original exception
+    :param trace: Traceback for the exception
+    """
+    # Write error to file
+    logging.critical(''.join(traceback.format_tb(trace)))
+    logging.critical('{0}: {1}'.format(exctype, exception))
+
+    # Write error to console
+    sys.__excepthook__(exctype, exception, trace)
+    return
+
+
 if __name__ == '__main__':
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='[%(asctime)s] %(levelname)s - %(message)s',
+        filename='errors.log',
+        filemode='a')
+    sys.excepthook = log_uncaught_exceptions
     APP = QApplication(sys.argv)
     ex = Main()
     sys.exit(APP.exec_())
