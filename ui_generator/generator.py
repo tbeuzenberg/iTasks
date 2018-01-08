@@ -9,11 +9,11 @@ from PyQt5.QtWidgets import (
     QMainWindow,
     QPushButton
 )
-
+from itasks_components import ItasksComponent
 from ui_generator import components
 from tree_components import (
     Tree,
-    Node
+    Node,
 )
 
 
@@ -29,7 +29,7 @@ class UIGenerator:
         return self.__application
 
     def add_widget(self, itasks_id, widget):
-        self.frame_widgets[itasks_id] = Tree(root_node=Node(widget))
+        self.frame_widgets[itasks_id] = Tree(root_node=Node(ItasksComponent(qwidget=widget)))
 
     def get_widget(self, itasks_id):
         return self.frame_widgets[itasks_id].root.value
@@ -69,7 +69,7 @@ class UIGenerator:
 
         if not location:
             location = [0]
-        current_widget.insert(node=Node(component), index_list=location)
+        current_widget.insert(node=Node(ItasksComponent(qwidget=component)), index_list=location)
 
 
 if __name__ == '__main__':

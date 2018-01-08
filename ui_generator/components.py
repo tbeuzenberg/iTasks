@@ -34,6 +34,11 @@ class Components:
         return output
 
     @staticmethod
+    def container(parent=None, **kwargs):
+        output = QWidget(parent=parent)
+        return output
+
+    @staticmethod
     def container(parent=None, direction=0, marginBottom=0, marginTop=0,
                   marginLeft=0, marginRight=0, **kwargs):
         output = QBoxLayout(direction)
@@ -78,19 +83,13 @@ class Components:
     @staticmethod
     def buttonbar(parent=None, **kwargs):
         output = QWidget(parent=parent)
-        output.setLayout(QHBoxLayout())
-
+        
         return output
 
     @staticmethod
     def unknown_component(parent=None, **kwargs):
         raise NotImplementedError
 
-    @staticmethod
-    def container(parent=None, **kwargs):
-        output = QWidget(parent=parent)
-        layout = QHBoxLayout()
-        layout.addChildWidget()
 
 
 
