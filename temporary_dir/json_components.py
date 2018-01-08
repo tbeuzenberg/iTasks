@@ -13,14 +13,19 @@ def get_button(enabled=True, height=100, width=200):
     enabled = "true" if enabled else "false"
     return '{"type": "Button","attributes": {"actionId": "Ok","enabled": ' + enabled + ', "height": ' + str(height) + ', "width": ' + str(width) + ', "iconCls": "icon-ok","taskId": "4-0","text": "Ok","value": "Ok"}}'
 
-def get_button_disabled():
-    return '{"type": "Button","attributes": {"actionId": "Ok","enabled": false,"iconCls": "icon-ok","taskId": "4-0","text": "Ok","value": "Ok"}}'
+def get_icon():
+    return '{"type": "Icon","attributes": {"hint": "Please enter a single line of text (this value is required)","hint-type": "info","iconCls": "icon-info","marginLeft": 5,"tooltip": "Please enter a single line of text (this value is required)"}}'
+
+def get_textfield():
+    return '{"type": "TextField","attributes": {"editorId": "v","hint": "Please enter a single line of text (this value is required)","hint-type": "info","mode": "enter","optional": false,"taskId": "4-1","value": null}}'
 
 def get_buttonbar_two_buttons():
     return '{"type": "ButtonBar","attributes": {},"children": [{"type": "Button","attributes": {"actionId": "Ok","enabled": false,"iconCls": "icon-ok","taskId": "4-0","text": "Ok","value": "Ok"}},{"type": "Button","attributes": {"actionId": "Cancel","enabled": true,"iconCls": "icon-cancel","taskId": "4-0","text": "Cancel","value": "Cancel"}}]}'
 
 def get_buttonbar():
     return '{"type": "ButtonBar","attributes": {},"children": []}'
+
+
 
 """
 Example of a replace JSON:

@@ -13,7 +13,15 @@ class Tree:
         :param root_node: The root node of the current tree
         :rtype: void
         """
-        self.root = root_node
+        self.__root = root_node
+
+    @property
+    def root(self):
+        """
+        Get the root node of the tree
+        :rtype: Node
+        """
+        return self.__root
 
     def find_node(self, index_list):
         """
@@ -22,8 +30,8 @@ class Tree:
         :rtype: Node
         """
         if len(index_list) == 0:
-            return self.root
-        return self.root.find_node(index_list=index_list)
+            return self.__root
+        return self.__root.find_node(index_list=index_list)
 
     def insert(self, node, index_list):
         """
@@ -36,12 +44,12 @@ class Tree:
         :rtype: void
         """
         if len(index_list) <= 1:
-            self.root.add_or_replace_child(node=node, index=index_list[0])
+            self.__root.add_or_replace_child(node=node, index=index_list[0])
         else:
             last = index_list[len(index_list) - 1:]
             rest = index_list[:len(index_list) - 1]
 
-            self.root.find_node(index_list=rest).add_or_replace_child(
+            self.__root.find_node(index_list=rest).add_or_replace_child(
                 node=node,
                 index=last[0]
             )
@@ -51,11 +59,4 @@ class Tree:
         Print the tree of the root node
         :rtype: void
         """
-        self.root.print()
-
-    def get_root(self):
-        """
-        Get the root node of the tree
-        :rtype: Node
-        """
-        return self.root
+        self.__root.print()

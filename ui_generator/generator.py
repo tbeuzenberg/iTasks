@@ -21,21 +21,20 @@ class UIGenerator:
     """ Generator of UI elements """
     frame_widgets = {}
 
-    def __init__(self, application):
+    def __init__(self, application: QApplication):
         self.__application = application
 
     @property
     def application(self):
         return self.__application
 
-    def add_widget(self, itasks_id, widget):
+    def add_widget(self, itasks_id, widget: QWidget):
         self.frame_widgets[itasks_id] = Tree(root_node=Node(widget))
 
     def get_widget(self, itasks_id):
+        if itasks_id not in self.frame_widgets:
+            raise IndexError()
         return self.frame_widgets[itasks_id].root.value
-
-    def get_tree(self, itasks_id):
-        return self.frame_widgets[itasks_id]
 
     def get_component_from_widget(self, itasks_id, location):
         return self.frame_widgets[itasks_id].find_node(index_list=location)
@@ -79,9 +78,11 @@ if __name__ == '__main__':
 
     generator.add_widget(itasks_id=1, widget=QMainWindow())
 
-    btn3 = get_button(width=50, height=500)
+    btn3 = get_button(width=50, height=500, enabled=False)
     btn2 = get_button(width=150, height=200)
     btn1 = get_button(width=150, height=500)
+
+
     generator.add_component_to_widget(
         itasks_id=1,
         location=[0],
