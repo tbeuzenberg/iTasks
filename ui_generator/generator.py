@@ -58,7 +58,7 @@ class UIGenerator:
         else:
             create_component_action = components.Components.unknown_component
 
-        parent = current_widget.find_node(index_list=location).value
+        parent = current_widget.find_node(index_list=location).value.qwidget
 
         # TODO: If one of these two fails, both have to throw an error
         # TODO: (and no component has to be created)
@@ -85,10 +85,10 @@ if __name__ == '__main__':
 
     ding = generator.get_component_from_widget(itasks_id=1, location=[0])
 
-    print(ding.value.layout)
+    print(ding.value)
 
 
-    generator.get_widget(1).show()
+    generator.get_widget(1).qwidget.show()
     sys.exit(generator.application.exec_())
 
 
