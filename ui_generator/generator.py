@@ -58,7 +58,9 @@ class UIGenerator:
         else:
             create_component_action = components.Components.unknown_component
 
-        parent = current_widget.find_node(index_list=location).value
+        parent_location = location[:len(location) - 1]
+
+        parent = current_widget.find_node(index_list=parent_location).value
 
         # TODO: If one of these two fails, both have to throw an error
         # TODO: (and no component has to be created)
@@ -77,16 +79,26 @@ if __name__ == '__main__':
 
     generator.add_widget(itasks_id=1, widget=QMainWindow())
 
+    btn3 = get_button(width=50, height=500)
+    btn2 = get_button(width=150, height=200)
+    btn1 = get_button(width=150, height=500)
     generator.add_component_to_widget(
         itasks_id=1,
-        location=[],
-        json_component=get_button()
+        location=[0],
+        json_component=btn1
     )
 
-    ding = generator.get_component_from_widget(itasks_id=1, location=[0])
+    generator.add_component_to_widget(
+        itasks_id=1,
+        location=[2],
+        json_component=btn2
+    )
 
-    print(ding.value.layout)
-
+    generator.add_component_to_widget(
+        itasks_id=1,
+        location=[0, 2],
+        json_component=btn3
+    )
 
     generator.get_widget(1).show()
     sys.exit(generator.application.exec_())

@@ -26,8 +26,9 @@ class Components:
         return QBoxLayout(0)
 
     @staticmethod
-    def button(enabled=True, iconCls=None, text="", parent=None, **kwargs):
+    def button(enabled=True, iconCls=None, text="", parent=None, height=100, width=200, **kwargs):
         output = QPushButton(parent)
+        output.setGeometry(0, 0, width, height)
         output.setText(text)
         output.setEnabled(enabled)
         output.setIcon(QIcon("icons/" + iconCls))
@@ -85,13 +86,6 @@ class Components:
     @staticmethod
     def unknown_component(parent=None, **kwargs):
         raise NotImplementedError
-
-    @staticmethod
-    def container(parent=None, **kwargs):
-        output = QWidget(parent=parent)
-        layout = QHBoxLayout()
-        layout.addChildWidget()
-
 
 
 
