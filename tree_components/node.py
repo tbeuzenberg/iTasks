@@ -23,7 +23,6 @@ class Node:
         """ Children property """
         return self.__children
 
-
     @property
     def valid(self):
         """ Valid property """
