@@ -26,7 +26,7 @@ class Node:
     @property
     def valid(self):
         """ Valid property """
-        return self.__valid or self.value is not None
+        return self.__valid and self.value is not None
 
     def __add_child(self, node, index):
         """
