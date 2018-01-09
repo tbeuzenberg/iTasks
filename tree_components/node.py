@@ -15,8 +15,19 @@ class Node:
         :rtype: void
         """
         self.value = value
-        self.children = []
-        self.valid = valid
+        self.__children = []
+        self.__valid = valid
+
+    @property
+    def children(self):
+        """ Children property """
+        return self.__children
+
+
+    @property
+    def valid(self):
+        """ Valid property """
+        return self.__valid or self.value is not None
 
     def __add_child(self, node, index):
         """
@@ -25,10 +36,10 @@ class Node:
         :param index: The index on which the node has to be added
         :rtype: void
         """
-        if index >= len(self.children):
-            for _ in range(len(self.children), index):
-                self.children.append(Node(valid=False))
-        self.children.append(node)
+        if index >= len(self.__children):
+            for _ in range(len(self.__children), index):
+                self.__children.append(Node(valid=False))
+        self.__children.append(node)
 
     def __replace_child(self, node, index):
         """
@@ -37,7 +48,7 @@ class Node:
         :param index: The index on which we have to replace the node
         :rtype: void
         """
-        self.children[index] = node
+        self.__children[index] = node
 
     def add_or_replace_child(self, node, index):
         """
@@ -47,7 +58,7 @@ class Node:
         method
         :rtype: void
         """
-        if index >= len(self.children):
+        if index >= len(self.__children):
             self.__add_child(node=node, index=index)
         else:
             self.__replace_child(node=node, index=index)
@@ -58,7 +69,7 @@ class Node:
         :param index: The index we have to find the child on
         :rtype: void
         """
-        return self.children[index]
+        return self.__children[index]
 
     def find_node(self, index_list):
         """
@@ -70,14 +81,14 @@ class Node:
         :rtype: Node
         """
         if len(index_list) == 1:
-            if self.get_child(index=index_list[0]).valid:
+            if self.get_child(index=index_list[0]).__valid:
                 return self.get_child(index=index_list[0])
             else:
                 raise IndexError()
         else:
             first_element = index_list[:1]
             rest = index_list[1:]
-            return self.children[first_element[0]].find_node(index_list=rest)
+            return self.__children[first_element[0]].find_node(index_list=rest)
 
     def print(self, prefix=""):
         """
@@ -86,11 +97,13 @@ class Node:
         :param prefix: Helper to know what indentation the printer needs
         :type: void
         """
-        if self.valid or self.value is not None:
+        if self.valid:
             print(prefix + type(self.value).__name__)
         else:
             print(prefix + "None")
 
-        if self.children:
-            for i in range(0, len(self.children)):
-                self.children[i].print(prefix + "- ")
+        if self.__children:
+            for i in range(0, len(self.__children)):
+                self.__children[i].print(prefix + "- ")
+
+
