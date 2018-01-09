@@ -3,8 +3,6 @@
 """ iTasks Desktop Application Entry point """
 
 import sys
-import os
-import json
 
 from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
     QMainWindow,

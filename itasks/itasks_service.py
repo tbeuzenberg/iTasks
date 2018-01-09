@@ -64,7 +64,7 @@ class ItasksService(object):
         :rtype: void
         """
         # TODO: Remove when iTasks has support for StdIO
-        self.send_data("EXIT_SERVER")
+        self.write_data_to_itasks("EXIT_SERVER")
         time.sleep(1)
         os.kill(self.process.pid, 2)
         self.process.kill()
@@ -193,13 +193,25 @@ class ItasksService(object):
         """
         pass
 
-    def send_data(self, data):
+    def write_data_to_itasks(self, data):
         """
-        Send data to the iTasks Server
-        :param data: Data to send to the server
+        Write data to the itasks server via StdIO
+        :param data: the data to write
         :rtype: void
         """
         self.process.stdin.write((data + '\n').encode())
+
+    def send_data(self, request_type, data):
+        """
+        Send data to the iTasks Server
+        :param request_type: The request type
+        :param data: Data to send to the server
+        :rtype: void
+        """
+        self.write_data_to_itasks(
+            json.dumps([self.req_id, request_type, data])
+        )
+        self.req_id += 1
 
     def send_ui_event(self, data):
         """
@@ -207,9 +219,7 @@ class ItasksService(object):
         :param data: Request to send
         :rtype: void
         """
-        request = json.dumps([self.req_id, "ui-event", data])
-        self.send_data(request)
-        self.req_id += 1
+        self.send_data("ui-event", data)
 
     def new_session(self, callback):
         """
@@ -218,8 +228,7 @@ class ItasksService(object):
         :rtype: void
         """
         self.newSessionCallbacks[self.req_id] = callback
-        self.send_data(json.dumps([self.req_id, "new", {}]))
-        self.req_id += 1
+        self.send_data("new", {})
 
     def attach_task_instance(self, instance_no, instance_key, callback):
         """
@@ -230,7 +239,7 @@ class ItasksService(object):
         :rtype: void
         """
         self.taskInstanceCallbacks[instance_no] = callback
-        self.send_data(json.dumps(
-            [self.req_id, "attach", {"instanceNo": instance_no,
-                                     "instanceKey": instance_key}]))
-        self.req_id += 1
+        self.send_data(
+            "attach",
+            {"instanceNo": instance_no, "instanceKey": instance_key}
+        )
