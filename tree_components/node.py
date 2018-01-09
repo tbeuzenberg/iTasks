@@ -80,7 +80,7 @@ class Node:
         :rtype: Node
         """
         if len(index_list) == 1:
-            if self.get_child(index=index_list[0]).__valid:
+            if self.get_child(index=index_list[0]).valid:
                 return self.get_child(index=index_list[0])
             else:
                 raise IndexError()

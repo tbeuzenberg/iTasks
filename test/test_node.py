@@ -197,7 +197,7 @@ class NodeTest(unittest.TestCase):
         valid node on index 3
         """
         # Assign
-        node1 = Node("Child node 1", valid=False)
+        node1 = Node(None, valid=False)
 
         root = Node("Root node")
         root.add_or_replace_child(node1, 3)
