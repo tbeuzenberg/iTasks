@@ -18,7 +18,7 @@ class Node:
         self.children = []
         self.valid = valid
 
-    def add_child(self, node, index):
+    def __add_child(self, node, index):
         """
         Add child to the current node.
         :param node: Node which has to be added
@@ -30,7 +30,7 @@ class Node:
                 self.children.append(Node(valid=False))
         self.children.append(node)
 
-    def replace_child(self, node, index):
+    def __replace_child(self, node, index):
         """
         Replace the existing child with the node given through the parameters
         :param node: The new node
@@ -48,9 +48,9 @@ class Node:
         :rtype: void
         """
         if index >= len(self.children):
-            self.add_child(node=node, index=index)
+            self.__add_child(node=node, index=index)
         else:
-            self.replace_child(node=node, index=index)
+            self.__replace_child(node=node, index=index)
 
     def get_child(self, index):
         """

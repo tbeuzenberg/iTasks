@@ -3,6 +3,7 @@
 
 import builtins
 import unittest
+
 from unittest.mock import (
     call,
     Mock
@@ -27,7 +28,7 @@ class NodeTest(unittest.TestCase):
         child = Node("Child node")
 
         # Act
-        root.add_child(node=child, index=3)
+        root.add_or_replace_child(node=child, index=3)
 
         # Assert
         self.assertEqual(child.value, root.children[3].value)
@@ -47,8 +48,8 @@ class NodeTest(unittest.TestCase):
         child2 = Node("Child node 2")
 
         # Act
-        root.add_child(node=child1, index=3)
-        root.add_child(node=child2, index=5)
+        root.add_or_replace_child(node=child1, index=3)
+        root.add_or_replace_child(node=child2, index=5)
 
         # Assert
         self.assertEqual(len(root.children), 6)
@@ -59,7 +60,7 @@ class NodeTest(unittest.TestCase):
         """
         Test for adding a children to a node and invalid nodes get created
 
-        :method: add_child:
+        :method: add_or_replace_child:
         :state: A tree with only a root node, which has no children
         :expect: The root node to have one valid child on index 3, and three
         invalid children on index 0, 1 and 2
@@ -69,7 +70,7 @@ class NodeTest(unittest.TestCase):
         child1 = Node("Child node 1")
 
         # Act
-        root.add_child(node=child1, index=3)
+        root.add_or_replace_child(node=child1, index=3)
 
         # Assert
         self.assertFalse(root.children[0].valid)
@@ -81,69 +82,21 @@ class NodeTest(unittest.TestCase):
         """
         Test for replacing a child of a node
 
-        :method: replace_child
+        :method: add_or_replace_child
         :state: A root node with a child
         :expect: The child to be replaced with another child
         """
         # Assign
         root = Node("Root node")
         child = Node("Child node")
-        root.add_child(child, 3)
+        root.add_or_replace_child(child, 3)
         child2 = Node("Child two node")
 
         # Act
-        root.replace_child(child2, 3)
+        root.add_or_replace_child(child2, 3)
 
         # Assert
         self.assertEqual(child2.value, root.children[3].value)
-
-    def test_add_or_replace_child_with_replace(self):
-        """
-        Test for replacing an item by calling the add or replace method
-
-        :method: add_or_replace_child
-        :state: A root node with one child on position 5
-        :expect: The child 'replace child' node to be called with index 5
-        (because we know this one exists)
-        """
-        # Assign
-        root = Node("Root node")
-        node1 = Node("Child node 1")
-        node2 = Node("Child node 2")
-        root.add_child(node1, 0)
-        root.replace_child = Mock(name="replace_child")
-        root.add_child = Mock(name="add_child")
-
-        # Act
-        root.add_or_replace_child(node=node2, index=0)
-
-        # Assert
-        root.replace_child.assert_called_once_with(node=node2, index=0)
-        root.add_child.assert_not_called()
-
-    def test_add_or_replace_child_with_add(self):
-        """
-        Test for adding an item by calling the add or replace method
-
-        :method: add_or_replace_child
-        :state: A root node with one child on position 0
-        :expect: The child 'add_node' node to be called with index 1
-        (because we know this doesn't exist)
-        """
-        # Assign
-        root = Node("Root node")
-        node1 = Node("Child node 1")
-        node2 = Node("Child node 2")
-        root.add_child(node=node1, index=0)
-        root.replace_child = Mock(name="replace_child")
-        root.add_child = Mock(name="add_child")
-
-        # Act
-        root.add_or_replace_child(node=node2, index=1)
-
-        # Assert
-        root.replace_child.assert_not_called()
-        root.add_child.assert_called_once_with(node=node2, index=1)
 
     def test_get_child_child_exists(self):
         """
@@ -156,7 +109,7 @@ class NodeTest(unittest.TestCase):
         # Assign
         root = Node("Root node")
         node1 = Node("Child node 1")
-        root.add_child(node=node1, index=0)
+        root.add_or_replace_child(node=node1, index=0)
 
         # Act
         retrieved_child = root.get_child(index=0)
@@ -175,7 +128,7 @@ class NodeTest(unittest.TestCase):
         # Assign
         root = Node("Root node")
         node1 = Node("Child node 1")
-        root.add_child(node=node1, index=0)
+        root.add_or_replace_child(node=node1, index=0)
 
         # Act & Assert
         with self.assertRaises(IndexError):
@@ -195,13 +148,13 @@ class NodeTest(unittest.TestCase):
         # Assign
         node2 = Node("Child node 2")
         node3 = Node("Child node 3")
-        node2.add_child(node=node3, index=2)
+        node2.add_or_replace_child(node=node3, index=2)
 
         node1 = Node("Child node 1")
-        node1.add_child(node=node2, index=0)
+        node1.add_or_replace_child(node=node2, index=0)
 
         root = Node("Root node")
-        root.add_child(node=node1, index=3)
+        root.add_or_replace_child(node=node1, index=3)
 
         # Act
         retrieved_node1 = root.find_node([3])
@@ -227,7 +180,7 @@ class NodeTest(unittest.TestCase):
         node1 = Node("Child node 1")
 
         root = Node("Root node")
-        root.add_child(node1, 3)
+        root.add_or_replace_child(node1, 3)
 
         # Act & Assert
         with self.assertRaises(IndexError):
@@ -247,7 +200,7 @@ class NodeTest(unittest.TestCase):
         node1 = Node("Child node 1", valid=False)
 
         root = Node("Root node")
-        root.add_child(node1, 3)
+        root.add_or_replace_child(node1, 3)
 
         # Act & Assert
         with self.assertRaises(IndexError):
@@ -275,13 +228,13 @@ class NodeTest(unittest.TestCase):
 
         node2 = Node("Child node 2")
         node3 = Node("Child node 3")
-        node2.add_child(node3, 2)
+        node2.add_or_replace_child(node3, 2)
 
         node1 = Node("Child node 1")
-        node1.add_child(node2, 0)
+        node1.add_or_replace_child(node2, 0)
 
         root = Node("Root node")
-        root.add_child(node1, 3)
+        root.add_or_replace_child(node1, 3)
 
         # Act
         root.print()
