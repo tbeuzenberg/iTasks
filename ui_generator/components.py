@@ -23,21 +23,22 @@ from PyQt5.QtWidgets import (
 class Components:
 
     @staticmethod
-    def component(marginBottom=0, marginTop=0, marginLeft=0, marginRight=0, **kwargs):
-        q = QWidget()
-        q.setContentsMargins(marginBottom, marginTop, marginLeft, marginRight)
-        return q
+    def component(qwidget, marginBottom=0, marginTop=0, marginLeft=0, marginRight=0, **kwargs):
+        qwidget.setContentsMargins(marginBottom, marginTop, marginLeft, marginRight)
+        return qwidget
 
     @staticmethod
     def buttonbar(**kwargs):
-        layout: QBoxLayout = Components.component(**kwargs)
-        layout.setDirection(0)
+        layout = QBoxLayout(0)
+        layout = Components.component(layout, **kwargs)
+
         return layout
 
     @staticmethod
     def button(enabled=True, iconCls=None, text="", parent=None, **kwargs):
-        output= Components.component(**kwargs)
-        output.setParent(parent)
+        output = QPushButton(parent)
+        output = Components.component(output, **kwargs)
+
         output.setText(text)
         output.setEnabled(enabled)
         output.setIcon(QIcon("icons/" + iconCls))
@@ -45,16 +46,9 @@ class Components:
 
     @staticmethod
     def container(parent=None, **kwargs):
-        output = QWidget(parent=parent)
-        return output
+        output = QWidget(parent)
+        output = Components.component(output, **kwargs)
 
-    @staticmethod
-    def container(parent=None, direction=0, marginBottom=0, marginTop=0,
-                  marginLeft=0, marginRight=0, **kwargs):
-        output = QBoxLayout(direction)
-        output.setParent(parent)
-        output.setContentsMargins(marginBottom, marginTop, marginLeft,
-                                  marginRight)
         return output
 
     @staticmethod
