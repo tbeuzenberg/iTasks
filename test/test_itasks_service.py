@@ -204,12 +204,15 @@ class TestItasksService(unittest.TestCase):
         # Assign
         itasksservice = ItasksService()
         itasksservice.process = Mock()
+        itasksservice.process.pid = 999999
+        os.kill = Mock()
 
         # Act
         itasksservice.stop_server()
 
         # Assert
         itasksservice.process.kill.assert_called()
+        os.kill.assert_called_with(999999, 2)
 
     def test_non_block_read(self):
         """
