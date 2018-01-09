@@ -5,11 +5,14 @@
 import os
 import json
 import sys
+import subprocess
+import threading
+import time
 
-from subprocess import Popen, PIPE
-from threading import Thread
-
-from itasks.exceptions import CouldNotReadStdIOException
+from itasks.exceptions import (
+    CouldNotReadStdIOException,
+    UnsupportedOperatingSystemException
+)
 
 
 class ItasksService(object):
@@ -20,7 +23,7 @@ class ItasksService(object):
     process = None  # Popen process
     newSessionCallbacks = {}
     taskInstanceCallbacks = {}
-    req_id = 1  # Unique request id
+    req_id = 0  # Unique request id
 
     def __new__(cls):
         """
@@ -38,18 +41,21 @@ class ItasksService(object):
         :rtype: void
         """
         if os.name == "nt":
-            self.process = Popen(
+            self.process = subprocess.Popen(
                 ["itasks_server/iTasksToStdIO.exe"],
-                stdout=PIPE, stdin=PIPE, bufsize=0)
+                stdout=subprocess.PIPE, stdin=subprocess.PIPE, bufsize=0)
         elif os.name == "posix":
-            self.process = Popen(
+            self.process = subprocess.Popen(
                 ["/usr/bin/mono", "itasks_server/iTasksToStdIO.exe"],
-                stdout=PIPE, stdin=PIPE, bufsize=0)
+                stdout=subprocess.PIPE, stdin=subprocess.PIPE, bufsize=0)
+        else:
+            raise UnsupportedOperatingSystemException
 
         # Start a background thread that reads the stdio output from
         # the iTasks Server
-        thread = Thread(target=self.background_worker,
-                        args=[self.process.stdout])
+        thread = threading.Thread(
+            target=self.background_worker,
+            args=[self.process.stdout])
         thread.daemon = True
         thread.start()
 
@@ -58,6 +64,10 @@ class ItasksService(object):
         Stop the iTasks server that is running in the background
         :rtype: void
         """
+        # TODO: Remove when iTasks has support for StdIO
+        self.write_data_to_itasks("EXIT_SERVER")
+        time.sleep(1)
+        os.kill(self.process.pid, 2)
         self.process.kill()
 
     def background_worker(self, stdout):
@@ -99,28 +109,120 @@ class ItasksService(object):
         :rtype: void
         """
         decoded_response = json.loads(data)
-        if isinstance(decoded_response, list):
+        if isinstance(decoded_response, list) and len(decoded_response) == 3:
             request_id = decoded_response[0]
-            response = decoded_response[1]
+            request_type = decoded_response[1]
+            request_arguments = decoded_response[2]
 
-            if request_id in self.newSessionCallbacks:
-                instance_no = response['instanceNo']
-                instance_key = response['instanceKey']
-                self.newSessionCallbacks[request_id](instance_no, instance_key)
+            # Define handlers for the response types
+            handlers = {
+                'new': self.process_new,
+                'attach': self.process_attach,
+                'detach': self.process_detach,
+                'ping': self.process_ping,
+                'ui-change': self.process_ui_change,
+                'exception': self.process_exception
+            }
+
+            # Call the handler
+            if request_type in handlers:
+                handlers[request_type](request_arguments=request_arguments,
+                                       request_id=request_id)
             else:
-                print("Unknown response: " + data)
-        else:
-            instance_no = decoded_response['instance']
-            if instance_no in self.taskInstanceCallbacks:
-                self.taskInstanceCallbacks[instance_no](data)
+                print("Unknown response from iTasks: " + data)
 
-    def send_data(self, data):
+    def process_new(self, request_arguments, **kwargs):
         """
-        Send data to the iTasks Server
-        :param data: Data to send to the server
+        Process a "new" response
+        :param request_arguments: Response arguments
+        :param kwargs: request_id
+        :rtype: void
+        """
+        if kwargs["request_id"] in self.newSessionCallbacks:
+            instance_no = request_arguments['instanceNo']
+            instance_key = request_arguments['instanceKey']
+            self.newSessionCallbacks[kwargs["request_id"]](instance_no,
+                                                           instance_key)
+            del self.newSessionCallbacks[kwargs["request_id"]]
+        else:
+            print("Unknown response from iTasks for request_id: " +
+                  str(kwargs['request_id']))
+
+    def process_attach(self, request_arguments, **kwargs):
+        """
+        Process a "attach" response
+        :param request_arguments: Response arguments
+        :param kwargs: request_id
+        :rtype: void
+        """
+        pass
+
+    def process_detach(self, request_arguments, **kwargs):
+        """
+        Process a "detach" response
+        :param request_arguments: Response arguments
+        :param kwargs: request_id
+        :rtype: void
+        """
+        pass
+
+    def process_ping(self, request_arguments, **kwargs):
+        """
+        Process a "ping" response
+        :param request_arguments: Response arguments
+        :param kwargs: request_id
+        :rtype: void
+        """
+        pass
+
+    def process_ui_change(self, request_arguments, **kwargs):
+        """
+        Process a "ui-change" response
+        :param request_arguments: Response arguments
+        :param kwargs: request_id
+        :rtype: void
+        """
+        kwargs.pop('request_id')
+        instance_no = request_arguments['instanceNo']
+        if instance_no in self.taskInstanceCallbacks:
+            self.taskInstanceCallbacks[instance_no](request_arguments)
+
+    def process_exception(self, request_arguments, **kwargs):
+        """
+        Process a "exception" response
+        :param request_arguments: Response arguments
+        :param kwargs: request_id
+        :rtype: void
+        """
+        pass
+
+    def write_data_to_itasks(self, data):
+        """
+        Write data to the itasks server via StdIO
+        :param data: the data to write
         :rtype: void
         """
         self.process.stdin.write((data + '\n').encode())
+
+    def send_data(self, request_type, data):
+        """
+        Send data to the iTasks Server
+        :param request_type: The request type
+        :param data: Data to send to the server
+        :rtype: void
+        """
+        self.write_data_to_itasks(
+            json.dumps([self.req_id, request_type, data])
+        )
+        self.req_id += 1
+
+    def send_ui_event(self, data):
+        """
+        Send ui-event to the iTasks Server
+        :param data: Request to send
+        :rtype: void
+        """
+        self.send_data("ui-event", data)
 
     def new_session(self, callback):
         """
@@ -129,8 +231,7 @@ class ItasksService(object):
         :rtype: void
         """
         self.newSessionCallbacks[self.req_id] = callback
-        self.send_data(json.dumps([self.req_id, "new"]))
-        self.req_id = self.req_id + 1
+        self.send_data("new", {})
 
     def attach_task_instance(self, instance_no, instance_key, callback):
         """
@@ -141,4 +242,7 @@ class ItasksService(object):
         :rtype: void
         """
         self.taskInstanceCallbacks[instance_no] = callback
-        self.send_data(json.dumps(["attach", instance_no, instance_key]))
+        self.send_data(
+            "attach",
+            {"instanceNo": instance_no, "instanceKey": instance_key}
+        )
