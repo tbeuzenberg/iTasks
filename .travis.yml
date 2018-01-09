@@ -7,7 +7,8 @@ install:
 script:
   - PYTHONPATH=. pytest
   - PYTHONPATH=. pytest --pep8
-  - PYTHONPATH=. pylint * || true
+  - PYTHONPATH=. pylint *.py || true
+  - PYTHONPATH=. pylint */*.py || true
   - PYTHONPATH=. coverage run --source=. -m unittest discover -s test/
   - PYTHONPATH=. coverage report -m
 after_success:
