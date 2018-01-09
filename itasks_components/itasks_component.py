@@ -1,6 +1,7 @@
 """Itasks_component for use in a Node"""
 # pylint: disable-msg=too-few-public-methods
 
+
 class ItasksComponent:
     """
     Component which is used to cluster iTask-specific attributes.
