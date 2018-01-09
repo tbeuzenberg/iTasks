@@ -25,6 +25,8 @@ def get_buttonbar_two_buttons():
 def get_buttonbar():
     return '{"type": "ButtonBar","attributes": {},"children": []}'
 
+def get_change():
+    return '{"instance":3,"change":{"type":"change","attributes":[],"children":[[1,"change",{"type":"change","attributes":[],"children":[[1,"change",{"type":"change","attributes":[],"children":[[1,"change",{"type":"change","attributes":[],"children":[[0,"change",{"type":"change","attributes":[{"name":"title","value":"Palindrome"}],"children":[]}]]}]]}]]}]]}}'
 
 
 """

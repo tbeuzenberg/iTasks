@@ -39,6 +39,49 @@ class UIGenerator:
     def get_component_from_widget(self, itasks_id, location):
         return self.frame_widgets[itasks_id].find_node(index_list=location)
 
+    def read_itasks_json_instruction(self, itasks_json_instruction):
+
+        itasks_instruction = json.loads(itasks_json_instruction)
+
+        instance_number = itasks_instruction["instance"]
+        change = itasks_instruction["change"]
+
+        if instance_number not in self.frame_widgets:
+            self.add_widget(itasks_id=instance_number, widget=QWidget())
+
+        current_widget = self.get_widget(itasks_id=instance_number)
+
+        if change["type"] == "replace":
+            self.replace_ui(
+                widget=current_widget,
+                replace_instruction=change["definition"]
+            )
+
+        if change["type"] == "change":
+            self.change_ui(
+                widget=current_widget,
+                change_instruction=change
+            )
+
+    def replace_ui(self, widget, replace_instruction):
+        raise NotImplementedError
+    #     possible_components = dir(components.Components)
+    #
+    #     for item in replace_instruction:
+    #         if item[replace_instruction['type']] in possible_components:
+    #             self.__add_component_to_widget()
+
+    def change_ui(self, widget, change_instruction):
+        # possible_components = dir(components.Components)
+
+        for item in change_instruction:
+            print(item)
+
+
+    def __add_component_to_widget(self, itasks_id, location, type,
+                                  attributes=None, children=None):
+        raise NotImplementedError
+
     # TODO: This function is too long, should be cut into different, smaller, parts
     def add_component_to_widget(self, itasks_id, location,
                                 json_component=""):
@@ -76,33 +119,36 @@ class UIGenerator:
 if __name__ == '__main__':
     generator = UIGenerator(QApplication(sys.argv))
 
-    generator.add_widget(itasks_id=1, widget=QMainWindow())
+    generator.read_itasks_json_instruction(get_change())
 
-    btn3 = get_button(width=50, height=500, enabled=False)
-    btn2 = get_button(width=150, height=200)
-    btn1 = get_button(width=150, height=500)
-
-
-    generator.add_component_to_widget(
-        itasks_id=1,
-        location=[0],
-        json_component=btn1
-    )
-
-    generator.add_component_to_widget(
-        itasks_id=1,
-        location=[2],
-        json_component=btn2
-    )
-
-    generator.add_component_to_widget(
-        itasks_id=1,
-        location=[0, 2],
-        json_component=btn3
-    )
-
-    generator.get_widget(1).show()
     sys.exit(generator.application.exec_())
 
-
-
+    # generator = UIGenerator(QApplication(sys.argv))
+    #
+    # generator.add_widget(itasks_id=1, widget=QMainWindow())
+    #
+    # btn3 = get_button(width=50, height=500, enabled=False)
+    # btn2 = get_button(width=150, height=200)
+    # btn1 = get_button(width=150, height=500)
+    #
+    #
+    # generator.add_component_to_widget(
+    #     itasks_id=1,
+    #     location=[0],
+    #     json_component=btn1
+    # )
+    #
+    # generator.add_component_to_widget(
+    #     itasks_id=1,
+    #     location=[2],
+    #     json_component=btn2
+    # )
+    #
+    # generator.add_component_to_widget(
+    #     itasks_id=1,
+    #     location=[0, 2],
+    #     json_component=btn3
+    # )
+    #
+    # generator.get_widget(1).show()
+    # sys.exit(generator.application.exec_())
