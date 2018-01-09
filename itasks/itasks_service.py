@@ -66,7 +66,6 @@ class ItasksService(object):
         # TODO: Remove when iTasks has support for StdIO
         self.write_data_to_itasks("EXIT_SERVER")
         time.sleep(1)
-        os.kill(self.process.pid, 2)
         self.process.kill()
 
     def background_worker(self, stdout):
