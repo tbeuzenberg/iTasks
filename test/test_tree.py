@@ -80,7 +80,7 @@ class TreeTest(unittest.TestCase):
         # Assign
         root = Node("Root node")
         child = Node("Child node")
-        root.add_child(node=child, index=0)
+        root.add_or_replace_child(node=child, index=0)
         tree = Tree(root_node=root)
         find_node_mock.return_value = child
         node_to_be_inserted = Node("To be inserted")
@@ -115,7 +115,7 @@ class TreeTest(unittest.TestCase):
         # Assign
         root = Node("Root node")
         child = Node("Child node")
-        root.add_child(node=child, index=0)
+        root.add_or_replace_child(node=child, index=0)
         tree = Tree(root_node=root)
         find_node_mock.return_value = child
         node_to_be_inserted1 = Node("To be inserted")
