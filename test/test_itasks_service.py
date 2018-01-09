@@ -1,5 +1,7 @@
 """ Unit tests for itasks_service.py """
 
+# pylint: disable=R0201, C0103
+
 import json
 import os
 import builtins
@@ -49,7 +51,6 @@ class TestItasksService(unittest.TestCase):
 
     @patch('subprocess.Popen')
     def test_process_data_new_session_callback(self, mocked_popen):
-        # pylint: disable=R0201, C0103
         """
         method: process_data
         state: with correct callback
@@ -73,7 +74,6 @@ class TestItasksService(unittest.TestCase):
         callback.assert_called_once_with(instance_no, instance_key)
 
     def test_process_data_new_session_invalid_response(self):
-        # pylint: disable=R0201, C0103
         """
         method: process_data
         state: response with invalid request_id
@@ -96,7 +96,6 @@ class TestItasksService(unittest.TestCase):
 
     @patch('subprocess.Popen')
     def test_process_data_attach_task_instance_callback(self, mocked_popen):
-        # pylint: disable=R0201, C0103
         """
         method: attach_task_instance
         state: with correct callback
@@ -120,7 +119,6 @@ class TestItasksService(unittest.TestCase):
 
     @patch('subprocess.Popen')
     def test_process_data_incorrect_instance_no(self, mocked_popen):
-        # pylint: disable=R0201, C0103
         """
         method: process_data
         state: Response with incorrect instance number
@@ -182,7 +180,6 @@ class TestItasksService(unittest.TestCase):
         self.assertTrue(mocked_thread.daemon)
 
     def test_start_server_on_unsupported_system(self):
-        # pylint: disable=R0201, C0103
         """
         method: start_server
         state: Server started on Mac platform
@@ -193,10 +190,10 @@ class TestItasksService(unittest.TestCase):
         os.name = "mac"
 
         # Assert
-        self.assertRaises(UnsupportedOperatingSystemException,
-                          itasksservice.start_server)
+        with self.assertRaises(UnsupportedOperatingSystemException):
+            itasksservice.start_server()
 
-    def test_stop_server(self):  # pylint: disable=R0201, C0103
+    def test_stop_server(self):
         """
         method: stop_server
         expected_result: stop method called on process
@@ -223,7 +220,6 @@ class TestItasksService(unittest.TestCase):
         # Assign
         itasksservice = ItasksService()
         method_input = Mock()
-        method_input.readline = Mock()
         method_input.readline.return_value = "Test string ".encode()
         expected_result = "Test string"
 
@@ -234,7 +230,6 @@ class TestItasksService(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
     def test_non_block_read_nothing_to_read(self):
-        # pylint: disable=C0103
         """
         method: non_block_read
         state: No data available
@@ -243,7 +238,6 @@ class TestItasksService(unittest.TestCase):
         # Assign
         itasksservice = ItasksService()
         method_input = Mock()
-        method_input.readline = Mock()
         method_input.readline.return_value = "".encode()
         expected_result = None
 
@@ -265,9 +259,8 @@ class TestItasksService(unittest.TestCase):
         method_input.readline = Mock(side_effect=Exception)
 
         # Assert
-        self.assertRaises(CouldNotReadStdIOException,
-                          itasksservice.non_block_read,
-                          method_input)
+        with self.assertRaises(CouldNotReadStdIOException):
+            itasksservice.non_block_read(method_input)
 
 
 if __name__ == '__main__':
