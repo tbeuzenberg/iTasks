@@ -1,8 +1,4 @@
-import sys
-import time
-
-
-from PyQt5.QtCore import Qt
+# pylint: disable-msg=unused-argument
 
 from PyQt5.QtGui import (
     QIcon,
