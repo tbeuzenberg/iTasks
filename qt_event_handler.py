@@ -1,6 +1,6 @@
 """ QtEventHandler handles the events from QWidgets """
 
-#!/usr/bin/python3
+# !/usr/bin/python3
 from itasks_components import ItasksComponent
 
 
@@ -23,7 +23,11 @@ class QtEventHandler:
         task_no = int(task_splitted[1])
 
         self.itasks_service.send_ui_event(
-            {"instanceNo": instance_no, "taskNo": task_no, "action": action_id}
+            {
+                "instanceNo": instance_no,
+                "taskNo": task_no,
+                "action": action_id
+            }
         )
 
     def textbox_changed_event(self, itasks_component: ItasksComponent):
@@ -37,5 +41,10 @@ class QtEventHandler:
         value = itasks_component.qwidget.text()
 
         self.itasks_service.send_ui_event(
-            {"instanceNo": instance_no, "taskNo": task_no, "edit": "v", "value": value}
+            {
+                "instanceNo": instance_no,
+                "taskNo": task_no,
+                "edit": "v",
+                "value": value
+            }
         )

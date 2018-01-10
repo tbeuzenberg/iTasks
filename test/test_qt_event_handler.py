@@ -35,7 +35,11 @@ class TestQtEventHandler(unittest.TestCase):
 
         # Asserts
         itasks_service.send_ui_event.assert_called_once_with(
-            {"instanceNo": 2, "taskNo": 0, "action": "Ok"}
+            {
+                "instanceNo": 2,
+                "taskNo": 0,
+                "action": "Ok"
+            }
         )
 
     @patch('PyQt5.QtWidgets.QLineEdit.text', return_value='kaas')
@@ -57,5 +61,10 @@ class TestQtEventHandler(unittest.TestCase):
 
         # Asserts
         itasks_service.send_ui_event.assert_called_once_with(
-            {"instanceNo": 2, "taskNo": 1, "edit": "v", "value": "kaas"}
+            {
+                "instanceNo": 2,
+                "taskNo": 1,
+                "edit": "v",
+                "value": "kaas"
+            }
         )
