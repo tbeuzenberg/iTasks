@@ -10,7 +10,7 @@ from unittest.mock import (
     Mock
 )
 # pylint: enable=ungrouped-imports
-from PyQt5.QtWidgets import QPushButton
+
 from itasks_components import ItasksComponent
 from qt_event_handler import QtEventHandler
 
@@ -27,13 +27,35 @@ class TestQtEventHandler(unittest.TestCase):
         # Assign
         itasks_service = Mock()
         qt_event_handler = QtEventHandler(itasks_service)
-        button = ItasksComponent(QPushButton("Ok"), "Ok", "2-0")
+        qpushbutton = Mock()
+        button = ItasksComponent(qpushbutton, "Ok", "2-0")
 
         # Act
         qt_event_handler.button_clicked_event(button)
 
-        self.assertTrue(True)
-        # Assert
+        # Asserts
         itasks_service.send_ui_event.assert_called_once_with(
             {"instanceNo": 2, "taskNo": 0, "action": "Ok"}
+        )
+
+    @patch('PyQt5.QtWidgets.QLineEdit.text', return_value='kaas')
+    def test_textbox_changed_event(self, text_function):
+        """
+        method: textbox_changed_event
+        state: text changed
+        expected_result: itasks_service.send_ui_event is called with correct data
+        """
+        # Assign
+        itasks_service = Mock()
+        qt_event_handler = QtEventHandler(itasks_service)
+        qlineedit = Mock()
+        qlineedit.text = text_function
+        textbox = ItasksComponent(qlineedit, None, "2-1")
+
+        # Act
+        qt_event_handler.textbox_changed_event(textbox)
+
+        # Asserts
+        itasks_service.send_ui_event.assert_called_once_with(
+            {"instanceNo": 2, "taskNo": 1, "edit": "v", "value": "kaas"}
         )
