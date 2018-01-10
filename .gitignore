@@ -3,3 +3,7 @@
 .idea
 .coverage
 /htmlcov
+__pycache__/
+/itasks/__pycache__/
+/itasks_components/__pycache__/
+/test/__pycache__/
