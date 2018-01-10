@@ -20,7 +20,6 @@ class TestUIGenerator(unittest.TestCase):
         self.test_widget = QWidget()
         self.ui_generator.add_widget(itasks_id=1, widget=self.test_widget)
 
-
     def test_add_widget(self):
 
         # Assign
@@ -30,7 +29,8 @@ class TestUIGenerator(unittest.TestCase):
         self.ui_generator.add_widget(itasks_id=10, widget=test_widget_two)
 
         # Assert
-        self.assertEqual(self.ui_generator.frame_widgets.get(10).root.value, test_widget_two)
+        self.assertEqual(self.ui_generator.frame_widgets.get(10).root.value,
+                         test_widget_two)
 
     def test_get_widget(self):
 
