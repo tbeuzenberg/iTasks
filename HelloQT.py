@@ -1,5 +1,6 @@
 import sys
 
+from ui_generator import components
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
     QWidget,
@@ -61,6 +62,8 @@ class Example(QWidget):
         LayoutL.addWidget(label2)
         LayoutL.addWidget(line_edit1)
 
+        lmao = components.Components.icon(iconCls="add")
+        LayoutL.addWidget(lmao)
         # LAYOUT MERGING
         LayoutT.addLayout(LayoutL)
         LayoutB.addLayout(LayoutR)
