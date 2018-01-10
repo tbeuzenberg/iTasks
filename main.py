@@ -3,8 +3,6 @@
 """ iTasks Desktop Application Entry point """
 
 import sys
-import os
-import json
 import logging
 import traceback
 
@@ -69,7 +67,6 @@ class Main(QMainWindow):
 
     def button_clicked(self):
         """ Button click handler """
-        1/0
         sender = self.sender()
         self.statusBar().showMessage(sender.text() + ' was pressed')
 
@@ -125,11 +122,11 @@ def log_uncaught_exceptions(exctype, exception, trace):
     """
     # Write error to file
     logging.critical(''.join(traceback.format_tb(trace)))
-    logging.critical('{0}: {1}'.format(exctype, exception))
+    logging.critical('%s: %s', exctype, exception)
 
     # Write error to console
     sys.__excepthook__(exctype, exception, trace)
-    return
+    sys.exit(6)
 
 
 if __name__ == '__main__':
