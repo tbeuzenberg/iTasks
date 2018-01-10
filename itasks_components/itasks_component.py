@@ -6,7 +6,13 @@ class ItasksComponent:
     Component which is used to cluster iTask-specific attributes.
     Used as "value" attribute in a Node.
     """
-    def __init__(self, qwidget: QWidget=None, action_id=None, task_id=None, qlayout: QLayout=None):
+    def __init__(
+            self,
+            qwidget: QWidget=None,
+            action_id=None,
+            task_id=None,
+            qlayout: QLayout=None
+    ):
         """
         :param qwidget: widget to add to component
         :param action_id: action_id assigned to this component by iTasks

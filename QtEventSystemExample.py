@@ -80,12 +80,16 @@ class QtEventSystemExample(QMainWindow):
         """ Prints whether it is a palindrome or not """
         sender = self.sender()
         text = str(sender.text())
-        if text == text[::-1] and text is not None and text != "" and len(text) is not 1:
+        if text == text[::-1] and text is not None:
             self.btn1.setEnabled(True)
-            self.statusBar().showMessage(sender.text() + " is a palindrome")
+            self.statusBar().showMessage(
+                sender.text() + " is a palindrome"
+            )
         else:
             self.btn1.setEnabled(False)
-            self.statusBar().showMessage(sender.text() + " is not a palindrome")
+            self.statusBar().showMessage(
+                sender.text() + " is not a palindrome"
+            )
 
     @staticmethod
     def button_clicked():

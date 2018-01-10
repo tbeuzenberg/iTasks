@@ -40,13 +40,26 @@ class Main(QMainWindow):
         """ Initialize basic UI """
         window = QWidget()
 
-        ok_button = ItasksComponent(QPushButton("OK", self), "Ok", "2-0")
-        cancel_button = ItasksComponent(QPushButton("Cancel", self), "Cancel", "2-0")
-        ok_button.qwidget.clicked.connect(lambda: self.qt_event_handler.button_clicked_event(ok_button))
-        cancel_button.qwidget.clicked.connect(lambda: self.qt_event_handler.button_clicked_event(cancel_button))
+        ok_button = ItasksComponent(
+            QPushButton("OK", self), "Ok", "2-0"
+        )
+        ok_button.qwidget.clicked.connect(
+            lambda: self.qt_event_handler.button_clicked_event(ok_button)
+        )
 
-        textbox = ItasksComponent(QLineEdit(self), None, "2-1")
-        textbox.qwidget.textChanged.connect(lambda: self.qt_event_handler.textbox_changed_event(textbox))
+        cancel_button = ItasksComponent(
+            QPushButton("Cancel", self), "Cancel", "2-0"
+        )
+        cancel_button.qwidget.clicked.connect(
+            lambda: self.qt_event_handler.button_clicked_event(cancel_button)
+        )
+
+        textbox = ItasksComponent(
+            QLineEdit(self), None, "2-1"
+        )
+        textbox.qwidget.textChanged.connect(
+            lambda: self.qt_event_handler.textbox_changed_event(textbox)
+        )
 
         textbox.qwidget.move(20, 20)
         textbox.qwidget.resize(280, 40)

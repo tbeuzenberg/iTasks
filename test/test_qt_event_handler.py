@@ -22,7 +22,7 @@ class TestQtEventHandler(unittest.TestCase):
         """
         method: button_clicked_event
         state: button clicked
-        expected_result: itasks_service.send_ui_event is called with correct data
+        expected_result: itasks_service.send_ui_event called with correct data
         """
         # Assign
         itasks_service = Mock()
@@ -47,7 +47,7 @@ class TestQtEventHandler(unittest.TestCase):
         """
         method: textbox_changed_event
         state: text changed
-        expected_result: itasks_service.send_ui_event is called with correct data
+        expected_result: itasks_service.send_ui_event called with correct data
         """
         # Assign
         itasks_service = Mock()
