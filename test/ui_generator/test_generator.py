@@ -4,8 +4,6 @@
 import sys
 import unittest
 
-from unittest.mock import Mock
-
 from PyQt5.QtWidgets import (
     QApplication,
     QWidget
