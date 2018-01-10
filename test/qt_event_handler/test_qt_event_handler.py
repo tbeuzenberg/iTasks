@@ -68,3 +68,7 @@ class TestQtEventHandler(unittest.TestCase):
                 "value": "kaas"
             }
         )
+
+
+if __name__ == '__main__':
+    unittest.main()
