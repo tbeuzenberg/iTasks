@@ -17,7 +17,10 @@ class Tree:
 
     @property
     def root(self):
-        """ Root property """
+        """
+        Get the root node of the tree
+        :rtype: Node
+        """
         return self.__root
 
     def find_node(self, index_list):
@@ -26,6 +29,8 @@ class Tree:
         :param index_list: The index_list the Node.find_node uses to find
         :rtype: Node
         """
+        if len(index_list) == 0:
+            return self.__root
         return self.__root.find_node(index_list=index_list)
 
     def insert(self, node, index_list):

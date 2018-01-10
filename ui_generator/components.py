@@ -1,7 +1,7 @@
 import sys
 import time
 
-from abc import abstractmethod
+
 from PyQt5.QtCore import Qt
 
 from PyQt5.QtGui import (
@@ -19,32 +19,19 @@ from PyQt5.QtWidgets import (
 )
 
 
-# noinspection PyPep8Naming
 class Components:
 
     @staticmethod
-    def __component(self, marginBottom=0, marginTop=0, marginLeft=0, marginRight=0):
-        q = QWidget()
-        q.setContentsMargins(marginBottom, marginTop, marginLeft, marginRight)
-        return q
+    def buttonbar():
+        return QBoxLayout(0)
 
     @staticmethod
-    def buttonbar(self, **kwargs):
-        layout: QBoxLayout = self.component(**kwargs)
-        layout.setDirection(0)
-        return layout
-
-    @staticmethod
-    def button(enabled=True, iconCls=None, text="", parent=None, **kwargs):
+    def button(enabled=True, iconCls=None, text="", parent=None, height=100, width=200, **kwargs):
         output = QPushButton(parent)
+        output.setGeometry(0, 0, width, height)
         output.setText(text)
         output.setEnabled(enabled)
         output.setIcon(QIcon("icons/" + iconCls))
-        return output
-
-    @staticmethod
-    def container(parent=None, **kwargs):
-        output = QWidget(parent=parent)
         return output
 
     @staticmethod
@@ -92,14 +79,13 @@ class Components:
     @staticmethod
     def buttonbar(parent=None, **kwargs):
         output = QWidget(parent=parent)
-        
+        output.setLayout(QHBoxLayout())
+
         return output
 
     @staticmethod
     def unknown_component(parent=None, **kwargs):
         raise NotImplementedError
-
-
 
 
 

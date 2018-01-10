@@ -1,7 +1,7 @@
+iTasks/
 /venv
 .cache
 .idea
-.coverage
-iTasks/
-.idea
 .git
+.coverage
+/htmlcov
