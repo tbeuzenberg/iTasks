@@ -1,7 +1,4 @@
-iTasks/
-.idea
 /venv
 .cache
-.git
+.idea
 .coverage
-coverage
