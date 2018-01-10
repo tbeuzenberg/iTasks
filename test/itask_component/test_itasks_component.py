@@ -18,7 +18,8 @@ class ItasksComponentTest(unittest.TestCase):
         qgridlayout = Mock()
 
         # Act
-        component = ItasksComponent(action_id="Action_ID", task_id="Task_ID", qwidget=qwidget, qlayout=qgridlayout)
+        component = ItasksComponent(action_id="Action_ID", task_id="Task_ID",
+                                    qwidget=qwidget, qlayout=qgridlayout)
 
         # Assert
         qgridlayout.addWidget.assert_called_with(qwidget)

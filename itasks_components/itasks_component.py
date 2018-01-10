@@ -20,4 +20,3 @@ class ItasksComponent:
         self.qlayout = qlayout
 
         self.qlayout.addWidget(self.qwidget)
-
