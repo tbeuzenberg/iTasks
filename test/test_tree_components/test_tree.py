@@ -53,7 +53,6 @@ class TestTree(unittest.TestCase):
         # Assert
         self.assertEqual(root, returned_node)
 
-
     def test_insert_with_one_numbered_location(self):
         """
         Test for adding a node with a single digit index list.
