@@ -18,3 +18,6 @@ class ItasksComponent:
         self.task_id = task_id
         self.qwidget = qwidget
         self.qlayout = qlayout
+
+        self.qlayout.addWidget(self.qwidget)
+
