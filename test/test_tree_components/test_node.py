@@ -12,7 +12,7 @@ from unittest.mock import (
 from tree_components import Node
 
 
-class NodeTest(unittest.TestCase):
+class TestNode(unittest.TestCase):
     """ Test cases for the Node component """
 
     def test_add_child(self):
