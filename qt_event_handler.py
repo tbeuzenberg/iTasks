@@ -1,3 +1,5 @@
+""" QtEventHandler handles the events from QWidgets """
+
 #!/usr/bin/python3
 from itasks_components import ItasksComponent
 
