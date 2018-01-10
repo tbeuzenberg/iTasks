@@ -24,7 +24,8 @@ class Example(QWidget):
 
     def __init__(self):
         """
-        Initializes the UI by calling init_ui and the super.__init__ of the Qwidget
+        Initializes the UI by calling init_ui and
+        the super.__init__ of the Qwidget
         """
 
         super().__init__()
