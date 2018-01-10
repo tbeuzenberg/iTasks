@@ -1,3 +1,5 @@
+"""" itasks_component.py """
+
 from PyQt5.QtWidgets import QLayout, QWidget
 
 
@@ -8,10 +10,10 @@ class ItasksComponent:
     """
     def __init__(
             self,
-            qwidget: QWidget=None,
+            qwidget: QWidget = None,
             action_id=None,
             task_id=None,
-            qlayout: QLayout=None
+            qlayout: QLayout = None
     ):
         """
         :param qwidget: widget to add to component
