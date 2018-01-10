@@ -1,12 +1,13 @@
 """Itasks_component for use in a Node"""
 # pylint: disable-msg=too-few-public-methods
 
+
 class ItasksComponent:
     """
     Component which is used to cluster iTask-specific attributes.
     Used as "value" attribute in a Node.
     """
-    def __init__(self, qwidget=None, action_id=None, task_id=None, qlayout=None):
+    def __init__(self, qwidget, qlayout, action_id=None, task_id=None):
         """
         :param qwidget: widget to add to component
         :param action_id: action_id assigned to this component by iTasks
