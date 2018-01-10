@@ -74,6 +74,9 @@ class UIGenerator:
     def change_ui(self, widget, change_instruction):
         # possible_components = dir(components.Components)
 
+
+
+
         for item in change_instruction:
             print(item)
 

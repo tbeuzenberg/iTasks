@@ -13,7 +13,7 @@ from tree_components import (
 )
 
 
-class TreeTest(unittest.TestCase):
+class TestTree(unittest.TestCase):
     """ Unit test class for the tree component """
 
     @patch('tree_components.Node.find_node')

@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import (
 from ui_generator import UIGenerator
 
 
-class UIGeneratorTest(unittest.TestCase):
+class TestUIGenerator(unittest.TestCase):
     """ Test cases for the UIGenerator """
 
     def setUp(self):
@@ -43,3 +43,5 @@ class UIGeneratorTest(unittest.TestCase):
         self.assertEqual(self.test_widget, retrieved_widget)
 
 
+if __name__ == '__main__':
+    unittest.main()
