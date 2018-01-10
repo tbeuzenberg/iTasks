@@ -1,4 +1,4 @@
-""" Unit tests for functions button_clicked_event() and textbox_changed_event() in main.py """
+""" Unit tests for qt_event_handler.py """
 
 # pylint: disable=R0201, C0103
 
@@ -15,7 +15,7 @@ from itasks_components import ItasksComponent
 from qt_event_handler import QtEventHandler
 
 
-class TestItasksEventResponse(unittest.TestCase):
+class TestQtEventHandler(unittest.TestCase):
     """ Unit test class """
 
     def test_button_clicked_event(self):
