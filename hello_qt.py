@@ -1,4 +1,7 @@
 """Demo code for layouts and other basic PyQT things."""
+# pylint: disable-msg=no-name-in-module
+# pylint: disable-msg=too-few-public-methods
+
 import sys
 
 from PyQt5.QtGui import QIcon
