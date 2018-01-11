@@ -2,6 +2,6 @@ iTasks/
 /venv
 .cache
 .idea
-.git
 .coverage
+/errors.log
 /htmlcov
