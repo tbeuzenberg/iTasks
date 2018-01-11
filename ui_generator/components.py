@@ -1,3 +1,6 @@
+
+# pylint: disable-msg=unused-argument
+
 import sys
 import time
 
