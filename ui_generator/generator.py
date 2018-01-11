@@ -116,38 +116,51 @@ class UIGenerator:
 
 
 if __name__ == '__main__':
-    generator = UIGenerator(QApplication(sys.argv))
-
-    generator.read_itasks_json_instruction(get_change())
-
-    sys.exit(generator.application.exec_())
-
     # generator = UIGenerator(QApplication(sys.argv))
     #
-    # generator.add_widget(itasks_id=1, widget=QMainWindow())
+    # generator.read_itasks_json_instruction(get_change())
     #
-    # btn3 = get_button(width=50, height=500, enabled=False)
-    # btn2 = get_button(width=150, height=200)
-    # btn1 = get_button(width=150, height=500)
-    #
-    #
-    # generator.add_component_to_widget(
-    #     itasks_id=1,
-    #     location=[0],
-    #     json_component=btn1
-    # )
-    #
-    # generator.add_component_to_widget(
-    #     itasks_id=1,
-    #     location=[2],
-    #     json_component=btn2
-    # )
-    #
-    # generator.add_component_to_widget(
-    #     itasks_id=1,
-    #     location=[0, 2],
-    #     json_component=btn3
-    # )
-    #
-    # generator.get_widget(1).show()
     # sys.exit(generator.application.exec_())
+
+    generator = UIGenerator(QApplication(sys.argv))
+
+    generator.add_widget(itasks_id=1, widget=QMainWindow())
+
+    btn4 = get_button(width=200, height=600)
+    btn3 = get_button(width=50, height=500, enabled=False)
+    btn2 = get_button(width=150, height=200)
+    btn1 = get_button(width=150, height=500)
+    txt1 = get_textfield(width=300, height=50, x=100, y=500)
+
+    generator.add_component_to_widget(
+        itasks_id=1,
+        location=[0],
+        json_component=btn1
+    )
+
+    generator.add_component_to_widget(
+        itasks_id=1,
+        location=[1],
+        json_component=btn2
+    )
+
+    generator.add_component_to_widget(
+        itasks_id=1,
+        location=[2],
+        json_component=btn3
+    )
+
+    generator.add_component_to_widget(
+        itasks_id=1,
+        location=[0, 2],
+        json_component=btn4
+    )
+
+    generator.add_component_to_widget(
+        itasks_id=1,
+        location=[3],
+        json_component=txt1
+    )
+
+    generator.get_widget(1).show()
+    sys.exit(generator.application.exec_())

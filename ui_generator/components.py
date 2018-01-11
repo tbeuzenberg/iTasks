@@ -53,8 +53,9 @@ class Components:
         return output
 
     @staticmethod
-    def textfield(hint="", value=None, parent=None, **kwargs):
+    def textfield(hint="", value=None, parent=None, height=100, width=1500, x=50, y=100, **kwargs):
         output = QLineEdit()
+        output.setGeometry(x, y, width, height)
         output.setParent(parent)
         output.setText(value)
         # output.textChanged.connect() : TODO
