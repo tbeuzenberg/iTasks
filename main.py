@@ -13,7 +13,12 @@ from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
     QApplication
 )
 
+from temporary_dir.json_components import *
+
+from Application.application import Application
+
 from itasks import ItasksService
+from ui_generator.components import Components
 
 
 class Main(QMainWindow):
@@ -111,7 +116,15 @@ class Main(QMainWindow):
         self.temp_start_palindrome += 1
 
 
+# if __name__ == '__main__':
+#     APP = QApplication(sys.argv)
+#     ex = Main()
+#     sys.exit(APP.exec_())
+
 if __name__ == '__main__':
-    APP = QApplication(sys.argv)
-    ex = Main()
-    sys.exit(APP.exec_())
+    app = Application(application=QApplication(sys.argv), main_window=QMainWindow())
+
+    app.handle_instruction(get_palindrome())
+
+    app.main_window.show()
+    sys.exit(app.qt_application.exec_())

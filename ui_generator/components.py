@@ -194,4 +194,5 @@ class Components:
         :param kwargs:
         :return:
         """
-        raise NotImplementedError
+        pass
+        # raise NotImplementedError

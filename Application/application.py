@@ -4,11 +4,13 @@ import json
 from PyQt5.QtWidgets import (
     QApplication,
     QMainWindow,
-    QGridLayout
-)
+    QGridLayout,
+    QWidget)
+
+from itasks_components import ItasksComponent
 
 from ui_generator import UIGenerator
-from tree_components import(
+from tree_components import (
     Tree,
     Node
 )
@@ -36,7 +38,10 @@ class Application:
         return self.__main_layout
 
     def add_instance_tree(self, instance_id, itasks_component):
-        self.instance_trees[instance_id] = Tree(root_node=Node(itasks_component))
+        dummy = Node("Dummy")
+        tree = Tree(root_node=Node(itasks_component))
+        # tree.insert(Node(itasks_component), [0])
+        self.instance_trees[instance_id] = tree
 
     def get_instance_tree(self, instance_id):
         if instance_id not in self.instance_trees:
@@ -51,11 +56,7 @@ class Application:
         instance = parsed_json.get("instanceNo") if "instanceNo" in json_instruction else parsed_json.get("instance")
 
         if instance not in self.instance_trees:
-            tree = Tree(Node("Dummy")).insert(
-                node=Node("Actual_data"),
-                index_list=[0]
-            )
-            self.add_instance_tree(instance, tree)
+            self.add_instance_tree(instance, ItasksComponent(qwidget=self.main_window, qlayout=self.main_layout))
 
         current_tree = self.instance_trees.get(instance)
 
