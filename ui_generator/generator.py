@@ -77,7 +77,6 @@ class UIGenerator:
         for item in change_instruction:
             print(item)
 
-
     def __add_component_to_widget(self, itasks_id, location, type,
                                   attributes=None, children=None):
         raise NotImplementedError
