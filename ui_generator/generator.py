@@ -131,6 +131,7 @@ if __name__ == '__main__':
     btn2 = get_button(width=150, height=200)
     btn1 = get_button(width=150, height=500)
     txt1 = get_textfield(width=300, height=50, x=100, y=500)
+    lbl1 = get_label(width=400, height=100)
 
     generator.add_component_to_widget(
         itasks_id=1,
@@ -160,6 +161,12 @@ if __name__ == '__main__':
         itasks_id=1,
         location=[3],
         json_component=txt1
+    )
+
+    generator.add_component_to_widget(
+        itasks_id=1,
+        location=[4],
+        json_component=lbl1
     )
 
     generator.get_widget(1).show()

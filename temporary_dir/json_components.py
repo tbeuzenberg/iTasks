@@ -24,6 +24,10 @@ def get_textfield(enabled=True, height=100, width=200, x=50, y=100):
     return '{"type": "TextField","attributes": {"editorId": "v","enabled": ' + enabled + ', "height": ' + str(height) + ',"width": ' + str(width) + ', "x": ' + str(x) + ', "y": ' + str(y) + ',"hint": "Please enter a single line of text (this value is required)","hint-type": "info","mode": "enter","optional": false,"taskId": "4-1","value": null}}'
 
 
+def get_label(height=100, width=200):
+    return '{"type": "Label","attributes": {"editorId": "v", "height": ' + str(height) + ',"width": ' + str(width) + ', "optional": false,"taskId": "4-1","value": null}}'
+
+
 def get_buttonbar_two_buttons():
     return '{"type": "ButtonBar","attributes": {},"children": [{"type": "Button","attributes": {"actionId": "Ok","enabled": false,"iconCls": "icon-ok","taskId": "4-0","text": "Ok","value": "Ok"}},{"type": "Button","attributes": {"actionId": "Cancel","enabled": true,"iconCls": "icon-cancel","taskId": "4-0","text": "Cancel","value": "Cancel"}}]}'
 

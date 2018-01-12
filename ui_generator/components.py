@@ -62,9 +62,10 @@ class Components:
         return output
 
     @staticmethod
-    def label(parent=None, **kwargs):
+    def label(parent=None, height=100, width=200, **kwargs):
         output = QLabel()
         output.setParent(parent)
+        output.setGeometry(0, 0, width, height)
         output.setText(kwargs["value"])
         return output
 
