@@ -1,7 +1,6 @@
 import sys
 import time
 
-
 from PyQt5.QtCore import Qt
 
 from PyQt5.QtGui import (
@@ -53,7 +52,8 @@ class Components:
         return output
 
     @staticmethod
-    def textfield(hint="", value=None, parent=None, height=100, width=1500, x=50, y=100, **kwargs):
+    def textfield(hint="", value=None, parent=None, height=100, width=1500,
+                  x=50, y=100, **kwargs):
         output = QLineEdit()
         output.setGeometry(x, y, width, height)
         output.setParent(parent)
@@ -89,6 +89,7 @@ class Components:
     @staticmethod
     def unknown_component(parent=None, **kwargs):
         raise NotImplementedError
+
 
 """"
 TODO
