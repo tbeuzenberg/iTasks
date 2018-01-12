@@ -201,7 +201,6 @@ class TestItasksService(unittest.TestCase):
         # Assign
         itasksservice = ItasksService()
         itasksservice.process = Mock()
-        itasksservice.process.pid = 999999
 
         # Act
         itasksservice.stop_server()

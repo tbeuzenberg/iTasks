@@ -1,5 +1,7 @@
 import sys
 
+# pylint: disable-all
+
 from ui_generator import components
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611

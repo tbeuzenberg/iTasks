@@ -13,7 +13,7 @@ from tree_components import (
 )
 
 
-class TreeTest(unittest.TestCase):
+class TestTree(unittest.TestCase):
     """ Unit test class for the tree component """
 
     @patch('tree_components.Node.find_node')
@@ -52,7 +52,6 @@ class TreeTest(unittest.TestCase):
 
         # Assert
         self.assertEqual(root, returned_node)
-
 
     def test_insert_with_one_numbered_location(self):
         """
@@ -98,7 +97,7 @@ class TreeTest(unittest.TestCase):
         # Assign
         root = Node("Root node")
         child = Node("Child node")
-        root.add_child(node=child, index=0)
+        root.add_or_replace_child(node=child, index=0)
         tree = Tree(root_node=root)
         find_node_mock.return_value = child
         node_to_be_inserted = Node("To be inserted")
@@ -133,7 +132,7 @@ class TreeTest(unittest.TestCase):
         # Assign
         root = Node("Root node")
         child = Node("Child node")
-        root.add_child(node=child, index=0)
+        root.add_or_replace_child(node=child, index=0)
         tree = Tree(root_node=root)
         find_node_mock.return_value = child
         node_to_be_inserted1 = Node("To be inserted")

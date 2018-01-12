@@ -77,17 +77,16 @@ class UIGenerator:
         for item in change_instruction:
             print(item)
 
-
     def __add_component_to_widget(self, itasks_id, location, type,
                                   attributes=None, children=None):
         raise NotImplementedError
 
-    # TODO: This function is too long, should be cut into different, smaller, parts
+    # TODO: This function is too long, should be cut into different, parts
     def add_component_to_widget(self, itasks_id, location,
                                 json_component=""):
         # TODO: Location has to be relative to the previously added component
         # TODO: No idea how we should fix this yet.
-        current_widget: Tree = self.frame_widgets[itasks_id]
+        current_widget = self.frame_widgets[itasks_id]
 
         component_data = json.loads(json_component)
 
