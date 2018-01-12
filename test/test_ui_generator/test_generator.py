@@ -31,7 +31,7 @@ class TestUIGenerator(unittest.TestCase):
         self.ui_generator.add_widget(itasks_id=10, widget=test_widget_two)
 
         # Assert
-        self.assertEqual(self.ui_generator.frame_widgets.get(10).root.value,
+        self.assertEqual(self.ui_generator.instance_trees.get(10).root.value,
                          test_widget_two)
 
     def test_get_widget(self):

@@ -33,6 +33,7 @@ class Components:
         output.setText(text)
         output.setEnabled(enabled)
         output.setIcon(QIcon("icons/" + iconCls))
+        output.setParent(parent)
         return output
 
     @staticmethod
@@ -55,6 +56,7 @@ class Components:
     @staticmethod
     def textfield(hint="", value=None, parent=None, **kwargs):
         output = QLineEdit()
+        # output.setGeometry(kwargs['x'], kwargs['y'], kwargs['width'], kwargs['height'])
         output.setParent(parent)
         output.setText(value)
         # output.textChanged.connect() : TODO
