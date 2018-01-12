@@ -1,3 +1,6 @@
+
+# pylint: disable-msg=unused-argument
+
 import sys
 import time
 
@@ -26,7 +29,8 @@ class Components:
         return QBoxLayout(0)
 
     @staticmethod
-    def button(enabled=True, iconCls=None, text="", parent=None, height=100, width=200, **kwargs):
+    def button(enabled=True, iconCls=None, text="",
+               parent=None, height=100, width=200, **kwargs):
         output = QPushButton(parent)
         output.setGeometry(0, 0, width, height)
         output.setText(text)
@@ -86,12 +90,6 @@ class Components:
     @staticmethod
     def unknown_component(parent=None, **kwargs):
         raise NotImplementedError
-
-
-
-
-
-
 
 """"
 TODO

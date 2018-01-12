@@ -3,14 +3,19 @@ python:
   - "3.6"
 install:
   - pip install PyQt5
-  - pip install pytest-pep8 coverage pylint coveralls
+  - pip install pytest pytest-pep8 coverage pylint coveralls
+  - pip install radon xenon
 script:
   - PYTHONPATH=. pytest
   - PYTHONPATH=. pytest --pep8
+  - PYTHONPATH=. pylint *.py
   - PYTHONPATH=. pylint */*.py || true
-  - PYTHONPATH=. pylint *.py || true
-  - PYTHONPATH=. pylint * || true
+  - PYTHONPATH=. pylint */*/*.py || true
   - PYTHONPATH=. coverage run --source=. -m unittest discover -s test/
   - PYTHONPATH=. coverage report -m
+  - PYTHONPATH=. radon cc ./
+  - PYTHONPATH=. xenon ./ --max-absolute B --max-modules A --max-average A
 after_success:
   - coveralls
+notifications:
+  email: false

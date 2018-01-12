@@ -1,8 +1,9 @@
 iTasks/
-.idea
 /venv
 .cache
-.git
+.idea
 .coverage
-coverage
+/errors.log
 /htmlcov
+.git
+coverage
