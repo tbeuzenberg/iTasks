@@ -1,8 +1,4 @@
-import sys
-import time
-
-from abc import abstractmethod
-from PyQt5.QtCore import Qt
+# pylint: disable-msg=unused-argument
 
 from PyQt5.QtGui import (
     QIcon,
@@ -19,7 +15,6 @@ from PyQt5.QtWidgets import (
 )
 
 
-# noinspection PyPep8Naming
 class Components:
 
     @staticmethod
@@ -28,11 +23,9 @@ class Components:
         return qwidget
 
     @staticmethod
-    def buttonbar(**kwargs):
-        layout = QBoxLayout(0)
-        layout = Components.component(layout, **kwargs)
+    def buttonbar(qwidget):
+        return QBoxLayout(0)
 
-        return layout
 
     @staticmethod
     def button(enabled=True, iconCls=None, text="", parent=None, **kwargs):
@@ -48,6 +41,7 @@ class Components:
     def container(parent=None, **kwargs):
         output = QWidget(parent)
         output = Components.component(output, **kwargs)
+        return output
 
         return output
 
@@ -87,20 +81,13 @@ class Components:
     @staticmethod
     def buttonbar(parent=None, **kwargs):
         output = QWidget(parent=parent)
-        
+        output.setLayout(QHBoxLayout())
+
         return output
 
     @staticmethod
     def unknown_component(parent=None, **kwargs):
         raise NotImplementedError
-
-
-
-
-
-
-
-
 
 """"
 TODO

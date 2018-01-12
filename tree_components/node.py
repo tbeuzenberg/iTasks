@@ -14,11 +14,21 @@ class Node:
         :param valid: Boolean that tells if the node is valid whether or not
         :rtype: void
         """
-        self.__value = value
+        self.value = value
         self.__children = []
         self.__valid = valid
 
-    def add_child(self, node, index):
+    @property
+    def children(self):
+        """ Children property """
+        return self.__children
+
+    @property
+    def valid(self):
+        """ Valid property """
+        return self.__valid and self.value is not None
+
+    def __add_child(self, node, index):
         """
         Add child to the current node.
         :param node: Node which has to be added
@@ -30,7 +40,7 @@ class Node:
                 self.__children.append(Node(valid=False))
         self.__children.append(node)
 
-    def replace_child(self, node, index):
+    def __replace_child(self, node, index):
         """
         Replace the existing child with the node given through the parameters
         :param node: The new node
@@ -48,9 +58,9 @@ class Node:
         :rtype: void
         """
         if index >= len(self.__children):
-            self.add_child(node=node, index=index)
+            self.__add_child(node=node, index=index)
         else:
-            self.replace_child(node=node, index=index)
+            self.__replace_child(node=node, index=index)
 
     def get_child(self, index):
         """
@@ -86,7 +96,7 @@ class Node:
         :param prefix: Helper to know what indentation the printer needs
         :type: void
         """
-        if self.__valid or self.value is not None:
+        if self.valid:
             print(prefix + type(self.value).__name__)
         else:
             print(prefix + "None")
@@ -94,27 +104,3 @@ class Node:
         if self.__children:
             for i in range(0, len(self.__children)):
                 self.__children[i].print(prefix + "- ")
-
-    @property
-    def value(self):
-        """
-
-        :return:
-        """
-        return self.__value
-
-    @property
-    def children(self):
-        """
-
-        :return:
-        """
-        return self.__children
-
-    @property
-    def valid(self):
-        """
-
-        :return:
-        """
-        return self.__valid

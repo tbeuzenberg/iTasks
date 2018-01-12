@@ -1,7 +1,11 @@
+"""Demo code for layouts and other basic PyQT things."""
+# pylint: disable-msg=no-name-in-module
+# pylint: disable-msg=too-few-public-methods
+
 import sys
 
-from ui_generator import components
 from PyQt5.QtGui import QIcon
+
 from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
     QWidget,
     QPushButton,
@@ -12,15 +16,25 @@ from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
     QGridLayout
 )
 
+from ui_generator import components
+
 
 class Example(QWidget):
+    """Example class for demonstrating how PyQt works"""
 
     def __init__(self):
+        """
+        Initializes the UI by calling init_ui and
+        the super.__init__ of the Qwidget
+        """
+
         super().__init__()
 
         self.initUI()
 
-    def initUI(self):
+    def init_ui(self):
+        """Initialises the UI"""
+
         button1 = QPushButton("OK")
         button2 = QPushButton("Cancel")
         label1 = QLabel('Enter a palindrome')
@@ -39,37 +53,37 @@ class Example(QWidget):
         line_edit1.setContentsMargins(5, 0, 0, 0)
         label2.setContentsMargins(0, 0, 5, 0)
 
-        MainLayout = QGridLayout()
-        MainLayout.setContentsMargins(0, 0, 0, 0)
+        main_layout = QGridLayout()
+        main_layout.setContentsMargins(0, 0, 0, 0)
 
         # LAYOUT RIGHT-TO-LEFT
-        LayoutR = QBoxLayout(0)
-        LayoutR.addStretch()
-        LayoutR.addWidget(button1)
-        LayoutR.setSpacing(0)
-        LayoutR.addWidget(button2)
+        layout_r = QBoxLayout(0)
+        layout_r.addStretch()
+        layout_r.addWidget(button1)
+        layout_r.setSpacing(0)
+        layout_r.addWidget(button2)
 
         # LAYOUT BOTTOM-TO-TOP
-        LayoutB = QBoxLayout(2)
-        LayoutB.addStretch()
+        layout_b = QBoxLayout(2)
+        layout_b.addStretch()
 
         # LAYOUT TOP-TO-BOTTOM
-        LayoutT = QBoxLayout(2)
-        LayoutT.addWidget(label1)
+        layout_t = QBoxLayout(2)
+        layout_t.addWidget(label1)
 
         # LAYOUT LEFT-TO-RIGHT
-        LayoutL = QBoxLayout(1)
-        LayoutL.addWidget(label2)
-        LayoutL.addWidget(line_edit1)
+        layout_l = QBoxLayout(1)
+        layout_l.addWidget(label2)
+        layout_l.addWidget(line_edit1)
 
-        lmao = components.Components.icon(iconCls="add")
-        LayoutL.addWidget(lmao)
+        icon = components.Components.icon(iconCls="add")
+        layout_l.addWidget(icon)
         # LAYOUT MERGING
-        LayoutT.addLayout(LayoutL)
-        LayoutB.addLayout(LayoutR)
-        MainLayout.addLayout(LayoutB, 1, 0)
-        MainLayout.addLayout(LayoutT, 0, 0)
-        self.setLayout(MainLayout)
+        layout_t.addLayout(layout_l)
+        layout_b.addLayout(layout_r)
+        main_layout.addLayout(layout_b, 1, 0)
+        main_layout.addLayout(layout_t, 0, 0)
+        self.setLayout(main_layout)
 
         self.setGeometry(0, 30, 800, 800)
         self.setWindowTitle('Hai nick')
@@ -77,6 +91,6 @@ class Example(QWidget):
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
+    APP = QApplication(sys.argv)
     ex = Example()
-    sys.exit(app.exec_())
+    sys.exit(APP.exec_())
