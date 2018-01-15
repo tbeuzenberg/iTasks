@@ -18,8 +18,9 @@ def get_button(enabled=True, height=100, width=200):
 def get_icon():
     return '{"type": "Icon","attributes": {"hint": "Please enter a single line of text (this value is required)","hint-type": "info","iconCls": "icon-info","marginLeft": 5,"tooltip": "Please enter a single line of text (this value is required)"}}'
 
+
 def get_textfield(height=100, width=200, x=0, y=0):
-    return '{"type": "Dingetje","attributes": {"editorId": "v", "x": ' + str(x) + ', "y": ' + str(y) + ', "height": ' + str(height) + ', "width": ' + str(width) + ',"hint": "Please enter a single line of text (this value is required)","hint-type": "info","mode": "enter","optional": false,"taskId": "4-1","value": null}}'
+    return '{"type": "TextField","attributes": {"editorId": "v", "x": ' + str(x) + ', "y": ' + str(y) + ', "height": ' + str(height) + ', "width": ' + str(width) + ',"hint": "Please enter a single line of text (this value is required)","hint-type": "info","mode": "enter","optional": false,"taskId": "4-1","value": null}}'
 
 
 def get_buttonbar_two_buttons():
@@ -29,6 +30,9 @@ def get_buttonbar_two_buttons():
 def get_buttonbar():
     return '{"type": "ButtonBar","attributes": {},"children": []}'
 
+
+def get_itasks_layout(json):
+    return '{"instance":4,"change":{"type":"replace","definition":' + json + '}}'
 
 def get_change():
     return '{"instance":3,"change":{"type":"change","attributes":[],"children":[[1,"change",{"type":"change","attributes":[],"children":[[1,"change",{"type":"change","attributes":[],"children":[[1,"change",{"type":"change","attributes":[],"children":[[0,"change",{"type":"change","attributes":[{"name":"title","value":"Palindrome"}],"children":[]}]]}]]}]]}]]}}'
