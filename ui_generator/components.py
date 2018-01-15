@@ -20,15 +20,37 @@ from math import floor
 
 from itasks_components import ItasksComponent
 
+
 class Components:
     """
     Components class. Public methods in this class can be called
     to create an ItasksComponent based on specifications
     """
+    @staticmethod
+    def __set_geometry(qwidget, x: int = 0, y: int = 0, width=-1, height=-1, **kwargs):
+        """
+        Sets the geometry for the QWidget passed into it.
+        :param qwidget: Qwidget to set the geometry for
+        :param x: x-position to place the widget at
+        :param y: y-position to place the widget at
+        :param width: width to resize the qwidget to
+        :param height: height to resize the qwidget to
+        :param kwargs: safety measure for when Itasks passes too many arguments
+        :return: Resized Qwidget
+        :rtype QWidget
+        """
+        hint = qwidget.sizeHint()
+        if width == -1 or "flex":
+            width = hint.width()
+        if height == -1 or "flex":
+            height = hint.height()
+        size = QSize(width, height)
+        qwidget.setGeometry(x, y, size.width(), size.height())
+        return qwidget
 
     @staticmethod
-    def __set_margins_and_geometry(qwidget, marginBottom=0, marginTop=0,
-                                   marginLeft=0, marginRight=0, **kwargs):
+    def __set_margins(qwidget, marginBottom=0, marginTop=0,
+                       marginLeft=0, marginRight=0, **kwargs):
         """
         This method sets the margins and geometry for the QWidget passed into it.
         :param qwidget: Qwidget to set the margins, padding and geometry for.
@@ -40,20 +62,10 @@ class Components:
         and itself
         :param **kwargs: Safety measure for when Itasks passes too many arguments
         :return: the Qwidget with corrected margins and geometry
+        :rtype QWidget
         """
-
-        if kwargs.get("height") and kwargs.get("width"):
-            height = kwargs["height"] if kwargs["height"] is "flex" else 500
-            width = kwargs["width"] if kwargs["width"] is "flex" else 500
-
-            size = QSize(width, height)
-            qwidget.resize(size)
-
-        else:
-            size = qwidget.sizeHint()
-
-        qwidget.setContentsMargins(marginBottom, marginTop, marginLeft,
-                                   marginRight)
+        qwidget.setContentsMargins(marginBottom, marginTop,
+                                   marginLeft, marginRight)
         return qwidget
 
     @staticmethod
@@ -86,7 +98,8 @@ class Components:
         :rtype ItasksComponent
         """
         widget = QWidget(parent.qwidget)
-        widget = Components.__set_margins_and_geometry(widget, **kwargs)
+        widget = Components.__set_margins(widget, **kwargs)
+        widget = Components.__set_geometry(widget, **kwargs)
 
         layout = QBoxLayout(1)
         Components.__nest_layout(parent=parent, layout=layout, index=index, vertical=True)
@@ -118,7 +131,8 @@ class Components:
         widget.setText(text)
         widget.setEnabled(enabled)
         widget.setIcon(QIcon("icons/" + iconCls))
-        widget = Components.__set_margins_and_geometry(widget, **kwargs)
+        widget = Components.__set_margins(widget, **kwargs)
+        widget = Components.__set_geometry(widget, **kwargs)
         # widget.clicked.connect() TODO
 
         layout = QGridLayout()
@@ -144,7 +158,8 @@ class Components:
         """
 
         widget = QWidget(parent.qwidget)
-        widget = Components.__set_margins_and_geometry(widget, **kwargs)
+        widget = Components.__set_margins(widget, **kwargs)
+        widget = Components.__set_geometry(widget, **kwargs)
 
         layout = QGridLayout()
         Components.__nest_layout(layout=layout, index=index, parent=parent, vertical=True)
@@ -169,9 +184,12 @@ class Components:
         :return: returns a filled ItasksComponent
         :rtype ItasksComponent
         """
-        widget = QLabel("<html><img src='icons/" + iconCls + ".png'></html>",
+        widget = QLabel("<html><img src='icons/" +
+                        iconCls +
+                        ".png'></html>",
                         parent=parent.qwidget)
-        widget = Components.__set_margins_and_geometry(widget, **kwargs)
+        widget = Components.__set_margins(widget, **kwargs)
+        widget = Components.__set_geometry(widget, **kwargs)
 
         layout = QGridLayout()
         Components.__nest_layout(parent=parent, layout=layout, index=index)
@@ -200,7 +218,8 @@ class Components:
         widget = QLineEdit(parent.qwidget)
         widget.setText(value)
         widget.setToolTip(hint)
-        widget = Components.__set_margins_and_geometry(qwidget=widget, **kwargs)
+        widget = Components.__set_margins(widget, **kwargs)
+        widget = Components.__set_geometry(widget, **kwargs)
 
         layout = QGridLayout()
         Components.__nest_layout(parent=parent, layout=layout, index=index)
@@ -226,7 +245,8 @@ class Components:
         :rtype ItasksComponent
         """
         widget = QLabel(parent.qwidget)
-        widget = Components.__set_margins_and_geometry(qwidget=widget, **kwargs)
+        widget = Components.__set_margins(widget, **kwargs)
+        widget = Components.__set_geometry(widget, **kwargs)
         widget.setText(value)
 
         layout = QGridLayout()
