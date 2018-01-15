@@ -12,10 +12,12 @@ from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
     QPushButton,
     QHBoxLayout,
     QVBoxLayout,
-    QApplication
-)
+    QApplication,
+    QLineEdit)
 
 from itasks import ItasksService
+from itasks_components import ItasksComponent
+from qt_event_handler import QtEventHandler
 
 
 class Main(QMainWindow):
@@ -32,23 +34,45 @@ class Main(QMainWindow):
         self.itasks_service.start_server()
         self.itasks_service.new_session(self.new_session_callback)
 
+        self.qt_event_handler = QtEventHandler(self.itasks_service)
+
         self.init_ui()
 
     def init_ui(self):
         """ Initialize basic UI """
         window = QWidget()
 
-        ok_button = QPushButton("OK", self)
-        cancel_button = QPushButton("Cancel", self)
-        ok_button.clicked.connect(self.button_clicked)
-        cancel_button.clicked.connect(self.button_clicked)
+        ok_button = ItasksComponent(
+            QPushButton("OK", self), "Ok", "2-0"
+        )
+        ok_button.qwidget.clicked.connect(
+            lambda: self.qt_event_handler.button_clicked_event(ok_button)
+        )
+
+        cancel_button = ItasksComponent(
+            QPushButton("Cancel", self), "Cancel", "2-0"
+        )
+        cancel_button.qwidget.clicked.connect(
+            lambda: self.qt_event_handler.button_clicked_event(cancel_button)
+        )
+
+        textbox = ItasksComponent(
+            QLineEdit(self), None, "2-1"
+        )
+        textbox.qwidget.textChanged.connect(
+            lambda: self.qt_event_handler.textbox_changed_event(textbox)
+        )
+
+        textbox.qwidget.move(20, 20)
+        textbox.qwidget.resize(280, 40)
 
         hbox = QHBoxLayout()
         hbox.addStretch(1)
-        hbox.addWidget(ok_button)
-        hbox.addWidget(cancel_button)
+        hbox.addWidget(ok_button.qwidget)
+        hbox.addWidget(cancel_button.qwidget)
 
         vbox = QVBoxLayout()
+        vbox.addWidget(textbox.qwidget)
         vbox.addStretch(1)
         vbox.addLayout(hbox)
 
@@ -64,11 +88,6 @@ class Main(QMainWindow):
     def closeEvent(self, q_close_event):  # pylint: disable-msg=C0103,W0613
         """ Close window event """
         self.itasks_service.stop_server()
-
-    def button_clicked(self):
-        """ Button click handler """
-        sender = self.sender()
-        self.statusBar().showMessage(sender.text() + ' was pressed')
 
     def new_session_callback(self, instance_no, instance_key):
         """
