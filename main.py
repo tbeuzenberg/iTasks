@@ -43,21 +43,21 @@ class Main(QMainWindow):
         window = QWidget()
 
         ok_button = ItasksComponent(
-            QPushButton("OK", self), "Ok", "2-0"
+            QPushButton("OK", self), "Ok", "2-0", QHBoxLayout()
         )
         ok_button.qwidget.clicked.connect(
             lambda: self.qt_event_handler.button_clicked_event(ok_button)
         )
 
         cancel_button = ItasksComponent(
-            QPushButton("Cancel", self), "Cancel", "2-0"
+            QPushButton("Cancel", self), "Cancel", "2-0", QHBoxLayout()
         )
         cancel_button.qwidget.clicked.connect(
             lambda: self.qt_event_handler.button_clicked_event(cancel_button)
         )
 
         textbox = ItasksComponent(
-            QLineEdit(self), None, "2-1"
+            QLineEdit(self), None, "2-1", QHBoxLayout()
         )
         textbox.qwidget.textChanged.connect(
             lambda: self.qt_event_handler.textbox_changed_event(textbox)

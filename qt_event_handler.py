@@ -33,6 +33,17 @@ class QtEventHandler:
             }
         )
 
+        # Example of update call
+        itasks_component.update(
+            x=38,
+            y=38,
+            width=38,
+            height=38,
+            text="kaas",
+            enabled=False,
+            icon="icons/accept.png"
+        )
+
     def textbox_changed_event(self, itasks_component: ItasksComponent):
         """
         Textbox changed event handler
