@@ -58,7 +58,7 @@ class Components:
 
     @staticmethod
     def __nest_layout(parent: ItasksComponent, layout: QLayout,
-                      index: int = -1):
+                      index: int = -1, vertical: bool = False):
         """
         Nests the given layout in the given parent at the location of the given index.
         :param parent: parent to nest the layout into
@@ -66,10 +66,13 @@ class Components:
         :param index: index you want the layout to be nested at
         :rtype void
         """
-        if type(parent.qlayout) is QBoxLayout:
+        if type(parent.qlayout) == QBoxLayout:
             parent.qlayout.insertLayout(index, layout)
-        elif type(parent.qlayout) is QGridLayout:
-            parent.qlayout.addLayout(layout, index, 0)
+        elif type(parent.qlayout) == QGridLayout:
+            if vertical:
+                parent.qlayout.addLayout(layout, index, 0)
+            else:
+                parent.qlayout.addLayout(layout, 0, index)
 
     @staticmethod
     def buttonbar(index: int, parent: ItasksComponent, **kwargs):
@@ -85,8 +88,8 @@ class Components:
         widget = QWidget(parent.qwidget)
         widget = Components.__set_margins_and_geometry(widget, **kwargs)
 
-        layout = QBoxLayout(0)
-        Components.__nest_layout(parent=parent, layout=layout, index=index)
+        layout = QBoxLayout(1)
+        Components.__nest_layout(parent=parent, layout=layout, index=index, vertical=True)
 
         output = ItasksComponent(
             qwidget=widget,
@@ -144,7 +147,7 @@ class Components:
         widget = Components.__set_margins_and_geometry(widget, **kwargs)
 
         layout = QGridLayout()
-        Components.__nest_layout(layout=layout, index=index, parent=parent)
+        Components.__nest_layout(layout=layout, index=index, parent=parent, vertical=True)
 
         output = ItasksComponent(
             qwidget=widget,
@@ -212,7 +215,7 @@ class Components:
         return output
 
     @staticmethod
-    def label(parent: ItasksComponent, index: int, text, **kwargs):
+    def textview(parent: ItasksComponent, index: int, value, **kwargs):
         """
         Creates an ItasksComponent containing a label and a layout
         :param index: index you want the item to be nested at
@@ -224,6 +227,7 @@ class Components:
         """
         widget = QLabel(parent.qwidget)
         widget = Components.__set_margins_and_geometry(qwidget=widget, **kwargs)
+        widget.setText(value)
 
         layout = QGridLayout()
         Components.__nest_layout(parent=parent, layout=layout, index=index)
@@ -240,11 +244,6 @@ class Components:
     def panel(**kwargs):
         return Components.container(**kwargs)
 
-    @staticmethod
-    def textview(**kwargs):
-        kwargs["text"] = kwargs["value"]
-        kwargs.pop("value")
-        return Components.label(**kwargs)
 
     @staticmethod
     def unknown_component(parent=None, **kwargs):

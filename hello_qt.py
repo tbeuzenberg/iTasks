@@ -30,7 +30,7 @@ class Example(QWidget):
 
         super().__init__()
 
-        self.initUI()
+        self.init_ui()
 
     def init_ui(self):
         """Initialises the UI"""
@@ -72,12 +72,10 @@ class Example(QWidget):
         layout_t.addWidget(label1)
 
         # LAYOUT LEFT-TO-RIGHT
-        layout_l = QBoxLayout(1)
-        layout_l.addWidget(label2)
-        layout_l.addWidget(line_edit1)
+        layout_l = QGridLayout()
+        layout_l.addWidget(label2, 0, 0)
+        layout_l.addWidget(line_edit1, 0, 1)
 
-        icon = components.Components.icon(iconCls="add")
-        layout_l.addWidget(icon)
         # LAYOUT MERGING
         layout_t.addLayout(layout_l)
         layout_b.addLayout(layout_r)
