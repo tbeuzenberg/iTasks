@@ -8,7 +8,7 @@ class ItasksComponent:
     Component which is used to cluster iTask-specific attributes.
     Used as "value" attribute in a Node.
     """
-    def __init__(self, qwidget:QWidget, qlayout:QLayout, action_id=None, task_id=None):
+    def __init__(self, qwidget:QWidget, qlayout:QLayout, action_id=None, task_id=None, main=False):
         """
         :param qwidget: widget to add to component
         :param action_id: action_id assigned to this component by iTasks
@@ -19,4 +19,7 @@ class ItasksComponent:
         self.task_id = task_id
         self.qwidget = qwidget
         self.qlayout = qlayout
-        self.qlayout.addWidget(self.qwidget)
+        if main:
+            self.qwidget.setLayout(self.qlayout)
+        else:
+            self.qlayout.addWidget(self.qwidget)

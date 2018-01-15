@@ -84,8 +84,8 @@ class UIGenerator:
         else:
             create_component_action = components.Components.unknown_component
 
-        if "direction" in attributes:
-            attributes.pop("direction")
+        # if "direction" in attributes:
+        #     attributes.pop("direction")
 
         return create_component_action(
             parent=parent_node.value,

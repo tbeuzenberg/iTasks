@@ -1,6 +1,7 @@
 """File for Components class"""
 # pylint: disable-msg=unused-argument
 # pylint: disable-msg=invalid-name
+from PyQt5.QtCore import QSize
 from PyQt5.QtGui import (
     QIcon,
 )
@@ -11,16 +12,20 @@ from PyQt5.QtWidgets import (
     QGridLayout,
     QWidget,
     QBoxLayout,
-    QLayout)
+    QLayout
+)
+
+from random import Random
+from math import floor
 
 from itasks_components import ItasksComponent
-
 
 class Components:
     """
     Components class. Public methods in this class can be called
     to create an ItasksComponent based on specifications
     """
+
     @staticmethod
     def __set_margins_and_geometry(qwidget, marginBottom=0, marginTop=0,
                                    marginLeft=0, marginRight=0, **kwargs):
@@ -36,12 +41,24 @@ class Components:
         :param **kwargs: Safety measure for when Itasks passes too many arguments
         :return: the Qwidget with corrected margins and geometry
         """
-        qwidget.setContentsMargins(marginBottom, marginTop, marginLeft, marginRight)
-        # set geometry TODO
+
+        if kwargs.get("height") and kwargs.get("width"):
+            height = kwargs["height"] if kwargs["height"] is "flex" else 500
+            width = kwargs["width"] if kwargs["width"] is "flex" else 500
+
+            size = QSize(width, height)
+            qwidget.resize(size)
+
+        else:
+            size = qwidget.sizeHint()
+
+        qwidget.setContentsMargins(marginBottom, marginTop, marginLeft,
+                                   marginRight)
         return qwidget
 
     @staticmethod
-    def __nest_layout(parent: ItasksComponent, layout: QLayout, index: int = -1):
+    def __nest_layout(parent: ItasksComponent, layout: QLayout,
+                      index: int = -1):
         """
         Nests the given layout in the given parent at the location of the given index.
         :param parent: parent to nest the layout into
@@ -49,10 +66,10 @@ class Components:
         :param index: index you want the layout to be nested at
         :rtype void
         """
-        if parent.qlayout is QBoxLayout:
-            parent.qlayout.insertLayout(Qlayout=layout, index=index)
-        else:
-            parent.qlayout.addLayout(QLayout=layout, row=index, column=0)
+        if type(parent.qlayout) is QBoxLayout:
+            parent.qlayout.insertLayout(index, layout)
+        elif type(parent.qlayout) is QGridLayout:
+            parent.qlayout.addLayout(layout, index, 0)
 
     @staticmethod
     def buttonbar(index: int, parent: ItasksComponent, **kwargs):
@@ -71,11 +88,17 @@ class Components:
         layout = QBoxLayout(0)
         Components.__nest_layout(parent=parent, layout=layout, index=index)
 
-        output = ItasksComponent(qwidget=widget, qlayout=layout, **kwargs)
+        output = ItasksComponent(
+            qwidget=widget,
+            qlayout=layout,
+            action_id=kwargs.get("action_id"),
+            task_id=kwargs.get("task_id")
+        )
         return output
 
     @staticmethod
-    def button(index: int, parent: ItasksComponent, enabled=True, iconCls=None, text="", **kwargs):
+    def button(index: int, parent: ItasksComponent, enabled=True, iconCls=None,
+               text="", **kwargs):
         """
         Creates an ItasksComponent containing a button and a layout
         :param index: index you want the item to be nested at
@@ -98,7 +121,12 @@ class Components:
         layout = QGridLayout()
         Components.__nest_layout(parent, layout, index)
 
-        output = ItasksComponent(qwidget=widget, qlayout=layout, **kwargs)
+        output = ItasksComponent(
+            qwidget=widget,
+            qlayout=layout,
+            action_id=kwargs.get("action_id"),
+            task_id=kwargs.get("task_id")
+        )
         return output
 
     @staticmethod
@@ -111,13 +139,19 @@ class Components:
         :return: returns a filled ItasksComponent
         :rtype ItasksComponent
         """
+
         widget = QWidget(parent.qwidget)
         widget = Components.__set_margins_and_geometry(widget, **kwargs)
 
         layout = QGridLayout()
         Components.__nest_layout(layout=layout, index=index, parent=parent)
 
-        output = ItasksComponent(qwidget=widget, qlayout=layout, **kwargs)
+        output = ItasksComponent(
+            qwidget=widget,
+            qlayout=layout,
+            action_id=kwargs.get("action_id"),
+            task_id=kwargs.get("task_id")
+        )
         return output
 
     @staticmethod
@@ -139,11 +173,17 @@ class Components:
         layout = QGridLayout()
         Components.__nest_layout(parent=parent, layout=layout, index=index)
 
-        output = ItasksComponent(qwidget=widget, qlayout=layout, **kwargs)
+        output = ItasksComponent(
+            qwidget=widget,
+            qlayout=layout,
+            action_id=kwargs.get("action_id"),
+            task_id=kwargs.get("task_id")
+        )
         return output
 
     @staticmethod
-    def textfield(parent: ItasksComponent, index: int, hint="", value=None, **kwargs):
+    def textfield(parent: ItasksComponent, index: int, hint="", value=None,
+                  **kwargs):
         """
         Creates an ItasksComponent containing an icon and a layout
         :param index: index you want the item to be nested at
@@ -163,7 +203,12 @@ class Components:
         Components.__nest_layout(parent=parent, layout=layout, index=index)
 
         # output.textChanged.connect() : TODO
-        output = ItasksComponent(qwidget=widget, qlayout=layout, **kwargs)
+        output = ItasksComponent(
+            qwidget=widget,
+            qlayout=layout,
+            action_id=kwargs.get("action_id"),
+            task_id=kwargs.get("task_id")
+        )
         return output
 
     @staticmethod
@@ -183,8 +228,23 @@ class Components:
         layout = QGridLayout()
         Components.__nest_layout(parent=parent, layout=layout, index=index)
 
-        output = ItasksComponent(qwidget=widget, qlayout=layout, **kwargs)
+        output = ItasksComponent(
+            qwidget=widget,
+            qlayout=layout,
+            action_id=kwargs.get("action_id"),
+            task_id=kwargs.get("task_id")
+        )
         return output
+
+    @staticmethod
+    def panel(**kwargs):
+        return Components.container(**kwargs)
+
+    @staticmethod
+    def textview(**kwargs):
+        kwargs["text"] = kwargs["value"]
+        kwargs.pop("value")
+        return Components.label(**kwargs)
 
     @staticmethod
     def unknown_component(parent=None, **kwargs):
