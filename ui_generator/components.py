@@ -1,15 +1,9 @@
-
+"""File for Components class"""
 # pylint: disable-msg=unused-argument
-
-import sys
-import time
-
-
-from PyQt5.QtCore import Qt
-
+# pylint: disable-msg=invalid-name
+from PyQt5.QtCore import QSize
 from PyQt5.QtGui import (
     QIcon,
-    QPalette
 )
 from PyQt5.QtWidgets import (
     QPushButton,
@@ -17,91 +11,264 @@ from PyQt5.QtWidgets import (
     QLabel,
     QGridLayout,
     QWidget,
-    QHBoxLayout,
-    QBoxLayout
+    QBoxLayout,
+    QLayout
 )
+
+from itasks_components import ItasksComponent
 
 
 class Components:
+    """
+    Components class. Public methods in this class can be called
+    to create an ItasksComponent based on specifications
+    """
+    @staticmethod
+    def __set_geometry(qwidget, x: int = 0, y: int = 0, width=-1, height=-1, **kwargs):
+        """
+        Sets the geometry for the QWidget passed into it.
+        :param qwidget: Qwidget to set the geometry for
+        :param x: x-position to place the widget at
+        :param y: y-position to place the widget at
+        :param width: width to resize the qwidget to
+        :param height: height to resize the qwidget to
+        :param kwargs: safety measure for when Itasks passes too many arguments
+        :return: Resized Qwidget
+        :rtype QWidget
+        """
+        hint = qwidget.sizeHint()
+        if width == -1 or "flex":
+            width = hint.width()
+        if height == -1 or "flex":
+            height = hint.height()
+        size = QSize(width, height)
+        qwidget.setGeometry(x, y, size.width(), size.height())
+        return qwidget
 
     @staticmethod
-    def buttonbar():
-        return QBoxLayout(0)
+    def __set_margins(qwidget, marginBottom=0, marginTop=0,
+                       marginLeft=0, marginRight=0, **kwargs):
+        """
+        This method sets the margins and geometry for the QWidget passed into it.
+        :param qwidget: Qwidget to set the margins, padding and geometry for.
+        :param marginBottom: Margin this qwidget has to have between elements below it and itself
+        :param marginTop: Margin this qwidget has to have between elements above it and itself
+        :param marginLeft: Margin this qwidget has to have between elements to the left of it
+        and itself
+        :param marginRight: Margin this qwidget has to have between elements to the right of it
+        and itself
+        :param **kwargs: Safety measure for when Itasks passes too many arguments
+        :return: the Qwidget with corrected margins and geometry
+        :rtype QWidget
+        """
+        qwidget.setContentsMargins(marginBottom, marginTop,
+                                   marginLeft, marginRight)
+        return qwidget
 
     @staticmethod
-    def button(enabled=True, iconCls=None, text="",
-               parent=None, height=100, width=200, **kwargs):
-        output = QPushButton(parent)
-        output.setGeometry(0, 0, width, height)
-        output.setText(text)
-        output.setEnabled(enabled)
-        output.setIcon(QIcon("icons/" + iconCls))
+    def __nest_layout(parent: ItasksComponent, layout: QLayout,
+                      index: int = -1, vertical: bool = False):
+        """
+        Nests the given layout in the given parent at the location of the given index.
+        :param parent: parent to nest the layout into
+        :param layout: layout you want to nest
+        :param index: index you want the layout to be nested at
+        :rtype void
+        """
+        if type(parent.qlayout) == QBoxLayout:
+            parent.qlayout.insertLayout(index, layout)
+        elif type(parent.qlayout) == QGridLayout:
+            if vertical:
+                parent.qlayout.addLayout(layout, index, 0)
+            else:
+                parent.qlayout.addLayout(layout, 0, index)
+
+    @staticmethod
+    def buttonbar(index: int, parent: ItasksComponent, **kwargs):
+        """
+        Creates an ItasksComponent containing a buttonbar and a layout
+        and a layout in which the buttonbar is nested
+        :param index: index you want the item to be nested at
+        :param parent: parent to nest the item into
+        :param kwargs: remaining arguments
+        :return: returns a filled ItasksComponent
+        :rtype ItasksComponent
+        """
+        widget = QWidget(parent.qwidget)
+        widget = Components.__set_margins(widget, **kwargs)
+        widget = Components.__set_geometry(widget, **kwargs)
+
+        layout = QBoxLayout(1)
+        Components.__nest_layout(parent=parent, layout=layout, index=index, vertical=True)
+
+        output = ItasksComponent(
+            qwidget=widget,
+            qlayout=layout,
+            action_id=kwargs.get("action_id"),
+            task_id=kwargs.get("task_id")
+        )
         return output
 
     @staticmethod
-    def container(parent=None, direction=0, marginBottom=0, marginTop=0,
-                  marginLeft=0, marginRight=0, **kwargs):
-        output = QBoxLayout(direction)
-        output.setParent(parent)
-        output.setContentsMargins(marginBottom, marginTop, marginLeft,
-                                  marginRight)
+    def button(index: int, parent: ItasksComponent, enabled=True, iconCls=None,
+               text="", **kwargs):
+        """
+        Creates an ItasksComponent containing a button and a layout
+        :param index: index you want the item to be nested at
+        :param parent: parent to nest the item into
+        :param enabled: boolean that determines if the button is enabled or not
+        :param iconCls: Icon class: this determines which icon is
+        picked from the /icons directory
+        :param text: Text that is embedded in the button
+        :param kwargs: remaining arguments
+        :return: returns a filled ItasksComponent
+        :rtype ItasksComponent
+        """
+        widget = QPushButton(parent.qwidget)
+        widget.setText(text)
+        widget.setEnabled(enabled)
+        widget.setIcon(QIcon("icons/" + iconCls))
+        widget = Components.__set_margins(widget, **kwargs)
+        widget = Components.__set_geometry(widget, **kwargs)
+        # widget.clicked.connect() TODO
+
+        layout = QGridLayout()
+        Components.__nest_layout(parent, layout, index)
+
+        output = ItasksComponent(
+            qwidget=widget,
+            qlayout=layout,
+            action_id=kwargs.get("action_id"),
+            task_id=kwargs.get("task_id")
+        )
         return output
 
     @staticmethod
-    def icon(iconCls, parent=None, **kwargs):
-        output = QLabel(
-            "<html><img src='icons/" + iconCls + ".png'></html>")
-        output.setParent(parent)
-        output.margin()
+    def container(index: int, parent: ItasksComponent, **kwargs):
+        """
+        Creates an ItasksComponent containing a container and a layout
+        :param index: index you want the item to be nested at
+        :param parent: parent to nest the item into
+        :param kwargs: remaining arguments
+        :return: returns a filled ItasksComponent
+        :rtype ItasksComponent
+        """
+
+        widget = QWidget(parent.qwidget)
+        widget = Components.__set_margins(widget, **kwargs)
+        widget = Components.__set_geometry(widget, **kwargs)
+
+        layout = QGridLayout()
+        Components.__nest_layout(layout=layout, index=index, parent=parent, vertical=True)
+
+        output = ItasksComponent(
+            qwidget=widget,
+            qlayout=layout,
+            action_id=kwargs.get("action_id"),
+            task_id=kwargs.get("task_id")
+        )
         return output
 
     @staticmethod
-    def textfield(hint="", value=None, parent=None, **kwargs):
-        output = QLineEdit()
-        output.setParent(parent)
-        output.setText(value)
+    def icon(iconCls, index: int, parent: ItasksComponent, **kwargs):
+        """
+        Creates an ItasksComponent containing an icon and a layout
+        :param index: index you want the item to be nested at
+        :param parent: parent to nest the item into
+        :param iconCls: Icon Class: this determines which icon is
+        picked from the /icons directory
+        :param kwargs: remaining arguments
+        :return: returns a filled ItasksComponent
+        :rtype ItasksComponent
+        """
+        widget = QLabel("<html><img src='icons/" +
+                        iconCls +
+                        ".png'></html>",
+                        parent=parent.qwidget)
+        widget = Components.__set_margins(widget, **kwargs)
+        widget = Components.__set_geometry(widget, **kwargs)
+
+        layout = QGridLayout()
+        Components.__nest_layout(parent=parent, layout=layout, index=index)
+
+        output = ItasksComponent(
+            qwidget=widget,
+            qlayout=layout,
+            action_id=kwargs.get("action_id"),
+            task_id=kwargs.get("task_id")
+        )
+        return output
+
+    @staticmethod
+    def textfield(parent: ItasksComponent, index: int, hint="", value=None,
+                  **kwargs):
+        """
+        Creates an ItasksComponent containing an icon and a layout
+        :param index: index you want the item to be nested at
+        :param parent: parent to nest the item into
+        :param hint: text for the tooltip
+        :param value: text in the field
+        :param kwargs: remaining arguments
+        :return: returns a filled ItasksComponent
+        :rtype ItasksComponent
+        """
+        widget = QLineEdit(parent.qwidget)
+        widget.setText(value)
+        widget.setToolTip(hint)
+        widget = Components.__set_margins(widget, **kwargs)
+        widget = Components.__set_geometry(widget, **kwargs)
+
+        layout = QGridLayout()
+        Components.__nest_layout(parent=parent, layout=layout, index=index)
+
         # output.textChanged.connect() : TODO
+        output = ItasksComponent(
+            qwidget=widget,
+            qlayout=layout,
+            action_id=kwargs.get("action_id"),
+            task_id=kwargs.get("task_id")
+        )
         return output
 
     @staticmethod
-    def label(parent=None, **kwargs):
-        output = QLabel()
-        output.setParent(parent)
-        output.setText(kwargs["value"])
+    def textview(parent: ItasksComponent, index: int, value, **kwargs):
+        """
+        Creates an ItasksComponent containing a label and a layout
+        :param index: index you want the item to be nested at
+        :param parent: parent to nest the item into
+        :param text: text to put in the label
+        :param kwargs: remaining arguments
+        :return: returns a filled ItasksComponent
+        :rtype ItasksComponent
+        """
+        widget = QLabel(parent.qwidget)
+        widget = Components.__set_margins(widget, **kwargs)
+        widget = Components.__set_geometry(widget, **kwargs)
+        widget.setText(value)
+
+        layout = QGridLayout()
+        Components.__nest_layout(parent=parent, layout=layout, index=index)
+
+        output = ItasksComponent(
+            qwidget=widget,
+            qlayout=layout,
+            action_id=kwargs.get("action_id"),
+            task_id=kwargs.get("task_id")
+        )
         return output
 
     @staticmethod
-    def create_html_attributes(attributes_dict):
-        temp = ""
-        for attribute_key, attribute_value in attributes_dict.items():
-            temp += " {name}=\"{value}\"".format(
-                name=attribute_key,
-                value=attribute_value
-            )
-        return temp
+    def panel(**kwargs):
+        return Components.container(**kwargs)
 
-    @staticmethod
-    def buttonbar(parent=None, **kwargs):
-        output = QWidget(parent=parent)
-        output.setLayout(QHBoxLayout())
-
-        return output
 
     @staticmethod
     def unknown_component(parent=None, **kwargs):
-        raise NotImplementedError
-
-""""
-TODO
-panel
-container
-textview
-textfield
-
-icon
-:hint, hint-type, iconCls, marginleft, tooltip
-buttonbar
-
-button
-:actionid, enabled, iconCls, taskid, text, value
-"""
+        """
+        Unknown component, not implemented yet
+        :param parent:
+        :param kwargs:
+        :return:
+        """
+        pass
+        # raise NotImplementedError

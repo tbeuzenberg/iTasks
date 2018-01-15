@@ -15,9 +15,14 @@ from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
     QApplication,
     QLineEdit)
 
+from temporary_dir.json_components import *
+
+from application.application import Application
+
 from itasks import ItasksService
 from itasks_components import ItasksComponent
 from qt_event_handler import QtEventHandler
+from ui_generator.components import Components
 
 
 class Main(QMainWindow):
@@ -155,6 +160,11 @@ if __name__ == '__main__':
         filename='errors.log',
         filemode='a')
     sys.excepthook = log_uncaught_exceptions
-    APP = QApplication(sys.argv)
-    ex = Main()
-    sys.exit(APP.exec_())
+
+    app = Application(application=QApplication(sys.argv))
+
+    app.handle_instruction(get_itasks_layout(get_icon()))
+    # app.handle_instruction(get_palindrome())
+    app.get_instance_tree(4).print()
+    app.main_window.show()
+    sys.exit(app.qt_application.exec_())

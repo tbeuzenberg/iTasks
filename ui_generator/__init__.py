@@ -1,1 +1,1 @@
-from .generator import UIGenerator
+from .ui_generator import UIGenerator
