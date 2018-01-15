@@ -14,7 +14,10 @@ class QtEventHandler:
         self.itasks_service = itasks_service
 
     def button_clicked_event(self, itasks_component: ItasksComponent):
-        """ button clicked event handler """
+        """
+        Button clicked event handler
+        :param itasks_component: ItasksComponent which triggered the event
+        """
         task_id = itasks_component.task_id
         task_splitted = task_id.split("-")
 
@@ -31,7 +34,10 @@ class QtEventHandler:
         )
 
     def textbox_changed_event(self, itasks_component: ItasksComponent):
-        """ textbox changed event handler """
+        """
+        Textbox changed event handler
+        :param itasks_component: ItasksComponent which triggered the event
+        """
         task_id = itasks_component.task_id
         task_splitted = task_id.split("-")
 
