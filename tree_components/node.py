@@ -97,10 +97,7 @@ class Node:
         :type: void
         """
         if self.valid:
-            print(prefix + type(self.value.qwidget).__name__)
-            print(prefix + str(self.value.qwidget.size()))
-            print(prefix + type(self.value.qlayout).__name__)
-            print()
+            print(prefix + type(self.value).__name__)
         else:
             print(prefix + "None")
 

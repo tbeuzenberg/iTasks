@@ -15,9 +15,6 @@ from PyQt5.QtWidgets import (
     QLayout
 )
 
-from random import Random
-from math import floor
-
 from itasks_components import ItasksComponent
 
 

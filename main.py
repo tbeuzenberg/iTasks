@@ -15,7 +15,7 @@ from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
 
 from temporary_dir.json_components import *
 
-from Application.application import Application
+from application.application import Application
 
 from itasks import ItasksService
 from ui_generator.components import Components
@@ -124,7 +124,8 @@ class Main(QMainWindow):
 if __name__ == '__main__':
     app = Application(application=QApplication(sys.argv))
 
-    app.handle_instruction(get_palindrome())
-    # app.get_instance_tree(4).print()
+    app.handle_instruction(get_itasks_layout(get_icon()))
+    # app.handle_instruction(get_palindrome())
+    app.get_instance_tree(4).print()
     app.main_window.show()
     sys.exit(app.qt_application.exec_())
