@@ -22,16 +22,22 @@ The wrapper application is written in C# and can be found at [GitHub](https://gi
 ## Installation instructions
 
 1. Download iTasks (Development release) from the [Clean website](http://clean.cs.ru.nl/Download_Clean)
-2. Unpack and compile the example iTasks project:
-    1. After extracting the .zip, open the map clean-bundle-complete and run CleanIDE.exe
+2. **[Windows only]** Unpack and compile the example iTasks project:
+    1. After extracting the .zip, open the folder clean-bundle-complete and run CleanIDE.exe
     2. Go to Open > ..\Path\To\clean-bundle-complete\Examples\iTasks\BasicAPIExamples.prj and click 'Open'.
     3. Click on the Update and Run button in the top of the screen.
     4. Close the application.
     5. A BasicAPIExamples.exe.exe is built. Remember the path, since this will be necessary in the next step.
 
-3. [Temporary step] If you don't have an IDE to run C#-applications (Visual Studio/Rider) download the here: [Visual Studio](https://www.visualstudio.com/downloads/)/[Rider](https://www.jetbrains.com/rider/download/#section=windows). If you do, proceed to step 4.
+3. **[Linux only]** Unpack and compile the example iTasks project:
+    1. After extracting the .zip, open a terminal and go to the clean-bundle-complete folder.
+    2. cd to the folder ../Path/To/clean-bundle-complete/examples/itasks/
+    3. Compile the application with the command: `cpm BasicAPIExamples.prj`
+    4. A BasicAPIExamples.exe is built. Remember the path, since this will be necessary in the next step.
 
-4. [Temporary step] Download the iTasks wrapper project from [GitHub](https://github.com/nickhidding/itaskstostdio) and fill in the correct path to the iTasks executable:
+4. [Temporary step] If you don't have an IDE to run C#-applications (Visual Studio/Rider) download the here: [Visual Studio](https://www.visualstudio.com/downloads/)/[Rider](https://www.jetbrains.com/rider/download/#section=windows). If you do, proceed to step 5.
+
+5. [Temporary step] Download the iTasks wrapper project from [GitHub](https://github.com/nickhidding/itaskstostdio) and fill in the correct path to the iTasks executable:
     1. Open iTasksToStdIO.sln and double-click Program.cs
     2. in the code ```p.StartInfo = new ProcessStartInfo("")```, type the path to the BasicAPIExamples.exe.exe from step 2 between the ```""```.
       It look like this: ````p.StartInfo = new ProcessStartInfo("..\Path\To\clean-bundle-complete\Examples\iTasks\BasicAPIExamples.exe.exe")````
@@ -39,8 +45,8 @@ The wrapper application is written in C# and can be found at [GitHub](https://gi
     and like this for Linux: ``ws://127.0.0.1:8080/gui-wsock``
     4. Run the application.
     5. Close the application and the IDE.
-5. [Temporary step] A few files are added to the Debug map of the iTasksToStdIO program. Copy the executable from step 3 to this project in the folder `itasks_server`:
-    1. Go to iTasksStdIO > bin > Debug and copy all the files to the map ``itasks_server`` in the Pythonproject.
+6. [Temporary step] A few files are added to the Debug folder of the iTasksToStdIO program. Copy the executable from step 3 to this project in the folder `itasks_server`:
+    1. Go to iTasksStdIO > bin > Debug and copy all the files to the folder ``itasks_server`` in the Pythonproject.
 
 You can now run the application.
 ## Usage
