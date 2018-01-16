@@ -123,9 +123,6 @@ class Main(QMainWindow):
 
 if __name__ == '__main__':
     app = Application(application=QApplication(sys.argv))
-
-    app.handle_instruction(get_itasks_layout(get_icon()))
-    # app.handle_instruction(get_palindrome())
-    app.get_instance_tree(4).print()
+    app.handle_instruction(get_palindrome())
     app.main_window.show()
     sys.exit(app.qt_application.exec_())
