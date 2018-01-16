@@ -55,6 +55,7 @@ class QtEventHandler:
         task_id = itasks_component.task_id
         task_splitted = task_id.split("-")
 
+        editor_id = itasks_component.editor_id
         instance_no = int(task_splitted[0])
         task_no = int(task_splitted[1])
 
@@ -64,7 +65,7 @@ class QtEventHandler:
             {
                 "instanceNo": instance_no,
                 "taskNo": task_no,
-                "edit": "v",
+                "edit": editor_id,
                 "value": value
             }
         )

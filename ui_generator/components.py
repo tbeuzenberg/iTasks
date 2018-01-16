@@ -230,7 +230,8 @@ class Components:
             qwidget=widget,
             qlayout=layout,
             action_id=kwargs.get("actionId"),
-            task_id=kwargs.get("taskId")
+            task_id=kwargs.get("taskId"),
+            editor_id=kwargs.get("editorId")
         )
 
         widget.textChanged.connect(

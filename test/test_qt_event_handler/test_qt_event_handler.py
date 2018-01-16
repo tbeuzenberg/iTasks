@@ -55,7 +55,7 @@ class TestQtEventHandler(unittest.TestCase):
         qlineedit = Mock()
         layout = Mock()
         qlineedit.text = text_function
-        textbox = ItasksComponent(qlineedit, layout, None, "2-1")
+        textbox = ItasksComponent(qlineedit, layout, None, "2-1", editor_id="v")
 
         # Act
         QtEventHandler.textbox_changed_event(textbox)

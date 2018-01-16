@@ -11,7 +11,7 @@ class ItasksComponent:
     """
 
     def __init__(self, qwidget: QWidget, qlayout: QLayout, action_id=None,
-                 task_id=None, main=False):
+                 task_id=None, main=False, editor_id=None):
         """
         :param qwidget: widget to add to component
         :param action_id: action_id assigned to this component by iTasks
@@ -20,6 +20,7 @@ class ItasksComponent:
         """
         self.action_id = action_id
         self.task_id = task_id
+        self.editor_id = editor_id
         self.qwidget = qwidget
         self.qlayout = qlayout
         if main:
