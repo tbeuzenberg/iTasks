@@ -147,8 +147,7 @@ class TestApplication(unittest.TestCase):
 
     @patch("application.application.Application.get_instance_tree")
     @patch("application.application.Application.add_instance_tree")
-    def test_get_or_create_instance_doesnt_exist(self,
-                                                 add_instance_tree_mock,
+    def test_get_or_create_instance_doesnt_exist(self, add_instance_tree_mock,
                                                  get_instance_tree_mock):
         """
         Test for calling the correct methods with only an instanceid, and no
@@ -174,8 +173,7 @@ class TestApplication(unittest.TestCase):
         self.assertEqual(returned_item, itasks_component)
 
     @patch("application.application.Application.get_instance_tree")
-    def test_get_or_create_instance_exists(self,
-                                           get_instance_tree_mock):
+    def test_get_or_create_instance_exists(self, get_instance_tree_mock):
         """
         Test for calling the correct methods with only an instanceid, but an
         instance on id 5
@@ -201,8 +199,8 @@ class TestApplication(unittest.TestCase):
     @patch("json.loads")
     @patch("ui_generator.ui_generator.UIGenerator.change_or_replace")
     @patch("application.application.Application.get_or_create_instance")
-    def test_handle_instruction(self, get_or_create_mock,
-                                component_mock, json_loads_mock):
+    def test_handle_instruction(self, get_or_create_mock, component_mock,
+                                json_loads_mock):
         """
         Test for handling a json instruction correctly.
 
