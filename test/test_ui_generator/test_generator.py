@@ -16,7 +16,7 @@ class TestUIGenerator(unittest.TestCase):
 
         application = Mock()
         widget = Mock()
-        self.ui_generator = UIGenerator(application)
+        self.ui_generator = UIGenerator()
         self.test_widget = widget
         self.ui_generator.add_widget(itasks_id=1, widget=self.test_widget)
 

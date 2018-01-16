@@ -1,6 +1,5 @@
 """ File for testing the application """
 import unittest
-import sys
 
 from PyQt5.QtWidgets import (
     QApplication,
@@ -148,9 +147,9 @@ class TestApplication(unittest.TestCase):
 
     @patch("application.application.Application.get_instance_tree")
     @patch("application.application.Application.add_instance_tree")
-    def test_get_or_create_instance_instance_doesnt_exist(self,
-                                    add_instance_tree_mock,
-                                    get_instance_tree_mock):
+    def test_get_or_create_instance_doesnt_exist(self,
+                                                 add_instance_tree_mock,
+                                                 get_instance_tree_mock):
         """
         Test for calling the correct methods with only an instanceid, and no
         instance on id 5
@@ -175,9 +174,8 @@ class TestApplication(unittest.TestCase):
         self.assertEqual(returned_item, itasks_component)
 
     @patch("application.application.Application.get_instance_tree")
-    def test_get_or_create_instance_instance_exists(self,
-                                    get_instance_tree_mock):
-
+    def test_get_or_create_instance_exists(self,
+                                           get_instance_tree_mock):
         """
         Test for calling the correct methods with only an instanceid, but an
         instance on id 5

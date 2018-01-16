@@ -2,7 +2,6 @@
 import json
 
 from PyQt5.QtWidgets import (
-    QApplication,
     QMainWindow,
     QGridLayout,
     QWidget
