@@ -100,7 +100,7 @@ class UIGenerator:
         children = change_instruction.get("children")
         attributes = change_instruction.get("attributes")
 
-        current_node.update(attributes)
+        current_node.value.update(attributes)
 
         for child in children:
             if child[1] == "change":
