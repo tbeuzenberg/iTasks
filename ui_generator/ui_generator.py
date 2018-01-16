@@ -100,9 +100,7 @@ class UIGenerator:
         children = change_instruction.get("children")
         attributes = change_instruction.get("attributes")
 
-        for att in attributes:
-            print(att)
-            raise NotImplementedError
+        current_node.update(attributes)
 
         for child in children:
             if child[1] == "change":
