@@ -40,8 +40,8 @@ class ItasksComponent:
         for arg in arguments:
             dictionary.update({arg["name"]: arg["value"]})
 
-        self.__update_geometry(qwidget, dictionary)
         self.__update_icon(qwidget, dictionary)
+        self.__update_value(qwidget, dictionary)
 
         for arg in dictionary:
             qwidget.setProperty(arg, dictionary.get(arg))
@@ -49,31 +49,23 @@ class ItasksComponent:
         self.qlayout.addWidget(qwidget)
         self.qwidget = qwidget
 
-    def __update_geometry(self, qwidget, dictionary):
-        """"
-        Update qwidget's geometry
-        :param qwidget: QWidget to update geometry of
-        :param dictionary: dictionary from update function
-        """
-        if 'x' in dictionary or \
-                'y' in dictionary or \
-                'width' in dictionary or \
-                'height' in dictionary:
-            x = dictionary.pop('x') if 'x' in dictionary else qwidget.x()
-            y = dictionary.pop('y') if 'y' in dictionary else qwidget.y()
-            width = dictionary.pop('width') if 'width' in dictionary \
-                else qwidget.width()
-            height = dictionary.pop('height') if 'height' in dictionary \
-                else qwidget.height()
-
-            qwidget.setGeometry(x, y, width, height)
-
     def __update_icon(self, qwidget, dictionary):
         """"
         Update qwidget's geometry
         :param qwidget: QWidget to update icon of
         :param dictionary: dictionary from update function
         """
-        if 'icon' in dictionary:
-            icon = dictionary.pop('icon')
-            qwidget.setIcon(QIcon(icon))
+        if 'iconCls' in dictionary:
+            icon = dictionary.pop('iconCls')
+            qwidget.setIcon(QIcon('icons/' + icon))
+
+    def __update_value(self, qwidget, dictionary):
+        """"
+        Update textfield's text value
+        :param qwidget: QWidget to update value of
+        :param dictionary: dictionary from update function
+        """
+        if 'value' in dictionary:
+            value = dictionary.pop('value')
+            qwidget.setText(value)
+
