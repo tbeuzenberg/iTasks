@@ -1,5 +1,7 @@
 """ File for the application class """
 import json
+import time
+import logging
 
 from PyQt5.QtWidgets import (
     QMainWindow,
@@ -138,6 +140,8 @@ class Application:
         :param json_instruction: The instruction received from the iTasks server
         :rtype: void
         """
+        start_time = time.time()
+
         parsed_json = json.loads(json_instruction)
 
         # This is dependent on the iTasks version you use.
@@ -153,3 +157,7 @@ class Application:
             node=current_tree.root,
             change=parsed_json.get("change")
         )
+
+        execution_time = round(((time.time() - start_time) * 100), 3)
+        logging.debug("UI generated in : %s ms", execution_time)
+        print("--- %s ms ---" % execution_time)
