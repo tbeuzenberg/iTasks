@@ -23,3 +23,6 @@ class ItasksComponent:
             self.qwidget.setLayout(self.qlayout)
         else:
             self.qlayout.addWidget(self.qwidget)
+
+    def update(self, **kwargs):
+        pass

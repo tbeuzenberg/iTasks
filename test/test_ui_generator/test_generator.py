@@ -7,6 +7,7 @@ import unittest
 from unittest.mock import Mock, call
 
 from tree_components import Node
+from itasks_components import ItasksComponent
 from ui_generator import (
     UIGenerator,
     Components
@@ -35,9 +36,11 @@ class TestUIGenerator(unittest.TestCase):
 
     def test_change_or_replace_replace(self):
         """
-        :method:
-        :state:
-        :expect:
+        Test if the method can determine what method to call correctly
+
+        :method: change_or_replace
+        :state: An instruction with a replace type
+        :expect: The replace_ui_instruction method to be called
         """
         # Assign
         UIGenerator.read_change_ui_instruction = Mock()
@@ -67,9 +70,11 @@ class TestUIGenerator(unittest.TestCase):
 
     def test_change_or_replace_change(self):
         """
-        :method:
-        :state:
-        :expect:
+        Test if the method can determine what method to call correctly
+
+        :method: change_or_replace
+        :state: An instruction with a change type
+        :expect: The change_ui_instruction method to be called
         """
         # Assign
         UIGenerator.read_change_ui_instruction = Mock()
@@ -98,9 +103,13 @@ class TestUIGenerator(unittest.TestCase):
 
     def test_read_replace_ui_instruction(self):
         """
-        :method:
-        :state:
-        :expect:
+        Test method that reads the ui instruction and check if the correct
+        methods get called accordingly
+
+        :method: read_replace_ui_instruction
+        :state: A node, an index and a replace instruction
+        :expect: The create component and the add_or_replace_child methods
+        to be called.
         """
         # Assign
         UIGenerator.create_component = Mock()
@@ -126,6 +135,7 @@ class TestUIGenerator(unittest.TestCase):
             replace_instruction=change
         )
 
+        # Assert
         UIGenerator.create_component.assert_called_with(
             component_type=change['type'],
             parent_node=node,
@@ -136,9 +146,13 @@ class TestUIGenerator(unittest.TestCase):
 
     def test_create_component(self):
         """
-        :method:
-        :state:
-        :expect:
+        Test if the correct component gets created from the parameters
+
+        :method: create_component
+        :state: A component type, parent node, index and attributes, so we can
+        create a component
+        :expect: The correct method (Components.button) to be called, with the
+        correct parameters
         """
         component_type = "button"
         name = "Piet-Jan Heijn"
@@ -168,8 +182,31 @@ class TestUIGenerator(unittest.TestCase):
         self.assertEqual(button, created_component)
 
     def test_read_change_ui_instruction(self):
-        pass
+        """
+        Test to read the instruction and all the update method accordingly
 
+        :method: read_change_ui_instruction
+        :state: An instruction with a node
+        :expect: the change_ui has to be called
+        """
+        parent_node = Mock()
+        parent_node.update = Mock()
+        change_instruction = {
+            "children": [],
+            "attributes": {
+                "height": "flex",
+                "width": "flex"
+            }
+        }
+
+        UIGenerator.read_change_ui_instruction(
+            current_node=parent_node,
+            change_instruction=change_instruction
+        )
+
+        parent_node.update.assert_called_with(
+            **change_instruction["attributes"]
+        )
 
 
 
