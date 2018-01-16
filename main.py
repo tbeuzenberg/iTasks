@@ -39,9 +39,6 @@ if __name__ == '__main__':
     sys.excepthook = log_uncaught_exceptions
 
     app = Application(application=QApplication(sys.argv))
-
-    app.handle_instruction(get_itasks_layout(get_icon()))
     app.handle_instruction(get_palindrome())
-    app.get_instance_tree(4).print()
     app.main_window.show()
     sys.exit(app.qt_application.exec_())
