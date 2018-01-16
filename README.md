@@ -32,7 +32,7 @@ The wrapper application is written in C# and can be found at [GitHub](https://gi
 3. [Temporary step] If you don't have an IDE to run C#-applications (Visual Studio/Rider) download the here: [Visual Studio](https://www.visualstudio.com/downloads/)/[Rider](https://www.jetbrains.com/rider/download/#section=windows). If you do, proceed to step 4.
 
 4. [Temporary step] Download the iTasks wrapper project from [GitHub](https://github.com/nickhidding/itaskstostdio) and fill in the correct path to the iTasks executable:
-    1. Open iTasksToStdIO.sln
+    1. Open iTasksToStdIO.sln and double-click Program.cs
     2. in the code ```p.StartInfo = new ProcessStartInfo("")```, type the path to the BasicAPIExamples.exe.exe from step 2 between the ```""```.
       It look like this: ````p.StartInfo = new ProcessStartInfo("..\Path\To\clean-bundle-complete\Examples\iTasks\BasicAPIExamples.exe.exe")````
     3. Check if the gate for the websocket looks like this for Windows: ``ws://127.0.0.1:80/gui-wsock``  
