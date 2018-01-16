@@ -56,6 +56,7 @@ class Application:
         self.__main_window.setGeometry(0, 0, 500, 500)
         self.__main_widget.setGeometry(0, 0, 500, 500)
         self.__main_window.setCentralWidget(self.__main_widget)
+        self.__main_window.closeEvent = self.close_event
 
     @property
     def qt_application(self):
@@ -145,7 +146,12 @@ class Application:
         :param json_instruction: The instruction received from the iTasks server
         :rtype: void
         """
-        parsed_json = json.loads(json_instruction)
+        try:
+            parsed_json = json.loads(json_instruction)
+        except ValueError:
+            parsed_json = json_instruction
+        except TypeError:
+            parsed_json = json_instruction
 
         # This is dependent on the iTasks version you use.
         # TODO: remove.
@@ -161,7 +167,7 @@ class Application:
             change=parsed_json.get("change")
         )
 
-    def closeEvent(self, q_close_event):  # pylint: disable-msg=C0103,W0613
+    def close_event(self, q_close_event):  # pylint: disable-msg=C0103,W0613
         """ Close window event """
         self.itasks_service.stop_server()
 
@@ -204,4 +210,9 @@ class Application:
             instance_key = attributes['instanceKey']
             self.itasks_service.attach_task_instance(
                 instance_no, instance_key, self.task_callback)
+
+        # Send data to the application when the palindrome is ready
+        if self.temp_start_palindrome > 4:
+            self.handle_instruction(data)
+
         self.temp_start_palindrome += 1
