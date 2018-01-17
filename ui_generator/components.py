@@ -76,7 +76,8 @@ class Components:
     def __nest_layout(parent, layout: QLayout,
                       index: int = -1, vertical: bool = False):
         """
-        Nests the given layout in the given parent at the location of the given index.
+        Nests the given layout in the given parent at the location of the given
+        index.
         :param parent: parent ITasksComponent to nest the layout into
         :param layout: layout you want to nest
         :param index: index you want the layout to be nested at

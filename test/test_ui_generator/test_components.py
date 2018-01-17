@@ -1,5 +1,6 @@
 """Unit test file for the component method aggregate"""
-# pylint: disable=unused-argument, protected-access, no-member, no-member, no-self-use, invalid-name
+# pylint: disable=unused-argument, protected-access
+# pylint: disable=no-member, no-member, no-self-use, invalid-name
 import unittest
 from unittest.mock import Mock, patch
 
@@ -19,11 +20,17 @@ class TestComponents(unittest.TestCase):
         """
         Sets up code before running the tests
         """
-        self.boxlayout_addwidget = patch('PyQt5.QtWidgets.QBoxLayout.addWidget', return_value=None)
-        self.gridlayout_addwidget = patch('PyQt5.QtWidgets.QGridLayout.addWidget', return_value=None)
-        self.qlabel = patch('PyQt5.QtWidgets.QLabel.__new__', return_value=Mock())
-        self.qlineedit = patch('PyQt5.QtWidgets.QLineEdit.__new__', return_value=Mock())
-        self.qwidget = patch('PyQt5.QtWidgets.QWidget.__new__', return_value=Mock())
+        self.boxlayout_addwidget = patch('PyQt5.QtWidgets.QBoxLayout.addWidget',
+                                         return_value=None)
+        self.gridlayout_addwidget = patch(
+            'PyQt5.QtWidgets.QGridLayout.addWidget',
+            return_value=None)
+        self.qlabel = patch('PyQt5.QtWidgets.QLabel.__new__',
+                            return_value=Mock())
+        self.qlineedit = patch('PyQt5.QtWidgets.QLineEdit.__new__',
+                               return_value=Mock())
+        self.qwidget = patch('PyQt5.QtWidgets.QWidget.__new__',
+                             return_value=Mock())
         self.boxlayout_addwidget.start()
         self.gridlayout_addwidget.start()
         self.qlabel.start()
@@ -115,7 +122,8 @@ class TestComponents(unittest.TestCase):
         # Assign
         layout = QBoxLayout(0)
         parent_layout = QGridLayout()
-        parent = ItasksComponent(qwidget=Mock(), qlayout=parent_layout, main=True)
+        parent = ItasksComponent(qwidget=Mock(), qlayout=parent_layout,
+                                 main=True)
         # Act
         Components._Components__nest_layout(parent=parent, layout=layout)
 
@@ -245,7 +253,8 @@ class TestComponents(unittest.TestCase):
         parent = ItasksComponent(qwidget=q_le, qlayout=q_l)
 
         # Act
-        textfield = Components.textfield(parent=parent, index=0, value="textfield")
+        textfield = Components.textfield(parent=parent, index=0,
+                                         value="textfield")
 
         # Assert
         textfield.qwidget.setText.assert_called_with("textfield")
