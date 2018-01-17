@@ -19,7 +19,7 @@ from tree_components import (
 
 class Application:
     """
-    Application out of an iTasks instruction
+    application out of an iTasks instruction
     Has an instance_trees properties. These are synced to the iTasks instances
     running on the iTasks server. This way we can nest different instances and
     still reach them by only their id.
