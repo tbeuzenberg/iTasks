@@ -16,6 +16,9 @@ class TestComponents(unittest.TestCase):
     """Test cases for the component method aggregate class"""
 
     def setUp(self):
+        """
+        Sets up code before running the tests
+        """
         self.boxlayout_addwidget = patch('PyQt5.QtWidgets.QBoxLayout.addWidget', return_value=None)
         self.gridlayout_addwidget = patch('PyQt5.QtWidgets.QGridLayout.addWidget', return_value=None)
         self.qlabel = patch('PyQt5.QtWidgets.QLabel.__new__', return_value=Mock())
@@ -28,6 +31,9 @@ class TestComponents(unittest.TestCase):
         self.qwidget.start()
 
     def tearDown(self):
+        """
+        Removes patches after running all tests in this file
+        """
         self.boxlayout_addwidget.stop()
         self.gridlayout_addwidget.stop()
         self.qlabel.stop()
