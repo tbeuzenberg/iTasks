@@ -6,7 +6,7 @@ install:
   - pip install pytest pytest-pep8 coverage pylint coveralls
 script:
   - PYTHONPATH=. pytest
-  - PYTHONPATH=. pytest --pep8
+  - PYTHONPATH=. pytest --pep8 -m pep8
   - PYTHONPATH=. pylint *.py || true
   - PYTHONPATH=. pylint */*.py || true
   - PYTHONPATH=. coverage run --source=. -m unittest discover -s test/
