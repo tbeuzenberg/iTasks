@@ -102,13 +102,16 @@ class UIGenerator:
         children = change_instruction.get("children")
         attributes = change_instruction.get("attributes")
 
-        current_node.update(**attributes)
+        current_node.value.update(attributes)
 
         for child in children:
             if child[1] == "change":
-                UIGenerator.change_or_replace(
-                    node=current_node.get_child(child[0]),
-                    change=child[2],
-                )
+                if current_node.has_child(child[0]):
+                    UIGenerator.change_or_replace(
+                     node=current_node.get_child(child[0]),
+                     change=child[2],
+                    )
+                else:
+                    raise NotImplementedError  # skip or give error message
             else:
                 raise NotImplementedError

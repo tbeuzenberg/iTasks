@@ -123,6 +123,6 @@ class Main(QMainWindow):
 
 if __name__ == '__main__':
     app = Application(application=QApplication(sys.argv))
-    app.handle_instruction(get_palindrome())
+    app.handle_instruction(get_change2())
     app.main_window.show()
     sys.exit(app.qt_application.exec_())

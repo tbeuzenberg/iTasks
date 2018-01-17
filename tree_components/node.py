@@ -93,6 +93,15 @@ class Node:
             rest = index_list[1:]
             return self.__children[first_element[0]].find_node(index_list=rest)
 
+    def has_child(self, index):
+        if len(self.__children) <= index:
+            return False
+
+        if self.__children[index] is None:
+            return False
+
+        return True
+
     def print(self, prefix=""):
         """
         Recursively print the tree of the current node.

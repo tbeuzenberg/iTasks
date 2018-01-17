@@ -32,5 +32,5 @@ class ItasksComponent:
     #     for i in range(self.qlayout.count()):
     #         print(i)
 
-    def update(self, **kwargs):
+    def update(self, arguments):
         pass
