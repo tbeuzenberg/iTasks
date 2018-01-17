@@ -43,6 +43,7 @@ class ItasksComponent:
 
         self.__update_icon(qwidget, dictionary)
         self.__update_value(qwidget, dictionary)
+        self.__update_hint(qwidget, dictionary)
 
         for arg in dictionary:
             qwidget.setProperty(arg, dictionary.get(arg))
@@ -52,7 +53,7 @@ class ItasksComponent:
 
     def __update_icon(self, qwidget, dictionary):
         """"
-        Update qwidget's geometry
+        Update qwidget's icon
         :param qwidget: QWidget to update icon of
         :param dictionary: dictionary from update function
         """
@@ -70,3 +71,19 @@ class ItasksComponent:
             value = dictionary.pop('value')
             qwidget.setText(value)
 
+    def __update_hint(self, qwidget, dictionary):
+        """"
+        Update qwidgets's hint
+        :param qwidget: QWidget to update hint of
+        :param dictionary: dictionary from update function
+        """
+        if 'hint' in dictionary:
+            hint = dictionary.pop('hint')
+            qwidget.setTooltip(hint)
+
+        if 'hint-type' in dictionary:
+            hint_type = dictionary.pop('hint-type')
+            if hint_type == "valid":
+                qwidget.setIcon('icons/accept.png')
+            else:
+                qwidget.setIcon('icons/icon-info.png')
