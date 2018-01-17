@@ -17,6 +17,8 @@ class UIGenerator:
         """
 
         if change["type"] == "replace":
+            node.children = []
+            # node.value.reset()
             UIGenerator.read_replace_ui_instruction(
                 parent_node=node,
                 index=0,
@@ -82,9 +84,6 @@ class UIGenerator:
         else:
             create_component_action = components.Components.unknown_component
 
-        # if "direction" in attributes:
-        #     attributes.pop("direction")
-
         return create_component_action(
             parent=parent_node.value,
             index=index,
@@ -103,9 +102,7 @@ class UIGenerator:
         children = change_instruction.get("children")
         attributes = change_instruction.get("attributes")
 
-        for att in attributes:
-            print(att)
-            raise NotImplementedError
+        current_node.update(**attributes)
 
         for child in children:
             if child[1] == "change":

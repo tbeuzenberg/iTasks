@@ -23,6 +23,10 @@ class Node:
         """ Children property """
         return self.__children
 
+    @children.setter
+    def children(self, children):
+        self.__children = children
+
     @property
     def valid(self):
         """ Valid property """
