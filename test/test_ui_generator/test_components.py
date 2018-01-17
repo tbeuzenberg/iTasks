@@ -15,6 +15,25 @@ from ui_generator.components import Components
 class TestComponents(unittest.TestCase):
     """Test cases for the component method aggregate class"""
 
+    def setUp(self):
+        self.boxlayout_addwidget = patch('PyQt5.QtWidgets.QBoxLayout.addWidget', return_value=None)
+        self.gridlayout_addwidget = patch('PyQt5.QtWidgets.QGridLayout.addWidget', return_value=None)
+        self.qlabel = patch('PyQt5.QtWidgets.QLabel.__new__', return_value=Mock())
+        self.qlineedit = patch('PyQt5.QtWidgets.QLineEdit.__new__', return_value=Mock())
+        self.qwidget = patch('PyQt5.QtWidgets.QWidget.__new__', return_value=Mock())
+        self.boxlayout_addwidget.start()
+        self.gridlayout_addwidget.start()
+        self.qlabel.start()
+        self.qlineedit.start()
+        self.qwidget.start()
+
+    def tearDown(self):
+        self.boxlayout_addwidget.stop()
+        self.gridlayout_addwidget.stop()
+        self.qlabel.stop()
+        self.qlineedit.stop()
+        self.qwidget.stop()
+
     def test_private_set_margins_default_parameters(self):
         """
         Tests the private __set_margins function,
@@ -97,10 +116,8 @@ class TestComponents(unittest.TestCase):
         # Assert
         self.assertEqual(parent_layout.children()[0], layout)
 
-    @patch('PyQt5.QtWidgets.QWidget.__new__', return_value=Mock())
     @patch('PyQt5.QtWidgets.QWidget.sizeHint', return_value=QSize(1, 1))
-    @patch('PyQt5.QtWidgets.QBoxLayout.addWidget', return_value=None)
-    def test_buttonbar(self, addwidget, sizehint, qwidget):
+    def test_buttonbar(self, sizehint):
         """
         Tests the buttonbar method. Tests if it returns an ItasksComponent,
         and if the QLayout in the ItasksComponent is the expected type.
@@ -113,7 +130,7 @@ class TestComponents(unittest.TestCase):
         q_w = QtWidgets.QWidget()
         q_w.sizeHint = sizehint
         q_l = QtWidgets.QGridLayout()
-        q_l.addWidget = addwidget
+        q_l.addWidget = self.boxlayout_addwidget
         parent = ItasksComponent(qwidget=q_w, qlayout=q_l)
 
         # Act
@@ -125,11 +142,9 @@ class TestComponents(unittest.TestCase):
         # QWidget assignment cannot be tested, as the class
         # needs to be mocked to make the test work
 
-    @patch('PyQt5.QtWidgets.QPushButton.__new__', return_value=Mock())
     @patch('PyQt5.QtWidgets.QPushButton.setIcon', return_value=None)
     @patch('PyQt5.QtWidgets.QPushButton.sizeHint', return_value=QSize(1, 1))
-    @patch('PyQt5.QtWidgets.QGridLayout.addWidget', return_value=None)
-    def test_button(self, addwidget, sizehint, seticon, qpushbutton):
+    def test_button(self, sizehint, seticon):
         """
         Tests the button method. Tests if it returns an ItasksComponent,
         and if the QLayout in the ItasksComponent is the expected type.
@@ -157,10 +172,8 @@ class TestComponents(unittest.TestCase):
         # QPushButton assignment cannot be tested, as the class
         # needs to be mocked to make the test work
 
-    @patch('PyQt5.QtWidgets.QWidget.__new__', return_value=Mock())
     @patch('PyQt5.QtWidgets.QWidget.sizeHint', return_value=QSize(1, 1))
-    @patch('PyQt5.QtWidgets.QGridLayout.addWidget', return_value=None)
-    def test_container(self, addwidget, sizehint, qwidget):
+    def test_container(self, sizehint):
         """
         Tests the container method. Tests if it returns an ItasksComponent,
         and if the QLayout in the ItasksComponent is the expected type.
@@ -184,10 +197,8 @@ class TestComponents(unittest.TestCase):
         # QWidget assignment cannot be tested, as the class
         # needs to be mocked to make the test work
 
-    @patch('PyQt5.QtWidgets.QLabel.__new__', return_value=Mock())
     @patch('PyQt5.QtWidgets.QLabel.sizeHint', return_value=QSize(1, 1))
-    @patch('PyQt5.QtWidgets.QGridLayout.addWidget', return_value=None)
-    def test_icon(self, addwidget, sizehint, qlabel):
+    def test_icon(self, sizehint):
         """
         Tests the icon method. Tests if it returns an ItasksComponent,
         and if the QLayout in the ItasksComponent is the expected type.
@@ -211,10 +222,8 @@ class TestComponents(unittest.TestCase):
         # QLabel assignment cannot be tested, as the class
         # needs to be mocked to make the test work
 
-    @patch('PyQt5.QtWidgets.QLineEdit.__new__', return_value=Mock())
     @patch('PyQt5.QtWidgets.QLineEdit.sizeHint', return_value=QSize(1, 1))
-    @patch('PyQt5.QtWidgets.QGridLayout.addWidget', return_value=None)
-    def test_textfield(self, addwidget, sizehint, qlineedit):
+    def test_textfield(self, sizehint):
         """
         Tests the textfield method. Tests if it returns an ItasksComponent,
         and if the QLayout in the ItasksComponent is the expected type.
@@ -240,10 +249,8 @@ class TestComponents(unittest.TestCase):
         # QLineEdit assignment cannot be tested, as the class
         # needs to be mocked to make the test work
 
-    @patch('PyQt5.QtWidgets.QLabel.__new__', return_value=Mock())
     @patch('PyQt5.QtWidgets.QLabel.sizeHint', return_value=QSize(1, 1))
-    @patch('PyQt5.QtWidgets.QGridLayout.addWidget', return_value=None)
-    def test_textview(self, addwidget, sizehint, qlabel):
+    def test_textview(self, sizehint):
         """
         Tests textview method. Tests if it returns an ItasksComponent,
         and if the QLayout in the ItasksComponent is the expected type.
@@ -268,10 +275,8 @@ class TestComponents(unittest.TestCase):
         # QLabel assignment cannot be tested, as the class
         # needs to be mocked to make the test work
 
-    @patch('PyQt5.QtWidgets.QWidget.__new__', return_value=Mock())
     @patch('ui_generator.components.Components.container', return_value=Mock())
-    @patch('PyQt5.QtWidgets.QGridLayout.addWidget', return_value=None)
-    def test_panel(self, addwidget, container, qwidget):
+    def test_panel(self, container):
         """
         Tests the panel method. Tests if it returns an ItasksComponent,
         and if the QLayout in the ItasksComponent is the expected type.
