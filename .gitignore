@@ -5,3 +5,4 @@ iTasks/
 .git
 .coverage
 /htmlcov
+messages.log

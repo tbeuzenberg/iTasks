@@ -1,9 +1,8 @@
 #!/usr/bin/python3
 
-""" iTasks Desktop Application Entry point """
+""" iTasks Desktop application Entry point """
 
 import sys
-import logging
 
 from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
     QMainWindow,
@@ -123,15 +122,7 @@ class Main(QMainWindow):
 #     sys.exit(APP.exec_())
 
 if __name__ == '__main__':
-    logging.basicConfig(
-        level=logging.DEBUG,
-        format='[%(asctime)s] %(levelname)s - %(message)s',
-        filename='messages.log',
-        filemode='a')
-
     app = Application(application=QApplication(sys.argv))
     app.handle_instruction(get_palindrome())
-    app.handle_instruction(get_enter_a_string())
-    app.handle_instruction(get_positive_number())
     app.main_window.show()
     sys.exit(app.qt_application.exec_())
