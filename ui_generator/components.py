@@ -25,7 +25,8 @@ class Components:
     """
 
     @staticmethod
-    def __set_geometry(qwidget, x: int = 0, y: int = 0, width=-1, height=-1, **kwargs):
+    def __set_geometry(qwidget, x: int = 0, y: int = 0, width=-1, height=-1,
+                       **kwargs):
         """
         Sets the geometry for the QWidget passed into it.
         :param qwidget: Qwidget to set the geometry for
@@ -50,15 +51,20 @@ class Components:
     def __set_margins(qwidget, marginBottom=0, marginTop=0,
                       marginLeft=0, marginRight=0, **kwargs):
         """
-        This method sets the margins and geometry for the QWidget passed into it.
+        This method sets the margins and geometry for the QWidget passed into it
         :param qwidget: Qwidget to set the margins, padding and geometry for.
-        :param marginBottom: Margin this qwidget has to have between elements below it and itself
-        :param marginTop: Margin this qwidget has to have between elements above it and itself
-        :param marginLeft: Margin this qwidget has to have between elements to the left of it
+        :param marginBottom: Margin this qwidget has to have between elements
+        below it and itself
+        :param marginTop: Margin this qwidget has to have between elements above
+        it and itself
+        :param marginLeft: Margin this qwidget has to have between elements to
+        the left of it
         and itself
-        :param marginRight: Margin this qwidget has to have between elements to the right of it
+        :param marginRight: Margin this qwidget has to have between elements to
+        the right of it
         and itself
-        :param **kwargs: Safety measure for when Itasks passes too many arguments
+        :param **kwargs: Safety measure for when Itasks passes too many
+        arguments
         :return: the Qwidget with corrected margins and geometry
         :rtype QWidget
         """
@@ -100,7 +106,8 @@ class Components:
         widget = Components.__set_geometry(widget, **kwargs)
 
         layout = QBoxLayout(1)
-        Components.__nest_layout(parent=parent, layout=layout, index=index, vertical=True)
+        Components.__nest_layout(parent=parent, layout=layout, index=index,
+                                 vertical=True)
 
         output = ItasksComponent(
             qwidget=widget,
@@ -160,7 +167,8 @@ class Components:
         widget = Components.__set_geometry(widget, **kwargs)
 
         layout = QGridLayout()
-        Components.__nest_layout(layout=layout, index=index, parent=parent, vertical=True)
+        Components.__nest_layout(layout=layout, index=index, parent=parent,
+                                 vertical=True)
 
         output = ItasksComponent(
             qwidget=widget,

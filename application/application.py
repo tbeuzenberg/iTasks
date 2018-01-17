@@ -2,14 +2,13 @@
 import json
 
 from PyQt5.QtWidgets import (
-    QApplication,
     QMainWindow,
     QGridLayout,
     QWidget
 )
 
+from application.exceptions import DuplicateKeyException
 from itasks_components import ItasksComponent
-
 from ui_generator import UIGenerator
 from tree_components import (
     Tree,
@@ -24,7 +23,7 @@ class Application:
     running on the iTasks server. This way we can nest different instances and
     still reach them by only their id.
      """
-    instance_trees = {}
+    __instance_trees = {}
 
     def __init__(self, application, grid_layout=None,
                  widget=None, main_window=None):
@@ -33,7 +32,10 @@ class Application:
         According to PyQT, there has to be an application and a mainwindow.
         Below this, there has to be a widget with a "mainlayout", on which all
         layouts can be added.
-        :param application: The application that has to be ran.
+        :param QApplication application:
+        :param QGridLayout grid_layout:
+        :param QWidget grid_layout:
+        :param QMainWindow grid_layout:
         """
 
         self.__application = application
@@ -65,6 +67,14 @@ class Application:
         return self.__main_layout
 
     @property
+    def instance_trees(self):
+        """
+        The property of the instance_trees.
+        :rtype: dict
+        """
+        return self.__instance_trees
+
+    @property
     def main_window(self):
         """
         The property of the main window that has to be added according to PyQt.
@@ -88,6 +98,9 @@ class Application:
         :param itasks_component: The value of the root node.
         :rtype: void
         """
+        if self.instance_trees.get(instance_id) is not None:
+            raise DuplicateKeyException()
+
         tree = Tree(root_node=Node(itasks_component))
         self.instance_trees[instance_id] = tree
 
@@ -100,6 +113,22 @@ class Application:
         if instance_id not in self.instance_trees:
             raise IndexError()
         return self.instance_trees[instance_id]
+
+    def get_or_create_instance(self, instance_number):
+        """
+        Get the instance tree when it already exists, create one if it doesn't.
+        :param instance_number: The instance number to be searched/created on
+        :rtype: Tree
+        """
+        if instance_number not in self.instance_trees:
+            component = ItasksComponent(
+                qwidget=self.main_widget,
+                qlayout=self.main_layout,
+                main=True
+            )
+            self.add_instance_tree(instance_number, component)
+
+        return self.get_instance_tree(instance_number)
 
     def handle_instruction(self, json_instruction):
         """
@@ -118,15 +147,7 @@ class Application:
         else:
             instance = parsed_json.get("instance")
 
-        if instance not in self.instance_trees:
-            component = ItasksComponent(
-                qwidget=self.main_widget,
-                qlayout=self.main_layout,
-                main=True
-            )
-            self.add_instance_tree(instance, component)
-
-        current_tree = self.instance_trees.get(instance)
+        current_tree = self.get_or_create_instance(instance)
 
         UIGenerator.change_or_replace(
             node=current_tree.root,
