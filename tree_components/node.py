@@ -97,7 +97,7 @@ class Node:
         if len(self.__children) <= index:
             return False
 
-        if self.__children[index] is None:
+        if self.__children[index].valid is False:
             return False
 
         return True
