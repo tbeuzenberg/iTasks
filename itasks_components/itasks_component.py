@@ -90,6 +90,6 @@ class ItasksComponent:
         if 'hint-type' in dictionary:
             hint_type = dictionary.pop('hint-type')
             if hint_type == "valid":
-                qwidget.setIcon('icons/accept.png')
+                qwidget.setIcon(QIcon('icons/accept.png'))
             else:
-                qwidget.setIcon('icons/icon-info.png')
+                qwidget.setIcon(QIcon('icons/icon-info.png'))
