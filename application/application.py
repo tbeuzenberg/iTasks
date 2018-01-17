@@ -1,7 +1,5 @@
 """ File for the application class """
 import json
-import time
-import logging
 
 from PyQt5.QtWidgets import (
     QMainWindow,
@@ -9,7 +7,7 @@ from PyQt5.QtWidgets import (
     QWidget
 )
 
-from application.performance_logger import PerformanceLogger
+from application.performance_timer import PerformanceTimer
 from application.exceptions import DuplicateKeyException
 from itasks_components import ItasksComponent
 from ui_generator import UIGenerator
@@ -141,7 +139,7 @@ class Application:
         :param json_instruction: The instruction received from the iTasks server
         :rtype: void
         """
-        performance_logger = PerformanceLogger()
+        performance_timer = PerformanceTimer()
 
         parsed_json = json.loads(json_instruction)
 
@@ -159,4 +157,4 @@ class Application:
             change=parsed_json.get("change")
         )
 
-        performance_logger.stop("Tree was generated")
+        performance_timer.stop("Tree was generated from JSON instruction")

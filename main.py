@@ -3,6 +3,8 @@
 """ iTasks Desktop application Entry point """
 
 import sys
+import logging
+import traceback
 
 from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
     QMainWindow,
@@ -18,7 +20,6 @@ from temporary_dir.json_components import *
 from application.application import Application
 
 from itasks import ItasksService
-from ui_generator.components import Components
 
 
 class Main(QMainWindow):
@@ -121,7 +122,30 @@ class Main(QMainWindow):
 #     ex = Main()
 #     sys.exit(APP.exec_())
 
+def log_uncaught_exceptions(exctype, exception, trace):
+    """
+    Log uncaught exceptions to messages.log file and to console
+    :param exctype: Exception type or class
+    :param exception: The original exception
+    :param trace: Traceback for the exception
+    """
+    # Write error to file
+    logging.critical(''.join(traceback.format_tb(trace)))
+    logging.critical('%s: %s', exctype, exception)
+
+    # Write error to console
+    sys.__excepthook__(exctype, exception, trace)
+    sys.exit(6)
+
+
 if __name__ == '__main__':
+    logging.basicConfig(
+        level=logging.DEBUG,
+        format='[%(asctime)s] %(levelname)s - %(message)s',
+        filename='messages.log',
+        filemode='a')
+    sys.excepthook = log_uncaught_exceptions
+
     app = Application(application=QApplication(sys.argv))
     app.handle_instruction(get_palindrome())
     app.main_window.show()
