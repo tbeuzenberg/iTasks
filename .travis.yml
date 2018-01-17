@@ -7,8 +7,8 @@ install:
   - pip install radon xenon
 script:
   - PYTHONPATH=. pytest
-  - PYTHONPATH=. pytest --pep8
-  - PYTHONPATH=. pylint *.py
+  - PYTHONPATH=. pytest --pep8 -m pep8
+  - PYTHONPATH=. pylint *.py || true
   - PYTHONPATH=. pylint */*.py || true
   - PYTHONPATH=. pylint */*/*.py || true
   - PYTHONPATH=. coverage run --source=. -m unittest discover -s test/
