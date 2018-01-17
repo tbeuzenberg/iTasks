@@ -268,8 +268,8 @@ class Components:
         return output
 
     @staticmethod
-    def panel(**kwargs):
-        return Components.container(**kwargs)
+    def panel(index, parent, **kwargs):
+        return Components.container(index=index, parent=parent, **kwargs)
 
     @staticmethod
     def unknown_component(parent=None, **kwargs):
