@@ -181,7 +181,7 @@ class TestUIGenerator(unittest.TestCase):
         )
         self.assertEqual(button, created_component)
 
-    def test_read_change_ui_instruction(self):
+    def test_read_change_ui_single_instruction(self):
         """
         Test to read the instruction and all the update method accordingly
 
@@ -207,6 +207,52 @@ class TestUIGenerator(unittest.TestCase):
         parent_node.update.assert_called_with(
             **change_instruction["attributes"]
         )
+
+    def test_read_change_ui_multiple_instructions(self):
+        parent_node = Mock()
+        parent_node.update = Mock()
+        change_instruction = {
+            "type": "change",
+            "attributes": {
+                "height": "flex",
+                "width": "flex"
+            },
+            "children": [
+                [
+                    1,
+                    "change",
+                    {
+                        "type": "change",
+                        "attributes": [],
+                        "children": []
+                    }
+                ],
+                [
+                    2,
+                    "change",
+                    {
+                        "type": "change",
+                        "attributes": [],
+                        "children": [
+                            [
+                                0,
+                                "change",
+                                {
+                                    "type": "change",
+                                    "attributes": [
+                                        {
+                                            "name": "title",
+                                            "value": "Palindrome"
+                                        }
+                                    ],
+                                    "children": []
+                                }
+                            ]
+                        ]
+                    }
+                ]
+            ],
+        }
 
 
 if __name__ == '__main__':

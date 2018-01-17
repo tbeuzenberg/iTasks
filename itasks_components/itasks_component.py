@@ -24,5 +24,11 @@ class ItasksComponent:
         else:
             self.qlayout.addWidget(self.qwidget)
 
+    # def reset(self):
+    #     self.action_id = None
+    #     self.task_id = None
+    #     for i in range(self.qlayout.count()):
+    #         print(i)
+
     def update(self, **kwargs):
         pass
