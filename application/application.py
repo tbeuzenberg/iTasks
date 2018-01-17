@@ -9,6 +9,7 @@ from PyQt5.QtWidgets import (
     QWidget
 )
 
+from application.performance_logger import PerformanceLogger
 from application.exceptions import DuplicateKeyException
 from itasks_components import ItasksComponent
 from ui_generator import UIGenerator
@@ -140,7 +141,7 @@ class Application:
         :param json_instruction: The instruction received from the iTasks server
         :rtype: void
         """
-        start_time = time.time()
+        performance_logger = PerformanceLogger()
 
         parsed_json = json.loads(json_instruction)
 
@@ -158,6 +159,4 @@ class Application:
             change=parsed_json.get("change")
         )
 
-        execution_time = round(((time.time() - start_time) * 100), 3)
-        logging.debug("UI generated in : %s ms", execution_time)
-        print("--- %s ms ---" % execution_time)
+        performance_logger.stop("Tree was generated")

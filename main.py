@@ -126,10 +126,12 @@ if __name__ == '__main__':
     logging.basicConfig(
         level=logging.DEBUG,
         format='[%(asctime)s] %(levelname)s - %(message)s',
-        filename='errors.log',
+        filename='messages.log',
         filemode='a')
 
     app = Application(application=QApplication(sys.argv))
     app.handle_instruction(get_palindrome())
+    app.handle_instruction(get_enter_a_string())
+    app.handle_instruction(get_positive_number())
     app.main_window.show()
     sys.exit(app.qt_application.exec_())
