@@ -159,6 +159,8 @@ class TestApplication(unittest.TestCase):
         """
         itasks_component = {"ItasksComponent", "ItasksComponent"}
 
+        constructor = ItasksComponent.__new__
+
         ItasksComponent.__new__ = Mock()
         ItasksComponent.__new__.return_value = itasks_component
 
@@ -170,6 +172,8 @@ class TestApplication(unittest.TestCase):
         get_instance_tree_mock.assert_called_with(5)
 
         self.assertEqual(returned_item, itasks_component)
+
+        ItasksComponent.__new__ = constructor
 
     @patch("application.application.Application.get_instance_tree")
     def test_get_or_create_instance_exists(self, get_instance_tree_mock):
