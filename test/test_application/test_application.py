@@ -53,4 +53,3 @@ class TestApplication(unittest.TestCase):
 
         :return:
         """
-        self.application.
