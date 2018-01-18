@@ -244,7 +244,7 @@ class Components:
             editor_id=kwargs.get("editorId")
         )
 
-        widget.textChanged.connect(
+        widget.textEdited.connect(
             lambda: QtEventHandler.textbox_changed_event(output)
         )
 
