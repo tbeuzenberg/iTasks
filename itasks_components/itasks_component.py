@@ -1,5 +1,6 @@
 """Itasks_component for use in a Node"""
 # pylint: disable-msg=too-few-public-methods
+import sip
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QLayout, QWidget, QPushButton, QLineEdit, QLabel
 
@@ -34,8 +35,7 @@ class ItasksComponent:
         self.task_id = None
 
         for child in children:
-            self.qlayout.removeWidget(child.value.qwidget)
-            child.value.qwidget.deleteLater()
+            self.qwidget.hide()
 
     def update(self, arguments):
         """

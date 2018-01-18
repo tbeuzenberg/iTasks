@@ -232,5 +232,4 @@ class Application:
                 break
 
     def task_callback(self, data):
-        print(data)
         self.callback_queue.put(data)

@@ -25,7 +25,6 @@ class UIGenerator:
             )
 
         if change["type"] == "change":
-            node.print()
             if node.value.main:
                 node = node.get_child(0)
             UIGenerator.read_change_ui_instruction(
