@@ -17,8 +17,7 @@ class UIGenerator:
         """
 
         if change["type"] == "replace":
-            node.children = []
-            # node.value.reset()
+            node.reset()
             UIGenerator.read_replace_ui_instruction(
                 parent_node=node,
                 index=0,

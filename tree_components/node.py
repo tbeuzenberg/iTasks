@@ -108,3 +108,8 @@ class Node:
         if self.__children:
             for i in range(0, len(self.__children)):
                 self.__children[i].print(prefix + "- ")
+
+    def reset(self):
+        self.value.reset(self.__children)
+        self.__children = []
+        self.__valid = False

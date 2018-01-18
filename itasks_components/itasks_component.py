@@ -28,11 +28,13 @@ class ItasksComponent:
         else:
             self.qlayout.addWidget(self.qwidget)
 
-    # def reset(self):
-    #     self.action_id = None
-    #     self.task_id = None
-    #     for i in range(self.qlayout.count()):
-    #         print(i)
+    def reset(self, children):
+        self.action_id = None
+        self.task_id = None
+
+        for child in children:
+            self.qlayout.removeWidget(child.value.qwidget)
+            child.value.qwidget.deleteLater()
 
     def update(self, arguments):
         """
