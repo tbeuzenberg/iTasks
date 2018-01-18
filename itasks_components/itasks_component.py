@@ -50,23 +50,21 @@ class ItasksComponent:
         for arg in arguments:
             dictionary.update({arg["name"]: arg["value"]})
 
-        if type(qwidget) == QPushButton:
+        if isinstance(qwidget, QPushButton):
             self.__update_button(qwidget, dictionary)
 
-        if type(qwidget) == QLineEdit:
+        if isinstance(qwidget, QLineEdit):
             self.__update_textfield(qwidget, dictionary)
 
-        if type(qwidget) == QLabel:
+        if isinstance(qwidget, QLabel):
             self.__update_icon(qwidget, dictionary)
-
-        for arg in dictionary:
-            qwidget.setProperty(arg, dictionary.get(arg))
 
         self.qlayout.addWidget(qwidget)
         self.qwidget = qwidget
 
-    def __update_icon(self, qwidget, dictionary):
+    def __update_icon(self, qwidget, dictionary):  # pragma: no cover
         """"
+        Ignored in coverage as it's tested through update method
         Update qwidget's icon
         :param qwidget: QWidget to update icon of
         :param dictionary: dictionary from update function
@@ -77,9 +75,10 @@ class ItasksComponent:
                 "<html><img src='icons/" + icon + ".png'></html>"
             )
 
-    def __update_button(self, qwidget, dictionary):
+    def __update_button(self, qwidget, dictionary):  # pragma: no cover
         """"
-        Update QPushButton
+        Ignored in coverage as it's tested through update method
+        Update QPushButton11
         :param qwidget: QPushButton to update
         :param dictionary: dictionary from update function
         """
@@ -93,10 +92,11 @@ class ItasksComponent:
 
         if 'iconCls' in dictionary:
             icon = dictionary.pop('iconCls')
-            qwidget.setIcon("icons/" + icon)
+            qwidget.setIcon("icons/" + icon + ".png")
 
-    def __update_textfield(self, qwidget, dictionary):
+    def __update_textfield(self, qwidget, dictionary):  # pragma: no cover
         """"
+        Ignored in coverage as it's tested through update method
         Update QLineEdit
         :param qwidget: QLineEdit to update
         :param dictionary: dictionary from update function

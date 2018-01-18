@@ -4,7 +4,10 @@ import unittest
 
 from unittest.mock import Mock, patch
 
+from PyQt5.QtWidgets import QLineEdit, QPushButton, QLabel
+
 from itasks_components import ItasksComponent
+from tree_components import Node
 
 
 class ItasksComponentTest(unittest.TestCase):
@@ -29,8 +32,12 @@ class ItasksComponentTest(unittest.TestCase):
         self.assertEqual(component.action_id, "Action_ID")
         self.assertEqual(component.task_id, "Task_ID")
 
-    def test_update_text_changed(self):
-        """"sdf"""
+    def test_update_button_changed(self):
+        """
+        method: update
+        state: button changed
+        expected_result: button.qwidget.setText called with 'itasks'
+        """
         # Assign
         data = [
             {
@@ -38,7 +45,7 @@ class ItasksComponentTest(unittest.TestCase):
                 "value": "itasks"
             }
         ]
-        qwidget = Mock()
+        qwidget = Mock(spec=QPushButton)
         qlayout = Mock()
         button = ItasksComponent(qwidget, qlayout)
 
@@ -48,19 +55,23 @@ class ItasksComponentTest(unittest.TestCase):
         # Assert
         qlayout.removeWidget.assert_called_once_with(qwidget)
         qlayout.addWidget.assert_called_with(qwidget)
-        button.qwidget.setProperty.\
-            assert_called_once_with("text", "itasks")
+        button.qwidget.setText.\
+            assert_called_once_with("itasks")
 
     def test_update_icon_changed(self):
-        """"sdf"""
+        """
+        method: update
+        state: icon changed
+        expected_result: icon.qwidget.setText called with correct html for icon
+        """
         # Assign
         data = [
             {
                 "name": "iconCls",
-                "value": "accept.png"
+                "value": "accept"
             }
         ]
-        qwidget = Mock()
+        qwidget = Mock(spec=QLabel)
         qlayout = Mock()
         icon = ItasksComponent(qwidget, qlayout)
 
@@ -70,11 +81,16 @@ class ItasksComponentTest(unittest.TestCase):
         # Assert
         qlayout.removeWidget.assert_called_once_with(qwidget)
         qlayout.addWidget.assert_called_with(qwidget)
-        icon.qwidget.setIcon.\
-            assert_called_once()
+        icon.qwidget.setText.assert_called_once_with(
+            "<html><img src='icons/accept.png'></html>"
+        )
 
-    def test_update_value_changed(self):
-        """"sdf"""
+    def test_update_textfield_changed(self):
+        """
+        method: update
+        state: textfield changed
+        expected_result: textfield.qwidget.setText called with 'itasks'
+        """
         # Assign
         data = [
             {
@@ -82,7 +98,7 @@ class ItasksComponentTest(unittest.TestCase):
                 "value": "itasks"
             }
         ]
-        qwidget = Mock()
+        qwidget = Mock(spec=QLineEdit)
         qlayout = Mock()
         textfield = ItasksComponent(qwidget, qlayout)
 
@@ -95,33 +111,39 @@ class ItasksComponentTest(unittest.TestCase):
         textfield.qwidget.setText. \
             assert_called_once_with("itasks")
 
-    def test_update_hint_and_hint_type_changed(self):
-        """"sdf"""
+    def test_reset_qwidget_hidden(self):
+        """
+        method: reset
+        state: itasks_component has at least 1 child
+        expected_result: qwidget.hide called
+        """
         # Assign
-        data = [
-            {
-                "name": "hint",
-                "value": "itasks"
-            },
-            {
-                "name": "hint-type",
-                "value": "valid"
-            }
-        ]
         qwidget = Mock()
         qlayout = Mock()
-        icon = ItasksComponent(qwidget, qlayout)
+        itasks_component = ItasksComponent(qwidget, qlayout)
 
         # Act
-        icon.update(data)
+        itasks_component.reset([Node("test")])
 
         # Assert
-        qlayout.removeWidget.assert_called_once_with(qwidget)
-        qlayout.addWidget.assert_called_with(qwidget)
-        icon.qwidget.setTooltip. \
-            assert_called_once_with("itasks")
-        icon.qwidget.setIcon. \
-            assert_called_once()
+        qwidget.hide.assert_called_once()
+
+    def test_reset_no_children(self):
+        """
+        method: reset
+        state: itasks_component has no children
+        expected_result: qwidget.hide not called
+        """
+        # Assign
+        qwidget = Mock()
+        qlayout = Mock()
+        itasks_component = ItasksComponent(qwidget, qlayout)
+
+        # Act
+        itasks_component.reset([])
+
+        # Assert
+        qwidget.hide.assert_not_called()
 
 
 if __name__ == '__main__':
