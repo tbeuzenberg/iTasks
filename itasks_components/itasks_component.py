@@ -1,7 +1,7 @@
 """Itasks_component for use in a Node"""
 # pylint: disable-msg=too-few-public-methods
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QLayout, QWidget
+from PyQt5.QtWidgets import QLayout, QWidget, QPushButton, QLineEdit, QLabel
 
 
 class ItasksComponent:
@@ -50,9 +50,14 @@ class ItasksComponent:
         for arg in arguments:
             dictionary.update({arg["name"]: arg["value"]})
 
-        self.__update_icon(qwidget, dictionary)
-        self.__update_value(qwidget, dictionary)
-        self.__update_hint(qwidget, dictionary)
+        if type(qwidget) == QPushButton:
+            self.__update_button(qwidget, dictionary)
+
+        if type(qwidget) == QLineEdit:
+            self.__update_textfield(qwidget, dictionary)
+
+        if type(qwidget) == QLabel:
+            self.__update_icon(qwidget, dictionary)
 
         for arg in dictionary:
             qwidget.setProperty(arg, dictionary.get(arg))
@@ -68,31 +73,38 @@ class ItasksComponent:
         """
         if 'iconCls' in dictionary:
             icon = dictionary.pop('iconCls')
-            qwidget.setIcon(QIcon('icons/' + icon))
+            qwidget.setText(
+                "<html><img src='icons/" + icon + ".png'></html>"
+            )
 
-    def __update_value(self, qwidget, dictionary):
+    def __update_button(self, qwidget, dictionary):
         """"
-        Update textfield's text value
-        :param qwidget: QWidget to update value of
+        Update QPushButton
+        :param qwidget: QPushButton to update
+        :param dictionary: dictionary from update function
+        """
+        if 'text' in dictionary:
+            text = dictionary.pop('text')
+            qwidget.setText(text)
+
+        if 'enabled' in dictionary:
+            enabled = dictionary.pop('enabled')
+            qwidget.setEnabled(enabled)
+
+        if 'iconCls' in dictionary:
+            icon = dictionary.pop('iconCls')
+            qwidget.setIcon("icons/" + icon)
+
+    def __update_textfield(self, qwidget, dictionary):
+        """"
+        Update QLineEdit
+        :param qwidget: QLineEdit to update
         :param dictionary: dictionary from update function
         """
         if 'value' in dictionary:
             value = dictionary.pop('value')
             qwidget.setText(value)
 
-    def __update_hint(self, qwidget, dictionary):
-        """"
-        Update qwidgets's hint
-        :param qwidget: QWidget to update hint of
-        :param dictionary: dictionary from update function
-        """
         if 'hint' in dictionary:
             hint = dictionary.pop('hint')
-            qwidget.setTooltip(hint)
-
-        if 'hint-type' in dictionary:
-            hint_type = dictionary.pop('hint-type')
-            if hint_type == "valid":
-                qwidget.setIcon(QIcon('icons/accept.png'))
-            else:
-                qwidget.setIcon(QIcon('icons/icon-info.png'))
+            qwidget.setToolTip(hint)
