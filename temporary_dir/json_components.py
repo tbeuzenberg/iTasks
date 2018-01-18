@@ -34,6 +34,7 @@ def get_buttonbar():
 def get_itasks_layout(json):
     return '{"instance":4,"change":{"type":"replace","definition":' + json + '}}'
 
+
 def get_change():
     return '{"instance":3,"change":{"type":"change","attributes":[],"children":[[1,"change",{"type":"change","attributes":[],"children":[[1,"change",{"type":"change","attributes":[],"children":[[1,"change",{"type":"change","attributes":[],"children":[[0,"change",{"type":"change","attributes":[{"name":"title","value":"Palindrome"}],"children":[]}]]}]]}]]}]]}}'
 

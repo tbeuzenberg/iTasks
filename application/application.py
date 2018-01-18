@@ -1,5 +1,6 @@
 """ File for the application class """
 import json
+import queue
 
 from PyQt5.QtWidgets import (
     QMainWindow,
@@ -41,6 +42,7 @@ class Application:
         """
 
         self.__application = application
+        self.callback_queue = queue.Queue()
 
         # Start a new itasks session
         self.itasks_service = ItasksService()
@@ -56,6 +58,7 @@ class Application:
         self.__main_window.setGeometry(0, 0, 500, 500)
         self.__main_widget.setGeometry(0, 0, 500, 500)
         self.__main_window.setCentralWidget(self.__main_widget)
+        self.__main_window.keyPressEvent = self.key_pressed
         self.__main_window.closeEvent = self.close_event
 
     @property
@@ -167,9 +170,17 @@ class Application:
             change=parsed_json.get("change")
         )
 
+        self.main_window.show()
+        self.main_widget.update()
+
     def close_event(self, q_close_event):  # pylint: disable-msg=C0103,W0613
         """ Close window event """
         self.itasks_service.stop_server()
+
+    def key_pressed(self, key_pressed_event):
+        """ Key pressed event """
+        if key_pressed_event:
+            self.from_main_thread_nonblocking()
 
     def new_session_callback(self, instance_no, instance_key):
         """
@@ -187,7 +198,6 @@ class Application:
         :param data: iTasks response data
         :rtype: void
         """
-        print(data)
 
         # Start the palindrome task
         if self.temp_start_palindrome == 0:
@@ -213,6 +223,14 @@ class Application:
 
         self.temp_start_palindrome += 1
 
+    def from_main_thread_nonblocking(self):
+        while True:
+            try:
+                data = self.callback_queue.get(False)
+                self.handle_instruction(data)
+            except queue.Empty:  # raised when queue is empty
+                break
+
     def task_callback(self, data):
         print(data)
-        self.handle_instruction(data)
+        self.callback_queue.put(data)
