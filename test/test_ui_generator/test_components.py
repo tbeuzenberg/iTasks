@@ -135,9 +135,7 @@ class TestComponents(unittest.TestCase):
         """
         Tests the buttonbar method. Tests if it returns an ItasksComponent,
         and if the QLayout in the ItasksComponent is the expected type.
-        :param addwidget: patched addwidget function
         :param sizehint: patched sizehint function
-        :param qwidget: patched qwidget constructor
         :return:
         """
         # Assign
@@ -162,10 +160,8 @@ class TestComponents(unittest.TestCase):
         """
         Tests the button method. Tests if it returns an ItasksComponent,
         and if the QLayout in the ItasksComponent is the expected type.
-        :param addwidget: patched addwidget method
         :param sizehint: patched sizehint method
         :param seticon: patched seticon method
-        :param qpushbutton: patched QPushButton constructor
         :return:
         """
         # Assign
@@ -191,9 +187,7 @@ class TestComponents(unittest.TestCase):
         """
         Tests the container method. Tests if it returns an ItasksComponent,
         and if the QLayout in the ItasksComponent is the expected type.
-        :param addwidget: patched addwidget method
         :param sizehint: patched sizehint method
-        :param qwidget: patched QWidget constructor
         :return:
         """
         # Assign
@@ -216,9 +210,7 @@ class TestComponents(unittest.TestCase):
         """
         Tests the icon method. Tests if it returns an ItasksComponent,
         and if the QLayout in the ItasksComponent is the expected type.
-        :param addwidget: patched addwidget method
         :param sizehint: patched sizehint method
-        :param qlabel: patched QLabel constructor
         :return:
         """
         # Assign
@@ -241,9 +233,7 @@ class TestComponents(unittest.TestCase):
         """
         Tests the textfield method. Tests if it returns an ItasksComponent,
         and if the QLayout in the ItasksComponent is the expected type.
-        :param addwidget: patched addwidget method
         :param sizehint: patched sizehint method
-        :param qlineedit: patched qlineedit constructor
         :return:
         """
         # Assign
@@ -269,9 +259,7 @@ class TestComponents(unittest.TestCase):
         """
         Tests textview method. Tests if it returns an ItasksComponent,
         and if the QLayout in the ItasksComponent is the expected type.
-        :param addwidget: patched addwidget method
         :param sizehint: patched sizehint method
-        :param qlabel: patched qlabel constructor
         :return:
         """
         # Assign
@@ -295,9 +283,7 @@ class TestComponents(unittest.TestCase):
         """
         Tests the panel method. Tests if it returns an ItasksComponent,
         and if the QLayout in the ItasksComponent is the expected type.
-        :param addwidget: patched addwidget method
         :param container: patched container method
-        :param qwidget: patched QWidget constructor
         :return:
         """
         # Assign
