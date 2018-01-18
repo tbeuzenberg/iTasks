@@ -44,4 +44,8 @@ if __name__ == '__main__':
 
     # app.from_main_thread_nonblocking()
 
-    sys.exit(app.qt_application.exec_())
+    while True:
+        app.qt_application.processEvents()
+        app.from_main_thread_nonblocking()
+
+    # sys.exit(app.qt_application.exec_())
