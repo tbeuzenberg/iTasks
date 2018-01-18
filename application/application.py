@@ -179,9 +179,9 @@ class Application:
         :rtype: void
         """
         self.itasks_service.attach_task_instance(
-            instance_no, instance_key, self.task_callback)
+            instance_no, instance_key, self.application_callback)
 
-    def task_callback(self, data):
+    def application_callback(self, data):
         """
         Task instance callback method
         :param data: iTasks response data
@@ -211,8 +211,8 @@ class Application:
             self.itasks_service.attach_task_instance(
                 instance_no, instance_key, self.task_callback)
 
-        # Send data to the application when the palindrome is ready
-        if self.temp_start_palindrome > 4:
-            self.handle_instruction(data)
-
         self.temp_start_palindrome += 1
+
+    def task_callback(self, data):
+        print(data)
+        self.handle_instruction(data)
