@@ -1,10 +1,9 @@
 """ Unit test file for the UIGenerator """
 # pylint: disable=invalid-name, no-self-use
 
-import sys
 import unittest
 
-from unittest.mock import Mock, call
+from unittest.mock import Mock
 
 from tree_components import Node
 from itasks_components import ItasksComponent
@@ -45,7 +44,7 @@ class TestUIGenerator(unittest.TestCase):
         # Assign
         UIGenerator.read_change_ui_instruction = Mock()
         UIGenerator.read_replace_ui_instruction = Mock()
-        node = Node("Piet-Jan Heijn")
+        node = Node(Mock())
         change = {
             "type": "replace",
             "definition": {
@@ -79,7 +78,9 @@ class TestUIGenerator(unittest.TestCase):
         # Assign
         UIGenerator.read_change_ui_instruction = Mock()
         UIGenerator.read_replace_ui_instruction = Mock()
-        node = Node("Piet-Jan Heijn")
+        itasks_component = Mock()
+        itasks_component.main = False
+        node = Node(itasks_component)
         change = {
             "type": "change",
             "attributes": [],
@@ -113,7 +114,7 @@ class TestUIGenerator(unittest.TestCase):
         """
         # Assign
         UIGenerator.create_component = Mock()
-        node = Node("Piet-Jan Heijn")
+        node = Node(Mock())
         attributes = {
             "height": "flex",
             "width": "flex"
@@ -190,7 +191,8 @@ class TestUIGenerator(unittest.TestCase):
         :expect: the change_ui has to be called
         """
         parent_node = Mock()
-        parent_node.update = Mock()
+        parent_node.value = Mock()
+        parent_node.value.update = Mock()
         change_instruction = {
             "children": [],
             "attributes": {
@@ -204,8 +206,8 @@ class TestUIGenerator(unittest.TestCase):
             change_instruction=change_instruction
         )
 
-        parent_node.update.assert_called_with(
-            **change_instruction["attributes"]
+        parent_node.value.update.assert_called_with(
+            change_instruction["attributes"]
         )
 
     def test_read_change_ui_multiple_instructions(self):

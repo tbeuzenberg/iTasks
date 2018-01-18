@@ -27,8 +27,10 @@ class TestQtEventHandler(unittest.TestCase):
         """
         # Assign
         qpushbutton = Mock()
-        layout = Mock()
-        button = ItasksComponent(qpushbutton, layout, "Ok", "2-0")
+        button = Mock()
+        button.qwidget = qpushbutton
+        button.action_id = "Ok"
+        button.task_id = "2-0"
 
         # Act
         QtEventHandler.button_clicked_event(button)
@@ -53,9 +55,11 @@ class TestQtEventHandler(unittest.TestCase):
         """
         # Assign
         qlineedit = Mock()
-        layout = Mock()
         qlineedit.text = text_function
-        textbox = ItasksComponent(qlineedit, layout, None, "2-1", editor_id="v")
+        textbox = Mock()
+        textbox.qwidget = qlineedit
+        textbox.task_id = "2-1"
+        textbox.editor_id = "v"
 
         # Act
         QtEventHandler.textbox_changed_event(textbox)
