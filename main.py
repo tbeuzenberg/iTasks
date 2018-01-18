@@ -41,4 +41,7 @@ if __name__ == '__main__':
     app = Application(application=QApplication(sys.argv))
     # app.handle_instruction(get_palindrome())
     app.main_window.show()
+
+    # app.from_main_thread_nonblocking()
+
     sys.exit(app.qt_application.exec_())

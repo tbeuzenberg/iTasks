@@ -23,6 +23,7 @@ class ItasksComponent:
         self.editor_id = editor_id
         self.qwidget = qwidget
         self.qlayout = qlayout
+        self.main = main
         if main:
             self.qwidget.setLayout(self.qlayout)
         else:

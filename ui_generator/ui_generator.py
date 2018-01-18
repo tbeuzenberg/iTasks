@@ -25,6 +25,9 @@ class UIGenerator:
             )
 
         if change["type"] == "change":
+            node.print()
+            if node.value.main:
+                node = node.get_child(0)
             UIGenerator.read_change_ui_instruction(
                 current_node=node,
                 change_instruction=change
@@ -101,7 +104,8 @@ class UIGenerator:
         children = change_instruction.get("children")
         attributes = change_instruction.get("attributes")
 
-        current_node.value.update(attributes)
+        if attributes:
+            current_node.value.update(attributes)
 
         for child in children:
             if child[1] == "change":
