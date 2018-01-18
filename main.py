@@ -10,8 +10,6 @@ from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
     QApplication)
 
 from application import Application
-from temporary_dir.json_components import get_itasks_layout, get_palindrome, \
-    get_icon
 
 
 def log_uncaught_exceptions(exctype, exception, trace):
@@ -39,13 +37,8 @@ if __name__ == '__main__':
     sys.excepthook = log_uncaught_exceptions
 
     app = Application(application=QApplication(sys.argv))
-    # app.handle_instruction(get_palindrome())
     app.main_window.show()
-
-    # app.from_main_thread_nonblocking()
 
     while True:
         app.qt_application.processEvents()
         app.from_main_thread_nonblocking()
-
-    # sys.exit(app.qt_application.exec_())

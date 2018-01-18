@@ -1,8 +1,7 @@
 """ Unit test file for itasks_component """
 
 import unittest
-
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
 from PyQt5.QtWidgets import QLineEdit, QPushButton, QLabel
 
@@ -55,7 +54,7 @@ class ItasksComponentTest(unittest.TestCase):
         # Assert
         qlayout.removeWidget.assert_called_once_with(qwidget)
         qlayout.addWidget.assert_called_with(qwidget)
-        button.qwidget.setText.\
+        button.qwidget.setText. \
             assert_called_once_with("itasks")
 
     def test_update_icon_changed(self):

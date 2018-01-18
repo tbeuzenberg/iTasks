@@ -38,12 +38,12 @@ class TestQtEventHandler(unittest.TestCase):
         # Asserts
         itasks_service._ItasksService__instance.send_ui_event.\
             assert_called_once_with(
-            {
-                "instanceNo": 2,
-                "taskNo": 0,
-                "action": "Ok"
-            }
-        )
+                {
+                    "instanceNo": 2,
+                    "taskNo": 0,
+                    "action": "Ok"
+                }
+            )
 
     @patch('itasks.itasks_service.ItasksService')
     @patch('PyQt5.QtWidgets.QLineEdit.text', return_value='kaas')

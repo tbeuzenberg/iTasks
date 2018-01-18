@@ -279,6 +279,14 @@ class Components:
 
     @staticmethod
     def panel(index, parent, **kwargs):
+        """
+        Creates an ItasksComponent containing a panel and a layout
+        :param index: index you want the item to be nested at
+        :param parent: parent to nest the item into
+        :param kwargs: remaining arguments
+        :return: returns a filled ItasksComponent
+        :rtype ItasksComponent
+        """
         return Components.container(index=index, parent=parent, **kwargs)
 
     @staticmethod

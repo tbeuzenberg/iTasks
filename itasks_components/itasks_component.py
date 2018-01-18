@@ -1,7 +1,5 @@
 """Itasks_component for use in a Node"""
 # pylint: disable-msg=too-few-public-methods
-import sip
-from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QLayout, QWidget, QPushButton, QLineEdit, QLabel
 
 
@@ -31,10 +29,11 @@ class ItasksComponent:
             self.qlayout.addWidget(self.qwidget)
 
     def reset(self, children):
+        """" Hides the qwidget and sets action_id and task_id to None """
         self.action_id = None
         self.task_id = None
 
-        for child in children:
+        if len(children) > 0:
             self.qwidget.hide()
 
     def update(self, arguments):
