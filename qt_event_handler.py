@@ -31,19 +31,6 @@ class QtEventHandler:
             }
         )
 
-        # Example of update call
-        # itasks_component.update(
-        #     [
-        #         {"name": "x", "value": 38},
-        #         {"name": "y", "value": 38},
-        #         {"name": "width", "value": 38},
-        #         {"name": "height", "value": 38},
-        #         {"name": "text", "value": "kaas"},
-        #         {"name": "enabled", "value": False},
-        #         {"name": "icon", "value": "icons/accept.png"}
-        #     ]
-        # )
-
     @staticmethod
     def textbox_changed_event(itasks_component: ItasksComponent):
         """
