@@ -226,29 +226,29 @@ class TestNode(unittest.TestCase):
         # Assign
         builtins.print = Mock()
 
-        node2 = Node("Child node 2")
-        node3 = Node("Child node 3")
+        node2 = Node(Mock())
+        node3 = Node(Mock())
         node2.add_or_replace_child(node3, 2)
 
-        node1 = Node("Child node 1")
+        node1 = Node(Mock())
         node1.add_or_replace_child(node2, 0)
 
-        root = Node("Root node")
+        root = Node(Mock())
         root.add_or_replace_child(node1, 3)
 
         # Act
         root.print()
 
         calls = [
-            call("str"),
+            call("Mock"),
             call("- None"),
             call("- None"),
             call("- None"),
-            call("- str"),
-            call("- - str"),
+            call("- Mock"),
+            call("- - Mock"),
             call("- - - None"),
             call("- - - None"),
-            call("- - - str"),
+            call("- - - Mock"),
         ]
 
         # Assert
