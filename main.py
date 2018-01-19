@@ -37,7 +37,6 @@ if __name__ == '__main__':
     sys.excepthook = log_uncaught_exceptions
 
     app = Application(application=QApplication(sys.argv))
-
     app.main_window.show()
 
     while True:

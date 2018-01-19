@@ -72,7 +72,6 @@ class Node:
         :param index: The index we have to find the child on
         :rtype: void
         """
-
         return self.__children[index]
 
     def find_node(self, index_list):

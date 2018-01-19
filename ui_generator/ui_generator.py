@@ -72,7 +72,7 @@ class UIGenerator:
         Calling the create component factory to create a component. Also checks
         if the component is known in the application.
         :param component_type: The type of the to be created component
-        :param parent_node: The node on which the component has to be created on
+        :param parent_node: The node on which the component has to be created
         :param index: The index the component has to be created on
         :param attributes: The attributes of the to be created component
         :rtype: ItasksComponent
