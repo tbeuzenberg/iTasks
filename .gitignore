@@ -1,5 +1,13 @@
+iTasks/
 /venv
 .cache
 .idea
 .coverage
+/errors.log
 /htmlcov
+.git
+coverage
+__pycache__/
+/itasks/__pycache__/
+/itasks_components/__pycache__/
+/test/__pycache__/

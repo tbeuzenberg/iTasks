@@ -4,6 +4,7 @@
 
 import os
 import json
+import sys
 import subprocess
 import threading
 import time
@@ -63,10 +64,11 @@ class ItasksService(object):
         Stop the iTasks server that is running in the background
         :rtype: void
         """
-        # TODO: Remove when iTasks has support for StdIO
+        # Remove when iTasks has support for StdIO
         self.write_data_to_itasks("EXIT_SERVER")
         time.sleep(1)
-        os.kill(self.process.pid, 2)
+
+        # End the process
         self.process.kill()
 
     def background_worker(self, stdout):
@@ -79,7 +81,13 @@ class ItasksService(object):
         while True:
             output = self.non_block_read(stdout)
             if output:
-                self.process_data(output)
+                # noinspection PyBroadException
+                try:
+                    self.process_data(output)
+                except Exception:  # pylint: disable=broad-except
+                    # Send all exceptions from the thread to the
+                    # logfile and console
+                    sys.excepthook(*sys.exc_info())
 
     @staticmethod
     def non_block_read(output):
@@ -90,7 +98,6 @@ class ItasksService(object):
         :rtype: str
         """
         try:
-
             line = output.readline().decode('utf-8')
             if len(line) > 1:
                 return str(line.strip())
