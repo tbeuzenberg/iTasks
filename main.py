@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-""" iTasks Desktop Application Entry point """
+""" iTasks Desktop application Entry point """
 
 import sys
 
@@ -13,12 +13,9 @@ from PyQt5.QtWidgets import (  # pylint: disable-msg=E0611
     QApplication
 )
 
-from temporary_dir.json_components import *
-
 from application.application import Application
-
 from itasks import ItasksService
-from ui_generator.components import Components
+from temporary_dir.json_components import *
 
 
 class Main(QMainWindow):

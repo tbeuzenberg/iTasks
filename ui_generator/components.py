@@ -48,8 +48,8 @@ class Components:
         return qwidget
 
     @staticmethod
-    def __set_margins(qwidget, marginBottom=0, marginTop=0, marginLeft=0,
-                      marginRight=0, **kwargs):
+    def __set_margins(qwidget, marginBottom=0, marginTop=0,
+                      marginLeft=0, marginRight=0, **kwargs):
         """
         This method sets the margins and geometry for the QWidget passed into it
         :param qwidget: Qwidget to set the margins, padding and geometry for.
@@ -73,31 +73,31 @@ class Components:
         return qwidget
 
     @staticmethod
-    def __nest_layout(parent: ItasksComponent, layout: QLayout, index: int = -1,
-                      vertical: bool = False):
+    def __nest_layout(parent, layout: QLayout,
+                      index: int = -1, vertical: bool = False):
         """
         Nests the given layout in the given parent at the location of the given
         index.
-        :param parent: parent to nest the layout into
+        :param parent: parent ITasksComponent to nest the layout into
         :param layout: layout you want to nest
         :param index: index you want the layout to be nested at
         :rtype void
         """
-        if type(parent.qlayout) == QBoxLayout:
+        if isinstance(parent.qlayout, QBoxLayout):
             parent.qlayout.insertLayout(index, layout)
-        elif type(parent.qlayout) == QGridLayout:
+        elif isinstance(parent.qlayout, QGridLayout):
             if vertical:
                 parent.qlayout.addLayout(layout, index, 0)
             else:
                 parent.qlayout.addLayout(layout, 0, index)
 
     @staticmethod
-    def buttonbar(index: int, parent: ItasksComponent, **kwargs):
+    def buttonbar(index: int, parent, **kwargs):
         """
         Creates an ItasksComponent containing a buttonbar and a layout
         and a layout in which the buttonbar is nested
         :param index: index you want the item to be nested at
-        :param parent: parent to nest the item into
+        :param parent: parent ITasksComponent to nest the item into
         :param kwargs: remaining arguments
         :return: returns a filled ItasksComponent
         :rtype ItasksComponent
@@ -119,12 +119,12 @@ class Components:
         return output
 
     @staticmethod
-    def button(index: int, parent: ItasksComponent, enabled=True, iconCls=None,
+    def button(index: int, parent, enabled=True, iconCls="",
                text="", **kwargs):
         """
         Creates an ItasksComponent containing a button and a layout
         :param index: index you want the item to be nested at
-        :param parent: parent to nest the item into
+        :param parent: parent ITasksComponent to nest the item into
         :param enabled: boolean that determines if the button is enabled or not
         :param iconCls: Icon class: this determines which icon is
         picked from the /icons directory
@@ -153,11 +153,11 @@ class Components:
         return output
 
     @staticmethod
-    def container(index: int, parent: ItasksComponent, **kwargs):
+    def container(index: int, parent, **kwargs):
         """
         Creates an ItasksComponent containing a container and a layout
         :param index: index you want the item to be nested at
-        :param parent: parent to nest the item into
+        :param parent: parent ITasksComponent to nest the item into
         :param kwargs: remaining arguments
         :return: returns a filled ItasksComponent
         :rtype ItasksComponent
@@ -180,11 +180,11 @@ class Components:
         return output
 
     @staticmethod
-    def icon(iconCls, index: int, parent: ItasksComponent, **kwargs):
+    def icon(iconCls, index: int, parent, **kwargs):
         """
         Creates an ItasksComponent containing an icon and a layout
         :param index: index you want the item to be nested at
-        :param parent: parent to nest the item into
+        :param parent: parent ITasksComponent to nest the item into
         :param iconCls: Icon Class: this determines which icon is
         picked from the /icons directory
         :param kwargs: remaining arguments
@@ -210,12 +210,12 @@ class Components:
         return output
 
     @staticmethod
-    def textfield(parent: ItasksComponent, index: int, hint="", value=None,
+    def textfield(parent, index: int, hint="", value="",
                   **kwargs):
         """
         Creates an ItasksComponent containing an icon and a layout
         :param index: index you want the item to be nested at
-        :param parent: parent to nest the item into
+        :param parent: parent ITasksComponent to nest the item into
         :param hint: text for the tooltip
         :param value: text in the field
         :param kwargs: remaining arguments
@@ -241,12 +241,12 @@ class Components:
         return output
 
     @staticmethod
-    def textview(parent: ItasksComponent, index: int, value, **kwargs):
+    def textview(parent, index: int, value, **kwargs):
         """
         Creates an ItasksComponent containing a label and a layout
         :param index: index you want the item to be nested at
-        :param parent: parent to nest the item into
-        :param value: text to put in the label
+        :param parent: parent ITasksComponent to nest the item into
+        :param text: text to put in the label
         :param kwargs: remaining arguments
         :return: returns a filled ItasksComponent
         :rtype ItasksComponent
@@ -268,15 +268,11 @@ class Components:
         return output
 
     @staticmethod
-    def panel(index, parent, **kwargs):
-        return Components.container(index=index, parent=parent, **kwargs)
-
-    @staticmethod
-    def unknown_component(parent=None, **kwargs):
+    def panel(**kwargs):
         """
-        Unknown component, not implemented yet
-        :param parent:
+        Calls the container method with all given parameters.
         :param kwargs:
-        :return:
+        :return: returns a filled ItasksComponent
+        :rtype ItasksComponent
         """
-        pass
+        return Components.container(**kwargs)

@@ -101,7 +101,7 @@ def direct_component():
     sys.exit(generator.application.exec_())
 
 def application():
-    app = Application(
+    app = application(
         application=QApplication(sys.argv),
         main_window=QMainWindow()
     )
