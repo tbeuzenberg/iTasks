@@ -58,7 +58,6 @@ class Application:
         self.__main_window.setGeometry(0, 0, 500, 500)
         self.__main_widget.setGeometry(0, 0, 500, 500)
         self.__main_window.setCentralWidget(self.__main_widget)
-        self.__main_window.keyPressEvent = self.key_pressed
         self.__main_window.closeEvent = self.close_event
 
     @property
@@ -174,13 +173,12 @@ class Application:
         self.main_widget.update()
 
     def close_event(self, q_close_event):  # pylint: disable-msg=C0103,W0613
-        """ Close window event """
+        """
+        Close window event, the server has to be closed as well
+        :param q_close_event: The event thrown by pyqt
+        :rtype: void
+        """
         self.itasks_service.stop_server()
-
-    def key_pressed(self, key_pressed_event):
-        """ Key pressed event """
-        if key_pressed_event:
-            self.from_main_thread_nonblocking()
 
     def new_session_callback(self, instance_no, instance_key):
         """
@@ -194,7 +192,8 @@ class Application:
 
     def application_callback(self, data):
         """
-        Task instance callback method
+        Task instance callback method. This method goes to the palindrome task.
+        This task has taskvalue 17, as we can see in the third if-statement.
         :param data: iTasks response data
         :rtype: void
         """
@@ -223,7 +222,11 @@ class Application:
 
         self.temp_start_palindrome += 1
 
-    def from_main_thread_nonblocking(self):
+    def handle_callback_instructions(self):
+        """
+        Handles all callback instructions that are in the current queue.
+        :rtype: void
+        """
         while True:
             try:
                 data = self.callback_queue.get(False)
@@ -232,4 +235,9 @@ class Application:
                 break
 
     def task_callback(self, data):
+        """
+        Fills queue with instructions for handling an itasks task.
+        :param data: iTasks task as an instruction
+        :rtype: void
+        """
         self.callback_queue.put(data)
