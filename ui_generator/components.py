@@ -16,6 +16,7 @@ from PyQt5.QtWidgets import (
 )
 
 from itasks_components import ItasksComponent
+from qt_event_handler import QtEventHandler
 
 
 class Components:
@@ -113,8 +114,8 @@ class Components:
         output = ItasksComponent(
             qwidget=widget,
             qlayout=layout,
-            action_id=kwargs.get("action_id"),
-            task_id=kwargs.get("task_id")
+            action_id=kwargs.get("actionId"),
+            task_id=kwargs.get("taskId")
         )
         return output
 
@@ -139,7 +140,6 @@ class Components:
         widget.setIcon(QIcon("icons/" + iconCls))
         widget = Components.__set_margins(widget, **kwargs)
         widget = Components.__set_geometry(widget, **kwargs)
-        # widget.clicked.connect() TODO
 
         layout = QGridLayout()
         Components.__nest_layout(parent, layout, index)
@@ -147,9 +147,14 @@ class Components:
         output = ItasksComponent(
             qwidget=widget,
             qlayout=layout,
-            action_id=kwargs.get("action_id"),
-            task_id=kwargs.get("task_id")
+            action_id=kwargs.get("actionId"),
+            task_id=kwargs.get("taskId")
         )
+
+        widget.clicked.connect(
+            lambda: QtEventHandler.button_clicked_event(output)
+        )
+
         return output
 
     @staticmethod
@@ -174,8 +179,8 @@ class Components:
         output = ItasksComponent(
             qwidget=widget,
             qlayout=layout,
-            action_id=kwargs.get("action_id"),
-            task_id=kwargs.get("task_id")
+            action_id=kwargs.get("actionId"),
+            task_id=kwargs.get("taskId")
         )
         return output
 
@@ -204,8 +209,8 @@ class Components:
         output = ItasksComponent(
             qwidget=widget,
             qlayout=layout,
-            action_id=kwargs.get("action_id"),
-            task_id=kwargs.get("task_id")
+            action_id=kwargs.get("actionId"),
+            task_id=kwargs.get("taskId")
         )
         return output
 
@@ -231,13 +236,18 @@ class Components:
         layout = QGridLayout()
         Components.__nest_layout(parent=parent, layout=layout, index=index)
 
-        # output.textChanged.connect() : TODO
         output = ItasksComponent(
             qwidget=widget,
             qlayout=layout,
-            action_id=kwargs.get("action_id"),
-            task_id=kwargs.get("task_id")
+            action_id=kwargs.get("actionId"),
+            task_id=kwargs.get("taskId"),
+            editor_id=kwargs.get("editorId")
         )
+
+        widget.textEdited.connect(
+            lambda: QtEventHandler.textbox_changed_event(output)
+        )
+
         return output
 
     @staticmethod
@@ -262,13 +272,25 @@ class Components:
         output = ItasksComponent(
             qwidget=widget,
             qlayout=layout,
-            action_id=kwargs.get("action_id"),
-            task_id=kwargs.get("task_id")
+            action_id=kwargs.get("actionId"),
+            task_id=kwargs.get("taskId")
         )
         return output
 
     @staticmethod
-    def panel(**kwargs):
+    def panel(index, parent, **kwargs):
+        """
+        Creates an ItasksComponent containing a panel and a layout
+        :param index: index you want the item to be nested at
+        :param parent: parent to nest the item into
+        :param kwargs: remaining arguments
+        :return: returns a filled ItasksComponent
+        :rtype ItasksComponent
+        """
+        return Components.container(index=index, parent=parent, **kwargs)
+
+    @staticmethod
+    def unknown_component(parent=None, **kwargs):
         """
         Calls the container method with all given parameters.
         :param kwargs:

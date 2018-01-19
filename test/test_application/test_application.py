@@ -24,7 +24,8 @@ from itasks_components import ItasksComponent
 class TestApplication(unittest.TestCase):
     """ The class for testing the Application class """
 
-    def setUp(self):
+    @patch('itasks.itasks_service.ItasksService')
+    def setUp(self, itasks_service):
         """
         Creating the application all of the tests need.
         """

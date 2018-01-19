@@ -1,5 +1,6 @@
 """ File for the application class """
 import json
+import queue
 
 from PyQt5.QtWidgets import (
     QMainWindow,
@@ -8,6 +9,7 @@ from PyQt5.QtWidgets import (
 )
 
 from application.exceptions import DuplicateKeyException
+from itasks import ItasksService
 from itasks_components import ItasksComponent
 from ui_generator import UIGenerator
 from tree_components import (
@@ -24,6 +26,7 @@ class Application:
     still reach them by only their id.
      """
     __instance_trees = {}
+    temp_start_palindrome = 0
 
     def __init__(self, application, grid_layout=None,
                  widget=None, main_window=None):
@@ -39,6 +42,12 @@ class Application:
         """
 
         self.__application = application
+        self.callback_queue = queue.Queue()
+
+        # Start a new itasks session
+        self.itasks_service = ItasksService()
+        self.itasks_service.start_server()
+        self.itasks_service.new_session(self.new_session_callback)
 
         # Create if they aren't passed through as parameters
         self.__main_layout = grid_layout if grid_layout else QGridLayout()
@@ -49,6 +58,8 @@ class Application:
         self.__main_window.setGeometry(0, 0, 500, 500)
         self.__main_widget.setGeometry(0, 0, 500, 500)
         self.__main_window.setCentralWidget(self.__main_widget)
+        self.__main_window.keyPressEvent = self.key_pressed
+        self.__main_window.closeEvent = self.close_event
 
     @property
     def qt_application(self):
@@ -138,7 +149,12 @@ class Application:
         :param json_instruction: The instruction received from the iTasks server
         :rtype: void
         """
-        parsed_json = json.loads(json_instruction)
+        try:
+            parsed_json = json.loads(json_instruction)
+        except ValueError:
+            parsed_json = json_instruction
+        except TypeError:
+            parsed_json = json_instruction
 
         # This is dependent on the iTasks version you use.
         # TODO: remove.
@@ -153,3 +169,67 @@ class Application:
             node=current_tree.root,
             change=parsed_json.get("change")
         )
+
+        self.main_window.show()
+        self.main_widget.update()
+
+    def close_event(self, q_close_event):  # pylint: disable-msg=C0103,W0613
+        """ Close window event """
+        self.itasks_service.stop_server()
+
+    def key_pressed(self, key_pressed_event):
+        """ Key pressed event """
+        if key_pressed_event:
+            self.from_main_thread_nonblocking()
+
+    def new_session_callback(self, instance_no, instance_key):
+        """
+        Callback method for the creation of a new session
+        :param instance_no: iTasks instance number
+        :param instance_key: iTasks instance key
+        :rtype: void
+        """
+        self.itasks_service.attach_task_instance(
+            instance_no, instance_key, self.application_callback)
+
+    def application_callback(self, data):
+        """
+        Task instance callback method
+        :param data: iTasks response data
+        :rtype: void
+        """
+
+        # Start the palindrome task
+        if self.temp_start_palindrome == 0:
+            self.itasks_service.send_ui_event(
+                {"instanceNo": 1, "taskNo": 7, "action": "Continue"})
+        if self.temp_start_palindrome == 1:
+            self.itasks_service.send_ui_event(
+                {"instanceNo": 1, "taskNo": 41, "action": "New"})
+        if self.temp_start_palindrome == 2:
+            self.itasks_service.send_ui_event(
+                {"instanceNo": 1, "taskNo": 63, "edit": "v", "value": [17]})
+        if self.temp_start_palindrome == 3:
+            self.itasks_service.send_ui_event(
+                {"instanceNo": 1, "taskNo": 61, "action": "Start task"})
+        if self.temp_start_palindrome == 4:
+            attributes = data['change']['children'][0][2]['children']
+            attributes = attributes[0][2]['children'][0][2]['children']
+            attributes = attributes[1][2]['children'][0]['attributes']
+            instance_no = attributes['instanceNo']
+            instance_key = attributes['instanceKey']
+            self.itasks_service.attach_task_instance(
+                instance_no, instance_key, self.task_callback)
+
+        self.temp_start_palindrome += 1
+
+    def from_main_thread_nonblocking(self):
+        while True:
+            try:
+                data = self.callback_queue.get(False)
+                self.handle_instruction(data)
+            except queue.Empty:  # raised when queue is empty
+                break
+
+    def task_callback(self, data):
+        self.callback_queue.put(data)
