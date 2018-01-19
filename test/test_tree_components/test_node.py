@@ -254,50 +254,6 @@ class TestNode(unittest.TestCase):
         # Assert
         builtins.print.assert_has_calls(calls)
 
-    def test_has_child_child_not_found(self):
-        # Assign
-        node1 = Node("Node 1")
-
-        node1.add_or_replace_child(Node("Node 2"), 1)
-
-        # Act
-        bool = node1.has_child(0)
-
-        # Assert
-        self.assertFalse(bool)
-
-    def test_has_child_index_out_of_range(self):
-        # Assign
-        node1 = Node("Node 1")
-
-        # Act
-        bool = node1.has_child(2)
-
-        # Assert
-        self.assertFalse(bool)
-
-    def test_has_child_index_equal_to_children_length(self):
-        # Assign
-        node1 = Node("Node 1")
-
-        # Act
-        bool = node1.has_child(1)
-
-        # Assert
-        self.assertFalse(bool)
-
-    def test_has_child_child_found(self):
-        # Assign
-        node1 = Node("Node 1")
-
-        node1.add_or_replace_child(Node("Node 2"), 1)
-
-        # Act
-        bool = node1.has_child(1)
-
-        # Assert
-        self.assertTrue(bool)
-
 
 if __name__ == '__main__':
     unittest.main()

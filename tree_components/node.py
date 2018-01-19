@@ -72,6 +72,7 @@ class Node:
         :param index: The index we have to find the child on
         :rtype: void
         """
+
         return self.__children[index]
 
     def find_node(self, index_list):
@@ -92,15 +93,6 @@ class Node:
             first_element = index_list[:1]
             rest = index_list[1:]
             return self.__children[first_element[0]].find_node(index_list=rest)
-
-    def has_child(self, index):
-        if len(self.__children) <= index:
-            return False
-
-        if self.__children[index].valid is False:
-            return False
-
-        return True
 
     def print(self, prefix=""):
         """

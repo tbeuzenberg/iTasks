@@ -106,12 +106,9 @@ class UIGenerator:
 
         for child in children:
             if child[1] == "change":
-                if current_node.has_child(child[0]):
-                    UIGenerator.change_or_replace(
-                     node=current_node.get_child(child[0]),
-                     change=child[2],
-                    )
-                else:
-                    raise NotImplementedError  # skip or give error message
+                UIGenerator.change_or_replace(
+                 node=current_node.find_node([child[0]]),
+                 change=child[2],
+                )
             else:
                 raise NotImplementedError
