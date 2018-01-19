@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 
-""" iTasks Desktop Application Entry point """
+""" iTasks Desktop application Entry point """
 
 import logging
 import sys
