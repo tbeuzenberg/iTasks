@@ -94,10 +94,12 @@ class UIGenerator:
     @staticmethod
     def read_change_ui_instruction(current_node, change_instruction):
         """
-
+        Read the change instruction recursively and change methods.
+        Besides a change, iTasks can return 3 other actions. These are not
+        supported yet, hence the NotImplementedError.
         :param current_node: The current node of which elements have to be
         replaced
-        :param change_instruction:
+        :param change_instruction: The iTasks instruction for changing elements
         :rtype: void
         """
         children = change_instruction.get("children")
