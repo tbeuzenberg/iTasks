@@ -29,6 +29,7 @@ def log_uncaught_exceptions(exctype, exception, trace):
 
 
 if __name__ == '__main__':
+    # Logging configuration
     logging.basicConfig(
         level=logging.DEBUG,
         format='[%(asctime)s] %(levelname)s - %(message)s',
@@ -36,9 +37,11 @@ if __name__ == '__main__':
         filemode='a')
     sys.excepthook = log_uncaught_exceptions
 
+    # Starting the application with a QMainWindow
     app = Application(application=QApplication(sys.argv))
     app.main_window.show()
 
+    # Main event loop
     while True:
         app.qt_application.processEvents()
-        app.from_main_thread_nonblocking()
+        app.handle_callback_instructions()
