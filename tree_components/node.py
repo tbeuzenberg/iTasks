@@ -23,6 +23,10 @@ class Node:
         """ Children property """
         return self.__children
 
+    @children.setter
+    def children(self, children):
+        self.__children = children
+
     @property
     def valid(self):
         """ Valid property """
@@ -97,10 +101,15 @@ class Node:
         :type: void
         """
         if self.valid:
-            print(prefix + type(self.value).__name__)
+            print(prefix + type(self.value.qwidget).__name__)
         else:
             print(prefix + "None")
 
         if self.__children:
             for i in range(0, len(self.__children)):
                 self.__children[i].print(prefix + "- ")
+
+    def reset(self):
+        self.value.reset(self.__children)
+        self.__children = []
+        self.__valid = False

@@ -1,3 +1,2 @@
-"""" itasks_component.py """
-
+"""Package stuff for itasks_component"""
 from .itasks_component import ItasksComponent
